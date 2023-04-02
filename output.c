@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
-#include "../libx264/common/x264.h"
+#include "common/x264.h"
 #include "output.h"
 
 static int open_file( char *psz_filename, void **p_handle )
