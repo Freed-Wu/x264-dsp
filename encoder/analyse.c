@@ -205,6 +205,7 @@ static const uint16_t x264_mv_bits_tab[23][3] =
 	*/
 };
 
+#ifdef __TI_COMPILER_VERSION__
 static inline void x264_memset_uint16( uint16_t * dst, uint16_t d, int count )
 {
 	int i;
@@ -231,6 +232,18 @@ static inline void x264_memset_uint16( uint16_t * dst, uint16_t d, int count )
 			cur[i] = d;
 	}
 }
+#else
+#include <string.h>
+static inline void x264_memset_uint16( uint16_t * dst, uint16_t d, int count )
+{
+	int i;
+	char *p = (char *)dst;
+	for (i = 0; i < count; i++) {
+		memset(p++, d >> 8, 1);
+		memset(p++, d, 1);
+	}
+}
+#endif
 
 /**********************************************************
  * x264_analyse_init_costs is called by x264_encoder_open *
