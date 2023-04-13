@@ -31,14 +31,17 @@ AS_IF([test "x$with_x264_bit_depth" = "xno"],
       []
     )
 AS_IF([test "x$with_x264_bit_depth" = x8 -o "x$with_x264_bit_depth" = x10],
-      [AC_MSG_NOTICE([define X264_BIT_DEPTH="$with_x264_bit_depth"])],
+      [AC_DEFINE_UNQUOTED([X264_BIT_DEPTH],
+                          [$with_x264_bit_depth],
+                          [bit depth, can be 8 or 10]
+                          )
+      ],
       [AC_MSG_ERROR(["$with_x264_bit_depth" is an illegal bit depth!])]
       )
-AC_SUBST(with_x264_bit_depth)
 
 AC_ARG_WITH([x264-chroma-format],
             [AS_HELP_STRING([--with-x264-chroma-format@<:@=0..3@:>@],
-                            [chroma format, default=1]
+                            [chroma format, 400, 420, 422, 444, default=1]
                             )
             ],
             [],
@@ -53,10 +56,13 @@ AS_IF([test "x$with_x264_chroma_format" = "xno"],
       []
     )
 AS_IF([test "$with_x264_chroma_format" -le 3 -a "$with_x264_chroma_format" -ge 0],
-      [AC_MSG_NOTICE([define X264_CHROMA_FORMAT="$with_x264_chroma_format"])],
+      [AC_DEFINE_UNQUOTED([X264_CHROMA_FORMAT],
+                          [$with_x264_chroma_format],
+                          [chroma format, 0..3 means 400, 420, 422, 444]
+                          )
+      ],
       [AC_MSG_ERROR(["$with_x264_chroma_format" is an illegal chroma format!])]
       )
-AC_SUBST(with_x264_chroma_format)
 
 AC_ARG_ENABLE([debug],
               [AS_HELP_STRING([--enable-debug],

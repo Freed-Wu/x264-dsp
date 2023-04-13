@@ -1,4 +1,3 @@
-DEFS += -DX264_BIT_DEPTH=@with_x264_bit_depth@ -DX264_CHROMA_FORMAT=@with_x264_chroma_format@
 bin_PROGRAMS = x264
 x264_LDFLAGS = -lm
 x264_SOURCES = \

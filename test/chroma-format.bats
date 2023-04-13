@@ -10,13 +10,13 @@ setup() {
 }
 
 @test with-x264-chroma-format {
-	run sh -c './configure --with-x264-chroma-format'
-	assert_output -p 'configure: define X264_CHROMA_FORMAT="1"'
+	run sh -c './configure --with-x264-chroma-format && cat config.h'
+	assert_output -p '#define X264_CHROMA_FORMAT 1'
 }
 
 @test with-x264-chroma-format=10 {
-	run sh -c './configure --with-x264-chroma-format=0'
-	assert_output -p 'configure: define X264_CHROMA_FORMAT="0"'
+	run sh -c './configure --with-x264-chroma-format=0 && cat config.h'
+	assert_output -p '#define X264_CHROMA_FORMAT 0'
 }
 
 @test with-x264-chroma-format=9 {
