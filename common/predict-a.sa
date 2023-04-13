@@ -315,7 +315,7 @@ _x264_predict_16x16_p_ti .cproc pix
             ADD             dotp_3,     dotp_4,     dotp_3
             SUB             dotp_1,     dotp_3,     V      ; V = (dotp_1 + dotp_2) - (dotp_3 + dotp_4)
 
-            ; calcualte a, b and c
+            ; calculate a, b and c
             MPY             5,          H,          b
             MPY             5,          V,          c
             ADD             k_32,       b,          b
@@ -853,7 +853,7 @@ _x264_predict_8x8c_p_ti .cproc pix
             SUB             dotp_1,     dotp_2,     H      ; H = dotp_1 - dotp_2
             SUB             dotp_3,     dotp_4,     V      ; v = dotp_3 - dotp_4
 
-            ; calcualte a, b and c
+            ; calculate a, b and c
             MPY             k_17,       H,          b
             MPY             k_17,       V,          c
             ADD             16,         b,          b

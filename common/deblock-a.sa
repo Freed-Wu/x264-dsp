@@ -1735,7 +1735,7 @@ _deblock_strength_ti .cproc nnz, ref, mv, bs
             PACKL4          bs_hi_22,  bs_lo_22, bs_2_3210
             PACKL4          bs_hi_33,  bs_lo_33, bs_3_3210
 
-            ; store bs arry of dir=0
+            ; store bs array of dir=0
             STNDW           bs_1_3210:bs_0_3210, *bs++
             STNDW           bs_3_3210:bs_2_3210, *bs++[3]
 
@@ -1846,7 +1846,7 @@ _deblock_strength_ti .cproc nnz, ref, mv, bs
             ADD4            nnz_2_3210, mv_2_3210,  bs_2_3210
             ADD4            nnz_3_3210, mv_3_3210,  bs_3_3210
 
-            ; store bs arry of dir=1
+            ; store bs array of dir=1
             STNDW           bs_1_3210:bs_0_3210, *bs++
             STNDW           bs_3_3210:bs_2_3210, *bs
 

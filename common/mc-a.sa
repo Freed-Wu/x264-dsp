@@ -242,7 +242,7 @@ loop_pixel_avg_w20: .trip   8,             16,      8
 ;*                                                                          *;
 ;* NOTE: this function suppose i_height be 16/32 and                        *;
 ;*       i_width be multiple of 8.                                          *;
-;*       the inner loop calcualtes 4 lines with 8 bytes of each line.       *;
+;*       the inner loop calculates 4 lines with 8 bytes of each line.       *;
 ;* ======================================================================== *;
 		.sect ".text:_hpel_filter_v_ti"
         .global _hpel_filter_v_ti
@@ -310,7 +310,7 @@ loop_hpel_filter_v_i:                                       ; loop count: (i_wid
 
 loop_hpel_filter_v_j: .trip 4,          8,          4       ; loop count [4 - 8]
 
-            ; load and calcualte next 2 lines
+            ; load and calculate next 2 lines
             LDNDW           *srcp++[pix_8x], src_5_7654:src_5_3210
             LDNDW           *srcp++[pix_8x], src_6_7654:src_6_3210
             ; 6-tap filter for line 1
@@ -374,7 +374,7 @@ loop_hpel_filter_v_j: .trip 4,          8,          4       ; loop count [4 - 8]
             STNDW           dst_0_7654:dst_0_3210, *dstp++[pix_8x] ; store 8 bytes of line 1
             STNDW           dst_1_7654:dst_1_3210, *dstp++[pix_8x] ; store 8 bytes of line 2
 
-            ; load and calcualte next 2 lines
+            ; load and calculate next 2 lines
             LDNDW           *srcp++[pix_8x], src_7_7654:src_7_3210
             LDNDW           *srcp++[pix_8x], src_8_7654:src_8_3210
             ; 6-tap filter for line 3
@@ -463,7 +463,7 @@ loop_hpel_filter_v_j: .trip 4,          8,          4       ; loop count [4 - 8]
 ;*                                                                          *;
 ;* NOTE: this function suppose i_height be multiple of 2 and                *;
 ;*       i_width be multiple of 16.                                         *;
-;*       the inner loop calcualtes 2 lines with 16 bytes of each line.      *;
+;*       the inner loop calculates 2 lines with 16 bytes of each line.      *;
 ;* ======================================================================== *;
 		.sect ".text:_hpel_filter_h_ti"
         .global _hpel_filter_h_ti
@@ -523,7 +523,7 @@ loop_hpel_filter_h_i:                                       ; loop count: (i_hei
 
 loop_hpel_filter_h_j: .trip 2                               ; loop count: (i_width >> 4)
 
-            ; load and calcualte next 8 bytes of 2 lines
+            ; load and calculate next 8 bytes of 2 lines
             LDNDW           *+srcp[pix_8x], src_1_fedc:src_1_ba98
             LDNDW           *srcp++,        src_0_fedc:src_0_ba98
             ; 6-tap filter for line 1
@@ -601,7 +601,7 @@ loop_hpel_filter_h_j: .trip 2                               ; loop count: (i_wid
             STNDW           dst_1_7654:dst_1_3210, *+dstp[pix_8x] ; store 8 bytes of line 2
             STNDW           dst_0_7654:dst_0_3210, *dstp++        ; store 8 bytes of line 1
 
-            ; load and calcualte next 8 bytes of 2 lines
+            ; load and calculate next 8 bytes of 2 lines
             LDNDW           *+srcp[pix_8x], src_1_nmlk:src_1_jihg
             LDNDW           *srcp++,        src_0_nmlk:src_0_jihg
             ; 6-tap filter for line 1
@@ -1821,9 +1821,9 @@ loop_load_deal_fdec: .trip  8,            16,          8      ; loop count
 
 ;* ======================================================================== *;
 ;* frame_init_lowres_core_ti -- init low-res frame                          *;
-;* NOTE: this function suppose i_height be mulitple of 2 and                *;
+;* NOTE: this function suppose i_height be multiple of 2 and                *;
 ;*       i_width be multiple of 8                                           *;
-;*       the inner loop calcualtes 2 lines with 8 bytes of each line.       *;
+;*       the inner loop calculates 2 lines with 8 bytes of each line.       *;
 ;* ======================================================================== *;
 		.sect ".text:_frame_init_lowres_core_ti"
         .global _frame_init_lowres_core_ti

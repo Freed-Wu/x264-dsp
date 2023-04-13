@@ -66,7 +66,7 @@ _x264_pixel_sad_16x16_ti .cproc A_srcImg, A_srcPitch, B_refImg, B_refPitch
             MVK             15,         i                    ; i = 15
             ZERO            A_sad                            ; A_sad = 0
             ZERO            B_sad                            ; B_sad = 0
-            
+
 loop_sad_16x16: .trip       16,         16,         16       ; loop count
 
             ; Load Nonaligned Double-Word From Memory
@@ -4243,7 +4243,7 @@ loop_var2_8x8: .trip         8,          8,      8          ; loop count
 
             ; var = ((pix1_sum - pix2_sum) * (pix1_sum - pix2_sum)) >> 6
             SUB2			pix1_sum,     pix2_sum,  var ; SUB2 make sure the result is in Signed 16 LSB
-            MPY				var,          var,       var ; Multiply Signed 16 LSB ¡Á Signed 16 LSB
+            MPY				var,          var,       var ; Multiply Signed 16 LSB Ã— Signed 16 LSB
             SHR				var,          6,         var
 
             ADD             ssd_1,        ssd_2,     ssd
