@@ -1,0 +1,41 @@
+#include "downsample.h"
+#define DST_WIDTH 2
+#define DST_HEIGHT 2
+
+char src[] = "\0\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f";
+
+#test clamp
+int x = -2;
+CLAMP(x, 0, 3);
+ck_assert_int_eq(x, 0);
+x = 5;
+CLAMP(x, 0, 3);
+ck_assert_int_eq(x, 3);
+
+#test symmetric
+int x = -2;
+SYMMETRIC(x, 0, 3);
+ck_assert_int_eq(x, 1);
+x = 5;
+SYMMETRIC(x, 0, 3);
+ck_assert_int_eq(x, 2);
+
+#test reflect
+int x = -2;
+REFLECT(x, 0, 3);
+ck_assert_int_eq(x, 2);
+x = 5;
+REFLECT(x, 0, 3);
+ck_assert_int_eq(x, 1);
+
+#test bilinear
+char expected[] = "\x03\x05\x0b\x0d";
+char dst[sizeof(expected)];
+resize2(dst, src, DST_WIDTH, DST_HEIGHT);
+ck_assert_mem_eq(dst, expected, DST_WIDTH *DST_HEIGHT);
+
+#test bicubic
+char expected[4] = "\x02\x04\x0b\x0d";
+char dst[sizeof(expected)];
+resize(dst, src, DST_WIDTH, DST_HEIGHT);
+ck_assert_mem_eq(dst, expected, DST_WIDTH *DST_HEIGHT);

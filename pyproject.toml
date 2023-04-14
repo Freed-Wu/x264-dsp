@@ -3,3 +3,7 @@ number = true
 
 [tool.codespell]
 ignore-words-list = "ue, te, farest, isse, reencode"
+
+[tool.bandit.assert_used]
+skips = ["*_test.py", "test_*.py"]
+number = true

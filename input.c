@@ -6,8 +6,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+#include "config.h"
 #include "common/x264.h"
 #include "input.h"
+#include "downsample.h"
 
 typedef struct
 {
@@ -109,6 +111,10 @@ static int open_file(char *psz_filename, void **p_handle, video_info_t *info) {
 	for (p = psz_filename; *p; p++)
 		if (*p >= '0' && *p <= '9' && sscanf(p, "%dx%d", &info->width, &info->height) == 2)
 			break;
+#ifdef DOWNSAMPLE
+	info->height /= 2;
+	info->width /= 2;
+#endif
 	if (!info->width || !info->height)
 		return -1;
 
@@ -147,8 +153,32 @@ static int read_frame_internal(cli_pic_t *pic, input_hnd_t *h) {
 	int error = 0;
 	int i;
 	int pixel_depth = x264_cli_csp_depth_factor(pic->img.csp);
+	size_t plane_size, height, width;
+	void *buf;
 	for (i = 0; i < pic->img.planes && !error; i++) {
-		error |= fread(pic->img.plane[i], pixel_depth, h->plane_size[i], h->fh) != h->plane_size[i];
+		plane_size = h->plane_size[i];
+		height = pic->img.height;
+		width = pic->img.width;
+#ifdef DOWNSAMPLE
+		// only for YUV420
+		if (i > 0) {
+			height /= 2;
+			width /= 2;
+		}
+		plane_size *= 2 * 2;
+#endif
+		buf = malloc(pixel_depth * plane_size);
+		error |= fread(buf, pixel_depth, plane_size, h->fh) != plane_size;
+#ifndef DOWNSAMPLE
+		memcpy((void *)pic->img.plane[i], buf, plane_size);
+#elif DOWNSAMPLE == DOWNSAMPLE_BILINEAR
+		resize2((void *)pic->img.plane[i], buf, width, height);
+#elif DOWNSAMPLE == DOWNSAMPLE_BICUBIC
+		resize((void *)pic->img.plane[i], buf, width, height);
+#else
+#error wrong DOWNSAMPLE!
+#endif
+		free(buf);
 	}
 	return error;
 }

@@ -1,6 +1,9 @@
+SUBDIRS = tests
+
 bin_PROGRAMS = x264
-x264_LDFLAGS = -lm
+x264_LDADD = -lm
 x264_SOURCES = \
+downsample.c \
 input.c \
 output.c \
 x264.c \

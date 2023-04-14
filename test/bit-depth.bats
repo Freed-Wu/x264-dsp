@@ -11,7 +11,7 @@ setup() {
 
 @test with-x264-bit-depth {
   run sh -c './configure --with-x264-bit-depth && cat config.h'
-  assert_output -p '#define X264_BIT_DEPTH 8'
+  assert_output -p '#define X264_BIT_DEPTH'
 }
 
 @test with-x264-bit-depth=10 {

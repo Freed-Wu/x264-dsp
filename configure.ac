@@ -77,10 +77,60 @@ AS_IF([test "x$enable_debug" = xyes],
       []
     )
 
+AC_ARG_WITH([downsample],
+            [AS_HELP_STRING([--with-downsample@<:@=0|1@:>@],
+                            [downsample from 720p to 360p, 0, 1 means bilinear, bicubic, default=0]
+                            )
+            ],
+            [],
+            [with_downsample=no]
+            )
+AS_IF([test "x$with_downsample" = "xyes"],
+      [with_downsample=0],
+      []
+)
+AS_IF([test "x$with_downsample" != xno],
+      AS_IF([test "x$with_downsample" = x0 -o "x$with_downsample" = x1],
+            [AC_DEFINE_UNQUOTED([DOWNSAMPLE],
+                                [$with_downsample],
+                                [downsample from 720p to 360p, 0, 1 means bilinear, bicubic]
+                                )
+            ],
+            [AC_MSG_ERROR(["$with_downsample" is an illegal downsample method!])]
+            ),
+            []
+      )
+
+AC_ARG_WITH([padding],
+            [AS_HELP_STRING([--with-padding@<:@=1..3@:>@],
+                            [padding method, edge, reflect, symmetric, default=3]
+                            )
+            ],
+            [],
+            [with_padding=yes]
+            )
+AS_IF([test "x$with_padding" = "xyes"],
+      [with_padding=3],
+      []
+    )
+AS_IF([test "x$with_padding" = "xno"],
+      [AC_MSG_ERROR([must define padding!])],
+      []
+    )
+AS_IF([test "$with_padding" -le 3 -a "$with_padding" -ge 1],
+      [AC_DEFINE_UNQUOTED([PADDING],
+                          [$with_padding],
+                          [padding method, 1..3 means edge, reflect, symmetric]
+                          )
+      ],
+      [AC_MSG_ERROR(["$with_padding" is an illegal padding method!])]
+      )
+
 # Checks for programs.
 AC_PROG_CC([gcc clang])
 
 # Checks for libraries.
+PKG_CHECK_MODULES([CHECK], [check >= 0.9.6])
 
 # Checks for header files.
 
@@ -88,5 +138,5 @@ AC_PROG_CC([gcc clang])
 
 # Checks for library functions.
 
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile tests/Makefile])
 AC_OUTPUT

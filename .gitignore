@@ -1,3 +1,8 @@
+/tests/check_downsample
+*.trs
+*.log
+*.gcno
+/tests/*.c
 /x264
 *.264
 .dirstamp
@@ -78,6 +83,7 @@ autom4te.cache
 /autoscan-*.log
 /aclocal.m4
 /build-aux/compile
+/build-aux/test-driver
 /config.guess
 /config.h.in
 /config.log
