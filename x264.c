@@ -85,7 +85,7 @@ int main(int argc, char **argv) {
 }
 
 static int parse(int argc, char **argv, x264_param_t *param, cli_opt_t *opt) {
-	char *input_filename = "704x576.yuv";
+	char *input_filename = "1280x720.yuv";
 	char *output_filename = "out.264";
 	video_info_t info = {0};
 

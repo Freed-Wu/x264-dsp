@@ -6,6 +6,9 @@ architecture.
 We tried to optimize several core routines, including DCT, Intra-Predict,
 Inter-Predict, CABAC, etc.
 
+Add an optional downsample module. The document is
+[here](https://x264-dsp.readthedocs.io/en/latest/md_docs_resources_downsample.html).
+
 ## Generate a Source Distribution
 
 In order to generate a source distribution, install:
@@ -66,3 +69,71 @@ ccstudio -noSplash -data ~/workspace_v12 -application com.ti.ccstudio.apps.proje
 <!-- markdownlint-enable MD013 -->
 
 For TI C6000 toolchain > 8.0.0, refer <https://github.com/Freed-Wu/x264>.
+
+## Configure
+
+```shell
+$ ./configure --help
+...
+  --enable-debug          enable debug
+...
+  --with-x264-bit-depth[=8|10]
+                          bit depth, default=8
+
+  --with-x264-chroma-format[=0..3]
+                          chroma format, 400, 420, 422, 444, default=1
+
+  --with-downsample[=0|1] downsample from 720p to 360p, 0, 1 means bilinear,
+                          bicubic, default=0
+
+  --with-padding[=1..3]   padding method, edge, reflect, symmetric, default=3
+...
+```
+
+## Usage
+
+Download a test YUV from
+[release](https://github.com/Freed-Wu/x264-dsp/releases). Or you want to
+download a YUV from <https://media.xiph.org/video/derf/> and convert it to 720p
+by:
+
+<!-- markdownlint-disable MD013 -->
+
+```shell
+ffmpeg -y -f rawvideo -pixel_format yuv420p -s 352x288 -i /the/path/of/yuv/352x288.yuv -f rawvideo -pixel_format yuv420 -s 1280x720 /the/path/of/yuv/1280x720.yuv
+```
+
+<!-- markdownlint-enable MD013 -->
+
+Note the file name must respect
+[YUView filename rules](https://github.com/IENT/YUView/wiki/YUV-File-Names)
+to contain resolution.
+
+Compile a `x264` which supports `bicubic downsample` by
+
+```shell
+./configure --with-downsample=1
+```
+
+For OSs:
+
+```shell
+./x264 /the/path/yuv/1280x720.yuv
+```
+
+After running, `out.264` will occur in current directory.
+
+For DSP:
+
+```shell
+mv /the/path/yuv/1280x720.yuv ~/workspace_v12/x264-dsp/Debug
+```
+
+Then `Run -> Load -> Select Program to Load`, select
+`~/workspace_v12/x264-dsp/Debug/x264-dsp.out`.
+
+After running, `out.264` will occur in `~/workspace_v12/x264-dsp/Debug`.
+
+```shell
+ffplay /the/path/of/out.264
+```

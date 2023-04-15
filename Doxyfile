@@ -2,3 +2,6 @@ PROJECT_NAME           = x264-dsp
 OUTPUT_DIRECTORY       = .deps
 USE_MDFILE_AS_MAINPAGE = README.md
 GENERATE_XML           = YES
+RECURSIVE              = YES
+# contains wikipedia math equations
+HTML_COLORSTYLE        = LIGHT
