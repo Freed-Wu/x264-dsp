@@ -2,7 +2,57 @@
  * https://github.com/rrepka10/imgResample
  * https://github.com/sanghyun-son/bicubic_pytorch
  */
+#include <stdlib.h>
+#include <math.h>
 #include "downsample.h"
+
+double cubic(double x, double a) {
+	x = fabs(x);
+	double weight = 0;
+	if (x < 1)
+		weight = (a + 2) * x * x * x - (a + 3) * x * x + 1;
+	else if (x < 2)
+		weight = a * x * x * x - 5 * a * x * x + 8 * a * x - 4 * a;
+	return weight;
+}
+
+double sample_cubic(double *src, size_t len, double pos) {
+	int i;
+	double sum = 0;
+	double weights = 0;
+	// left of pos: -1..0, right of pos: 1..2
+	for (i = -1; i < 3; i++) {
+		ssize_t base = (size_t)pos + i;
+		double dist = pos - base;
+		double weight = cubic(dist, -0.5);
+		PAD(base, 0, len);
+		sum += weight * (*(src + base));
+		weights += weight;
+	}
+	sum /= weights;
+	return sum;
+}
+
+/**
+ * \param u the coordination of unknown pixel
+ * \param v the coordination of unknown pixel
+ */
+uint8_t sample_bicubic2(uint8_t *_src, size_t src_width, size_t src_height, double u, double v) {
+	double *src = (double *)malloc(sizeof(double) * src_width * src_height);
+	double *src2 = src;
+	int i;
+	// convert uint8_t to double
+	for (i = 0; i < src_width * src_height; i++)
+		*(src2++) = (double)*(_src++);
+	double *cols = (double *)malloc(sizeof(double) * src_height);
+	double *cols2 = cols;
+	for (i = 0; i < src_height; i++) {
+		*(cols2++) = sample_cubic(src, src_width, u);
+		src += src_width;
+	}
+	double result = sample_cubic(cols, src_width, v);
+	return (uint8_t)rint(result);
+}
 
 /**
  * fast algorithm for bicubic when a = -0.5
