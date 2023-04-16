@@ -102,6 +102,23 @@ AS_IF([test "x$enable_debug" = xyes],
       []
     )
 
+AC_ARG_ENABLE([dry-run],
+              [AS_HELP_STRING([--enable-dry-run],
+                              [enable dry run, do not write any file. default=no]
+                              )
+              ],
+              [],
+              [enable_dry_run=no]
+              )
+AS_IF([test "x$enable_dry_run" = xyes],
+      [AC_DEFINE_UNQUOTED([DRY_RUN],
+                          [1],
+                          [do not write any file]
+                          )
+      ],
+      []
+    )
+
 AC_ARG_WITH([downsample],
             [AS_HELP_STRING([--with-downsample@<:@=0|1@:>@],
                             [downsample from 720p to 360p, 0, 1 means bilinear, bicubic. default=0]

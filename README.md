@@ -76,6 +76,8 @@ For TI C6000 toolchain > 8.0.0, refer <https://github.com/Freed-Wu/x264>.
 $ ./configure --help
 ...
   --enable-debug          enable debug. default=no
+
+  --enable-dry-run        enable dry run, do not write any file. default=no
 ...
   --with-x264-bit-depth[=8|10]
                           bit depth. default=8
