@@ -266,7 +266,7 @@ static int encode(x264_param_t *param, cli_opt_t *opt) {
 			break;
 
 		/* update status line (up to 1000 times per input file) */
-		if (opt->b_progress && i_frame_output)
+		if (cli_log_level >= X264_LOG_DEBUG && opt->b_progress && i_frame_output)
 			i_previous = print_status(i_start, i_previous, i_frame_output, param->i_frame_total, i_file, param, 2 * last_dts - prev_dts - first_dts);
 	}
 

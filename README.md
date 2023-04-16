@@ -75,18 +75,22 @@ For TI C6000 toolchain > 8.0.0, refer <https://github.com/Freed-Wu/x264>.
 ```shell
 $ ./configure --help
 ...
-  --enable-debug          enable debug
+  --enable-debug          enable debug. default=no
 ...
   --with-x264-bit-depth[=8|10]
-                          bit depth, default=8
+                          bit depth. default=8
 
   --with-x264-chroma-format[=0..3]
-                          chroma format, 400, 420, 422, 444, default=1
+                          chroma format: 400, 420, 422, 444. default=1
+
+  --with-x264-log-level[=0..3]
+                          log level: error, warning, info, debug. debug will
+                          decrease fps. default=2
 
   --with-downsample[=0|1] downsample from 720p to 360p, 0, 1 means bilinear,
-                          bicubic, default=0
+                          bicubic. default=0
 
-  --with-padding[=1..3]   padding method, edge, reflect, symmetric, default=3
+  --with-padding[=1..3]   padding method, edge, reflect, symmetric. default=3
 ...
 ```
 

@@ -94,11 +94,7 @@ void x264_param_default(x264_param_t *param) {
 	/* Log */
 	param->pf_log = x264_log_default;
 	param->p_log_private = NULL;
-#ifdef _DEBUG
-	param->i_log_level = X264_LOG_DEBUG;
-#else
-	param->i_log_level = X264_LOG_INFO;
-#endif
+	param->i_log_level = X264_LOG_LEVEL;
 
 	/* analyse */
 	param->analyse.intra = X264_ANALYSE_I4x4;

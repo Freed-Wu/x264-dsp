@@ -16,7 +16,7 @@ AM_INIT_AUTOMAKE([subdir-objects -Wall -Werror foreign])
 
 AC_ARG_WITH([x264-bit-depth],
             [AS_HELP_STRING([--with-x264-bit-depth@<:@=8|10@:>@],
-                            [bit depth, default=8]
+                            [bit depth. default=8]
                             )
             ],
             [],
@@ -41,7 +41,7 @@ AS_IF([test "x$with_x264_bit_depth" = x8 -o "x$with_x264_bit_depth" = x10],
 
 AC_ARG_WITH([x264-chroma-format],
             [AS_HELP_STRING([--with-x264-chroma-format@<:@=0..3@:>@],
-                            [chroma format, 400, 420, 422, 444, default=1]
+                            [chroma format: 400, 420, 422, 444. default=1]
                             )
             ],
             [],
@@ -64,9 +64,34 @@ AS_IF([test "$with_x264_chroma_format" -le 3 -a "$with_x264_chroma_format" -ge 0
       [AC_MSG_ERROR(["$with_x264_chroma_format" is an illegal chroma format!])]
       )
 
+AC_ARG_WITH([x264-log-level],
+            [AS_HELP_STRING([--with-x264-log-level@<:@=0..3@:>@],
+                            [log level: error, warning, info, debug. debug will decrease fps. default=2]
+                            )
+            ],
+            [],
+            [with_x264_log_level=yes]
+            )
+AS_IF([test "x$with_x264_log_level" = "xyes"],
+      [with_x264_log_level=2],
+      []
+    )
+AS_IF([test "x$with_x264_log_level" = "xno"],
+      [AC_MSG_ERROR([must define X264_LOG_LEVEL!])],
+      []
+    )
+AS_IF([test "$with_x264_log_level" -le 3 -a "$with_x264_log_level" -ge 0],
+      [AC_DEFINE_UNQUOTED([X264_LOG_LEVEL],
+                          [$with_x264_log_level],
+                          [log level, 0..3 means error, warning, info, debug]
+                          )
+      ],
+      [AC_MSG_ERROR(["$with_x264_log_level" is an illegal log level!])]
+      )
+
 AC_ARG_ENABLE([debug],
               [AS_HELP_STRING([--enable-debug],
-                              [enable debug]
+                              [enable debug. default=no]
                               )
               ],
               [],
@@ -79,7 +104,7 @@ AS_IF([test "x$enable_debug" = xyes],
 
 AC_ARG_WITH([downsample],
             [AS_HELP_STRING([--with-downsample@<:@=0|1@:>@],
-                            [downsample from 720p to 360p, 0, 1 means bilinear, bicubic, default=0]
+                            [downsample from 720p to 360p, 0, 1 means bilinear, bicubic. default=0]
                             )
             ],
             [],
@@ -103,7 +128,7 @@ AS_IF([test "x$with_downsample" != xno],
 
 AC_ARG_WITH([padding],
             [AS_HELP_STRING([--with-padding@<:@=1..3@:>@],
-                            [padding method, edge, reflect, symmetric, default=3]
+                            [padding method, edge, reflect, symmetric. default=3]
                             )
             ],
             [],
