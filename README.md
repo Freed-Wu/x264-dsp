@@ -29,7 +29,7 @@ Download
 install:
 
 - bash
-- make (ccstudio contains a builtin make)
+- make (ccstudio contains a builtin `/opt/ccstudio/ccs/utils/bin/gmake`)
 
 To compile this program for native platform or other platforms, install:
 
@@ -53,17 +53,20 @@ For OSs:
 make
 ```
 
-For TI DSP DM6467:
+For TI DSP DM6467: (Refer
+[ccs_projects-command-line](https://software-dl.ti.com/ccs/esd/documents/ccs_projects-command-line.html))
 
 <!-- markdownlint-disable MD013 -->
 
 ```shell
-# generate config.h
-./configure
-ccstudio -noSplash -data ~/workspace_v12 -application com.ti.ccstudio.apps.projectCreate -ccs.device TMS320C64XX.TMS320DM6467 -ccs.name x264-dsp -ccs.setCompilerOptions --gcc
+# a large heap/stack size to avoid malloc failure
+ccstudio -noSplash -data ~/workspace_v12 -application com.ti.ccstudio.apps.projectCreate -ccs.device TMS320C64XX.TMS320DM6467 -ccs.name x264-dsp -ccs.setCompilerOptions --gcc -ccs.setCompilerOptions -O3 @configurations Release -ccs.setCompilerOptions --program_level_compile @configurations Release -ccs.setLinkerOptions -heap=0x1000000 -ccs.setLinkerOptions -stack=0x1000000
 cp -r .git ~/workspace_v12/x264-dsp
-git -C ~/workspace_v12/x264-dsp reset --hard
-ccstudio -noSplash -data ~/workspace_v12 -application com.ti.ccstudio.apps.projectBuild -ccs.projects x264-dsp -ccs.configuration Debug
+cd ~/workspace_v12/x264-dsp
+git reset --hard
+scripts/generate-yuv.h.pl /the/path/of/1280x720.yuv > yuv.h
+./configure --enable-asm
+ccstudio -noSplash -data ~/workspace_v12 -application com.ti.ccstudio.apps.projectBuild -ccs.projects x264-dsp -ccs.configuration Release
 ```
 
 <!-- markdownlint-enable MD013 -->
@@ -122,7 +125,7 @@ to contain resolution.
 Compile a `x264` which supports `bicubic downsample` by
 
 ```shell
-./configure --with-downsample=1
+./configure --with-downsample=1 --enable-fake-input --enable-asm
 ```
 
 For OSs:
@@ -140,7 +143,7 @@ mv /the/path/yuv/1280x720.yuv ~/workspace_v12/x264-dsp/Debug
 ```
 
 Then `Run -> Load -> Select Program to Load`, select
-`~/workspace_v12/x264-dsp/Debug/x264-dsp.out`.
+`~/workspace_v12/x264-dsp/Release/x264-dsp.out`.
 
 After running, `out.264` will occur in `~/workspace_v12/x264-dsp/Debug`.
 

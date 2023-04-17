@@ -22,9 +22,7 @@
  * chroma format that x264 supports encoding. If the    *
  * value is 0 then there are no restrictions.           *
  ********************************************************/
-#define X264_CHROMA_FORMAT 0 /* default: 0 */
-#define X264_BIT_DEPTH 8     /* bit-depth: 8 */
-#define HIGH_BIT_DEPTH 0     /* disable high bit-depth */
+#define HIGH_BIT_DEPTH 0 /* disable high bit-depth */
 #endif
 
 #define DECLARE_ALIGNED(var, n) var __attribute__((aligned(n)))

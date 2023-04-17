@@ -13,7 +13,7 @@
 #ifdef FAKE_INPUT
 #include "yuv.h"
 extern uint8_t yuv[];
-static void *p_yuv = (void *)yuv;
+static uint8_t *p_yuv = (void *)yuv;
 #endif
 
 typedef struct
@@ -185,7 +185,7 @@ static int read_frame_internal(cli_pic_t *pic, input_hnd_t *h) {
 		buf = malloc(pixel_depth * plane_size);
 		error |= fread(buf, pixel_depth, plane_size, h->fh) != plane_size;
 #else
-		buf = p_yuv;
+		buf = (void *)p_yuv;
 #endif
 #ifndef DOWNSAMPLE
 		memcpy((void *)pic->img.plane[i], buf, plane_size);
