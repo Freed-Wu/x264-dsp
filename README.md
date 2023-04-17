@@ -78,6 +78,8 @@ $ ./configure --help
   --enable-debug          enable debug. default=no
 
   --enable-dry-run        enable dry run, do not write any file. default=no
+
+  --enable-fake-input     enable fake input. default=no
 ...
   --with-x264-bit-depth[=8|10]
                           bit depth. default=8

@@ -119,6 +119,23 @@ AS_IF([test "x$enable_dry_run" = xyes],
       []
     )
 
+AC_ARG_ENABLE([fake-input],
+              [AS_HELP_STRING([--enable-fake-input],
+                              [enable fake input. default=no]
+                              )
+              ],
+              [],
+              [enable_fake_input=no]
+              )
+AS_IF([test "x$enable_fake_input" = xyes],
+      [AC_DEFINE_UNQUOTED([FAKE_INPUT],
+                          [1],
+                          [do not input a true YUV file]
+                          )
+      ],
+      []
+    )
+
 AC_ARG_WITH([downsample],
             [AS_HELP_STRING([--with-downsample@<:@=0|1@:>@],
                             [downsample from 720p to 360p, 0, 1 means bilinear, bicubic. default=0]

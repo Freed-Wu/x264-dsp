@@ -10,6 +10,11 @@
 #include "common/x264.h"
 #include "input.h"
 #include "downsample.h"
+#ifdef FAKE_INPUT
+#include "yuv.h"
+extern uint8_t yuv[];
+static void *p_yuv = (void *)yuv;
+#endif
 
 typedef struct
 {
@@ -122,12 +127,14 @@ static int open_file(char *psz_filename, void **p_handle, video_info_t *info) {
 	info->csp = X264_CSP_I420;
 	info->num_frames = 0;
 
+#ifndef FAKE_INPUT
 	if (!strcmp(psz_filename, "-"))
 		h->fh = stdin;
 	else
 		h->fh = fopen(psz_filename, "rb");
 	if (h->fh == NULL)
 		return -1;
+#endif
 
 	csp = x264_cli_get_csp(info->csp);
 	for (i = 0; i < csp->planes; i++) {
@@ -138,11 +145,18 @@ static int open_file(char *psz_filename, void **p_handle, video_info_t *info) {
 	}
 
 	if (h->frame_size > 0) {
+#ifndef FAKE_INPUT
 		uint64_t i_size;
 		fseek(h->fh, 0, SEEK_END);
 		i_size = ftell(h->fh);
 		fseek(h->fh, 0, SEEK_SET);
 		info->num_frames = i_size / h->frame_size;
+#else
+		info->num_frames = sizeof(yuv) / sizeof(uint8_t) / h->frame_size;
+#endif
+#ifdef DOWNSAMPLE
+		info->num_frames /= 4;
+#endif
 	}
 
 	*p_handle = h;
@@ -167,8 +181,12 @@ static int read_frame_internal(cli_pic_t *pic, input_hnd_t *h) {
 		}
 		plane_size *= 2 * 2;
 #endif
+#ifndef FAKE_INPUT
 		buf = malloc(pixel_depth * plane_size);
 		error |= fread(buf, pixel_depth, plane_size, h->fh) != plane_size;
+#else
+		buf = p_yuv;
+#endif
 #ifndef DOWNSAMPLE
 		memcpy((void *)pic->img.plane[i], buf, plane_size);
 #elif DOWNSAMPLE == DOWNSAMPLE_BILINEAR
@@ -178,7 +196,11 @@ static int read_frame_internal(cli_pic_t *pic, input_hnd_t *h) {
 #else
 #error wrong DOWNSAMPLE!
 #endif
+#ifndef FAKE_INPUT
 		free(buf);
+#else
+		p_yuv += pixel_depth * plane_size;
+#endif
 	}
 	return error;
 }
@@ -186,8 +208,10 @@ static int read_frame_internal(cli_pic_t *pic, input_hnd_t *h) {
 static int read_frame(cli_pic_t *pic, void *handle, int i_frame) {
 	input_hnd_t *h = handle;
 
+#ifndef FAKE_INPUT
 	if (i_frame > h->next_frame)
 		fseek(h->fh, i_frame * h->frame_size, SEEK_SET);
+#endif
 
 	if (read_frame_internal(pic, h))
 		return -1;
@@ -197,11 +221,13 @@ static int read_frame(cli_pic_t *pic, void *handle, int i_frame) {
 }
 
 static int close_file(void *handle) {
+#ifndef FAKE_INPUT
 	input_hnd_t *h = handle;
 	if (!h || !h->fh)
 		return 0;
 	fclose(h->fh);
 	free(h);
+#endif
 	return 0;
 }
 

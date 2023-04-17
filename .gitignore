@@ -1,3 +1,5 @@
+/.vscode/perl-lang/
+/yuv.h
 /docs/_build/
 /tests/check_downsample
 *.trs
