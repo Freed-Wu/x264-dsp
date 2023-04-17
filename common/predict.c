@@ -4,7 +4,7 @@
 
 #include "common.h"
 
-#ifdef __TI_COMPILER_VERSION__
+#ifdef HAVE_TIC6X
 void x264_predict_16x16_v_ti(pixel *src);
 void x264_predict_16x16_h_ti(pixel *src);
 void x264_predict_16x16_p_ti(pixel *src);
@@ -434,7 +434,7 @@ void x264_predict_16x16_init(int cpu, x264_predict_t pf[7]) {
 	pf[I_PRED_16x16_DC_TOP] = x264_predict_16x16_dc_top_c;
 	pf[I_PRED_16x16_DC_128] = x264_predict_16x16_dc_128_c;
 
-#ifdef __TI_COMPILER_VERSION__
+#ifdef HAVE_TIC6X
 	pf[I_PRED_16x16_V] = x264_predict_16x16_v_ti;
 	pf[I_PRED_16x16_H] = x264_predict_16x16_h_ti;
 	pf[I_PRED_16x16_DC] = x264_predict_16x16_dc_ti;
@@ -454,7 +454,7 @@ void x264_predict_8x8c_init(int cpu, x264_predict_t pf[7]) {
 	pf[I_PRED_CHROMA_DC_TOP] = x264_predict_8x8c_dc_top_c;
 	pf[I_PRED_CHROMA_DC_128] = x264_predict_8x8c_dc_128_c;
 
-#ifdef __TI_COMPILER_VERSION__
+#ifdef HAVE_TIC6X
 	pf[I_PRED_CHROMA_V] = x264_predict_8x8c_v_ti;
 	pf[I_PRED_CHROMA_H] = x264_predict_8x8c_h_ti;
 	pf[I_PRED_CHROMA_DC] = x264_predict_8x8c_dc_ti;
@@ -479,7 +479,7 @@ void x264_predict_4x4_init(int cpu, x264_predict_t pf[12]) {
 	pf[I_PRED_4x4_DC_TOP] = x264_predict_4x4_dc_top_c;
 	pf[I_PRED_4x4_DC_128] = x264_predict_4x4_dc_128_c;
 
-#ifdef __TI_COMPILER_VERSION__
+#ifdef HAVE_TIC6X
 	pf[I_PRED_4x4_V] = x264_predict_4x4_v_ti;
 	pf[I_PRED_4x4_H] = x264_predict_4x4_h_ti;
 	pf[I_PRED_4x4_DC] = x264_predict_4x4_dc_ti;

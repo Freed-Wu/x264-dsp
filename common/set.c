@@ -4,7 +4,7 @@
 
 #include "common.h"
 
-#ifdef __TI_COMPILER_VERSION__
+#ifdef HAVE_TIC6X
 
 /* since we use flat cqm only, quant/dequant mf and quant bias are predefined instead of calculation */
 static int x264_dequant4_mf[6][16] =

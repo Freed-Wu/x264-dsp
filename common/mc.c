@@ -4,7 +4,7 @@
 
 #include "common.h"
 
-#ifdef __TI_COMPILER_VERSION__
+#ifdef HAVE_TIC6X
 void mc_copy_w16_ti(pixel *dst, intptr_t dst_stride, pixel *src, intptr_t src_stride, int i_height);
 void mc_copy_w8_ti(pixel *dst, intptr_t dst_stride, pixel *src, intptr_t src_stride, int i_height);
 void mc_copy_w4_ti(pixel *dst, intptr_t dst_stride, pixel *src, intptr_t src_stride, int i_height);
@@ -43,7 +43,7 @@ const x264_weight_t x264_weight_none[3] = {{{0}}};
  * NOTe: src1 and src2 are not 8-bytes aligned,    *
  * but dst is 8-bytes aligned                      *
  ***************************************************/
-#ifdef __TI_COMPILER_VERSION__
+#ifdef HAVE_TIC6X
 
 void pixel_avg_w8e_ti(pixel *, intptr_t, pixel *, intptr_t, pixel *, intptr_t, int, int);
 void pixel_avg_w8o_ti(pixel *, intptr_t, pixel *, intptr_t, pixel *, intptr_t, int, int);
@@ -117,7 +117,7 @@ static void mc_copy(pixel *src, intptr_t i_src_stride, pixel *dst, intptr_t i_ds
  * $: vertical half-pixel, save to dstv                              *
  * ^: center half-pixel, save to dstc                                *
  *********************************************************************/
-#ifdef __TI_COMPILER_VERSION__
+#ifdef HAVE_TIC6X
 
 void hpel_filter_v_ti(pixel *dst, pixel *src, intptr_t stride, int width, int height);
 void hpel_filter_h_ti(pixel *dst, pixel *src, intptr_t stride, int width, int height);
@@ -259,7 +259,7 @@ static pixel *get_ref(pixel *dst, intptr_t *i_dst_stride,
  * possible width x height:                        *
  * 8x8, 8x4, 4x8, 4x4                              *
  ***************************************************/
-#ifdef __TI_COMPILER_VERSION__
+#ifdef HAVE_TIC6X
 
 void mc_chroma_w8_ti(pixel *dstu, pixel *dstv, intptr_t i_dst_stride, pixel *src, intptr_t i_src_stride, int mvx, int mvy, int i_width, int i_height);
 void mc_chroma_w4_ti(pixel *dstu, pixel *dstv, intptr_t i_dst_stride, pixel *src, intptr_t i_src_stride, int mvx, int mvy, int i_width, int i_height);
@@ -449,7 +449,7 @@ void x264_mc_init(int cpu, x264_mc_functions_t *pf) {
 	pf->memzero_aligned = memzero_aligned;
 	pf->frame_init_lowres_core = frame_init_lowres_core;
 
-#ifdef __TI_COMPILER_VERSION__
+#ifdef HAVE_TIC6X
 	pf->mc_chroma = mc_chroma_ti;
 
 	pf->copy[PIXEL_16x16] = mc_copy_w16_ti;

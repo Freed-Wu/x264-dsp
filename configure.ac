@@ -102,6 +102,23 @@ AS_IF([test "x$enable_debug" = xyes],
       []
     )
 
+AC_ARG_ENABLE([asm],
+              [AS_HELP_STRING([--enable-asm],
+                              [enable TI C6X asm. default=no]
+                              )
+              ],
+              [],
+              [enable_asm=no]
+              )
+AS_IF([test "x$enable_asm" = xyes],
+      [AC_DEFINE_UNQUOTED([HAVE_TIC6X],
+                          [1],
+                          [enable TI C6X asm]
+                          )
+      ],
+      []
+    )
+
 AC_ARG_ENABLE([dry-run],
               [AS_HELP_STRING([--enable-dry-run],
                               [enable dry run, do not write any file. default=no]

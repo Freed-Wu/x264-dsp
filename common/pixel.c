@@ -4,7 +4,7 @@
 
 #include "common.h"
 
-#ifdef __TI_COMPILER_VERSION__
+#ifdef HAVE_TIC6X
 int x264_pixel_sad_16x16_ti(pixel *, intptr_t, pixel *, intptr_t);
 int x264_pixel_sad_16x8_ti(pixel *, intptr_t, pixel *, intptr_t);
 int x264_pixel_sad_8x16_ti(pixel *, intptr_t, pixel *, intptr_t);
@@ -308,7 +308,7 @@ PIXEL_SATD(8, 8, x264_pixel_satd_8x4, )	  /* x264_pixel_satd_8x8   */
 PIXEL_SATD(4, 16, x264_pixel_satd_4x4, )  /* x264_pixel_satd_4x16  */
 PIXEL_SATD(4, 8, x264_pixel_satd_4x4, )	  /* x264_pixel_satd_4x8   */
 
-#ifdef __TI_COMPILER_VERSION__
+#ifdef HAVE_TIC6X
 /* PIXEL_SATD( 16, 16, x264_pixel_satd_8x4_ti, _ti ) */ /* x264_pixel_satd_16x16_ti */
 /* PIXEL_SATD( 16, 8,  x264_pixel_satd_8x4_ti, _ti ) */ /* x264_pixel_satd_16x8_ti  */
 /* PIXEL_SATD( 8,  16, x264_pixel_satd_8x4_ti, _ti ) */ /* x264_pixel_satd_8x16_ti  */
@@ -385,7 +385,7 @@ static int x264_pixel_satd_4x8_ti(pixel *pix1, intptr_t i_pix1, pixel *pix2, int
 /* x264_pixel_sad_x3_4x4   and x264_pixel_sad_x4_4x4   */
 SAD_X_DECL7()
 
-#ifdef __TI_COMPILER_VERSION__
+#ifdef HAVE_TIC6X
 /* x264_pixel_sad_x3_16x16_ti and x264_pixel_sad_x4_16x16_ti */
 /* x264_pixel_sad_x3_16x8_ti  and x264_pixel_sad_x4_16x8_ti  */
 /* x264_pixel_sad_x3_8x16_ti  and x264_pixel_sad_x4_8x16_ti  */
@@ -438,7 +438,7 @@ SAD_X_DECL7()
 /* x264_pixel_satd_x3_4x4   and x264_pixel_satd_x4_4x4   */
 SATD_X_DECL7()
 
-#ifdef __TI_COMPILER_VERSION__
+#ifdef HAVE_TIC6X
 /* x264_pixel_satd_x3_16x16_ti and x264_pixel_satd_x4_16x16_ti */
 /* x264_pixel_satd_x3_16x8_ti  and x264_pixel_satd_x4_16x8_ti  */
 /* x264_pixel_satd_x3_8x16_ti  and x264_pixel_satd_x4_8x16_ti  */
@@ -466,7 +466,7 @@ INTRA_MBCMP(satd, 8x8, dc, h, v, c, , _c)  /* x264_intra_satd_x3_8x8c  */
 INTRA_MBCMP(sad, 16x16, v, h, dc, , , _c)  /* x264_intra_sad_x3_16x16  */
 INTRA_MBCMP(satd, 16x16, v, h, dc, , , _c) /* x264_intra_satd_x3_16x16 */
 
-#ifdef __TI_COMPILER_VERSION__
+#ifdef HAVE_TIC6X
 void x264_predict_4x4_v_ti(pixel *src);
 void x264_predict_4x4_h_ti(pixel *src);
 void x264_predict_4x4_dc_ti(pixel *src);
@@ -668,7 +668,7 @@ void x264_pixel_init(int cpu, x264_pixel_function_t *pixf) {
 	pixf->intra_satd_x4_4x4_h = x264_intra_satd_x4_4x4_h;
 	pixf->intra_satd_x4_4x4_v = x264_intra_satd_x4_4x4_v;
 
-#ifdef __TI_COMPILER_VERSION__
+#ifdef HAVE_TIC6X
 	INIT7(sad, _ti);
 	INIT7_NAME(sad_aligned, sad, _ti);
 	INIT4(sad_x3, _ti);

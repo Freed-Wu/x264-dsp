@@ -77,6 +77,8 @@ $ ./configure --help
 ...
   --enable-debug          enable debug. default=no
 
+  --enable-asm            enable TI C6X asm. default=no
+
   --enable-dry-run        enable dry run, do not write any file. default=no
 
   --enable-fake-input     enable fake input. default=no

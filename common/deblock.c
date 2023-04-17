@@ -4,7 +4,7 @@
 
 #include "common.h"
 
-#ifdef __TI_COMPILER_VERSION__
+#ifdef HAVE_TIC6X
 void deblock_v_luma_ti(pixel *pix, intptr_t stride, int alpha, int beta, int8_t *tc0);
 void deblock_h_luma_ti(pixel *pix, intptr_t stride, int alpha, int beta, int8_t *tc0);
 void deblock_v_chroma_ti(pixel *pix, intptr_t stride, int alpha, int beta, int8_t *tc0);
@@ -619,7 +619,7 @@ void x264_deblock_init(int cpu, x264_deblock_function_t *pf) {
 
 	pf->deblock_strength = deblock_strength_c;
 
-#ifdef __TI_COMPILER_VERSION__
+#ifdef HAVE_TIC6X
 	pf->deblock_luma[0] = deblock_h_luma_ti;
 	pf->deblock_luma[1] = deblock_v_luma_ti;
 	pf->deblock_chroma[0] = deblock_h_chroma_ti;
