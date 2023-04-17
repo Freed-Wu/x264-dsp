@@ -61,17 +61,17 @@ void x264_param_default(x264_param_t *param) {
 	param->i_deblocking_filter_alphac0 = 0;
 	param->i_deblocking_filter_beta = 0;
 
-	param->b_cabac = 1;
+	param->b_cabac = 0;
 	param->i_cabac_init_idc = 0;
 
 	/* rc */
-	param->rc.i_rc_method = X264_RC_CRF;
+	param->rc.i_rc_method = X264_RC_CQP;
 	param->rc.i_bitrate = 0;
 	param->rc.f_rate_tolerance = 1.0;
 	param->rc.i_vbv_max_bitrate = 0;
 	param->rc.i_vbv_buffer_size = 0;
 	param->rc.f_vbv_buffer_init = 0.9;
-	param->rc.i_qp_constant = 23 + QP_BD_OFFSET;
+	param->rc.i_qp_constant = 32 + QP_BD_OFFSET;
 	param->rc.f_rf_constant = 28; /**** default: 23 => 28 ****/
 	param->rc.i_qp_min = 0;
 	param->rc.i_qp_max = QP_MAX;
