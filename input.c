@@ -12,8 +12,7 @@
 #include "downsample.h"
 #ifdef FAKE_INPUT
 #include "yuv.h"
-extern uint8_t yuv[];
-static uint8_t *p_yuv = (void *)yuv;
+static char *p_yuv = yuv;
 #endif
 
 typedef struct
@@ -152,7 +151,7 @@ static int open_file(char *psz_filename, void **p_handle, video_info_t *info) {
 		fseek(h->fh, 0, SEEK_SET);
 		info->num_frames = i_size / h->frame_size;
 #else
-		info->num_frames = sizeof(yuv) / sizeof(uint8_t) / h->frame_size;
+		info->num_frames = yuv_len / h->frame_size;
 #endif
 #ifdef DOWNSAMPLE
 		info->num_frames /= 4;

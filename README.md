@@ -13,8 +13,8 @@ Add an optional downsample module. The document is
 
 In order to generate a source distribution, install:
 
-- autoconf
-- automake
+- [autoconf](https://www.gnu.org/software/autoconf)
+- [automake](https://www.gnu.org/software/automake)
 
 Then:
 
@@ -28,17 +28,25 @@ Download
 [a source distribution](https://github.com/Freed-Wu/x264-dsp/releases), then
 install:
 
-- bash
-- make (ccstudio contains a builtin `/opt/ccstudio/ccs/utils/bin/gmake`)
+- [bash](https://www.gnu.org/software/bash)
+- [make](https://www.gnu.org/software/make) (ccstudio contains a builtin
+  `/opt/ccstudio/ccs/utils/bin/gmake`)
+
+Optional dependencies:
+
+- [check](https://github.com/libcheck/check): for unit test
+- [bin2c](https://github.com/adobe/bin2c): for
+  `./configure --enable-fake-input`
 
 To compile this program for native platform or other platforms, install:
 
-- gcc/clang for native building
-- [mingw-w64](https://archlinux.org/packages/community/x86_64/mingw-w64-gcc)
+- [gcc](https://gcc.gnu.org)/[clang](https://clang.llvm.org/): for native
+  building
+- [mingw-w64](https://archlinux.org/packages/community/x86_64/mingw-w64-gcc):
   for windows
-- [android-ndk](https://aur.archlinux.org/packages/android-ndk) for android
-- [ccstudio](https://aur.archlinux.org/packages/ccstudio) for TI DSP
-- [TI C6000 toolchain \< 8.0.0](https://www.ti.com/tool/C6000-CGT) for TI DSP
+- [android-ndk](https://aur.archlinux.org/packages/android-ndk): for android
+- [ccstudio](https://aur.archlinux.org/packages/ccstudio): for TI DSP
+- [TI C6000 toolchain \< 8.0.0](https://www.ti.com/tool/C6000-CGT): for TI DSP
   DM6467
 
 For OSs:
@@ -64,7 +72,7 @@ ccstudio -noSplash -data ~/workspace_v12 -application com.ti.ccstudio.apps.proje
 cp -r .git ~/workspace_v12/x264-dsp
 cd ~/workspace_v12/x264-dsp
 git reset --hard
-scripts/generate-yuv.h.pl /the/path/of/1280x720.yuv > yuv.h
+bin2c yuv < /the/path/of/1280x720.yuv > yuv.h
 ./configure --enable-asm
 ccstudio -noSplash -data ~/workspace_v12 -application com.ti.ccstudio.apps.projectBuild -ccs.projects x264-dsp -ccs.configuration Release
 ```
