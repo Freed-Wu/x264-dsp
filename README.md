@@ -36,7 +36,7 @@ Optional dependencies:
 
 - [check](https://github.com/libcheck/check): for unit test
 - [bin2c](https://github.com/adobe/bin2c): for
-  `./configure --enable-fake-input`
+  `./configure --with-bin2c=/the/path/of/WxH.yuv`
 
 To compile this program for native platform or other platforms, install:
 
@@ -72,8 +72,7 @@ ccstudio -noSplash -data ~/workspace_v12 -application com.ti.ccstudio.apps.proje
 cp -r .git ~/workspace_v12/x264-dsp
 cd ~/workspace_v12/x264-dsp
 git reset --hard
-bin2c yuv < /the/path/of/1280x720.yuv > yuv.h
-./configure --enable-asm
+./configure --enable-asm --with-bin2c=/the/path/of/1280x720.yuv
 ccstudio -noSplash -data ~/workspace_v12 -application com.ti.ccstudio.apps.projectBuild -ccs.projects x264-dsp -ccs.configuration Release
 ```
 
@@ -91,8 +90,6 @@ $ ./configure --help
   --enable-asm            enable TI C6X asm. default=no
 
   --enable-dry-run        enable dry run, do not write any file. default=no
-
-  --enable-fake-input     enable fake input. default=no
 ...
   --with-x264-bit-depth[=8|10]
                           bit depth. default=8
@@ -103,6 +100,9 @@ $ ./configure --help
   --with-x264-log-level[=0..3]
                           log level: error, warning, info, debug. debug will
                           decrease fps. default=2
+
+  --with-bin2c[=/the/path/of/WxH.yuv]
+                          use bin2c to convert a yuv to yuv.h
 
   --with-downsample[=0|1] downsample from 720p to 360p, 0, 1 means bilinear,
                           bicubic. default=0
@@ -130,11 +130,7 @@ Note the file name must respect
 [YUView filename rules](https://github.com/IENT/YUView/wiki/YUV-File-Names)
 to contain resolution.
 
-Compile a `x264` which supports `bicubic downsample` by
-
-```shell
-./configure --with-downsample=1 --enable-fake-input --enable-asm
-```
+[Build](#build) a `x264`.
 
 For OSs:
 

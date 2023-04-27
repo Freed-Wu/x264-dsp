@@ -136,22 +136,30 @@ AS_IF([test "x$enable_dry_run" = xyes],
       []
     )
 
-AC_ARG_ENABLE([fake-input],
-              [AS_HELP_STRING([--enable-fake-input],
-                              [enable fake input. default=no]
-                              )
-              ],
-              [],
-              [enable_fake_input=no]
-              )
-AS_IF([test "x$enable_fake_input" = xyes],
-      [AC_DEFINE_UNQUOTED([FAKE_INPUT],
+AC_ARG_WITH([bin2c],
+            [AS_HELP_STRING([--with-bin2c@<:@=/the/path/of/WxH.yuv@:>@],
+                            [use bin2c to convert a yuv to yuv.h]
+                            )
+            ],
+            [],
+            [with_bin2c=no]
+            )
+AS_IF([test "x$with_bin2c" = "xyes"],
+      [AC_MSG_ERROR(["$with_bin2c" must be a file name!])],
+      []
+)
+AS_IF([test "x$with_bin2c" != "xno"],
+      [AC_CONFIG_COMMANDS([yuv.h],
+                          [bin2c yuv < $with_bin2c > yuv.h],
+                          [with_bin2c=$with_bin2c]
+                          )
+      AC_DEFINE_UNQUOTED([FAKE_INPUT],
                           [1],
-                          [do not input a true YUV file]
+                          [use bin2c]
                           )
       ],
       []
-    )
+)
 
 AC_ARG_WITH([downsample],
             [AS_HELP_STRING([--with-downsample@<:@=0|1@:>@],
