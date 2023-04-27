@@ -153,7 +153,7 @@ AS_IF([test "x$with_bin2c" != "xno"],
                           [bin2c yuv < $with_bin2c > yuv.h],
                           [with_bin2c=$with_bin2c]
                           )
-      AC_DEFINE_UNQUOTED([FAKE_INPUT],
+      AC_DEFINE_UNQUOTED([BIN2C],
                           [1],
                           [use bin2c]
                           )

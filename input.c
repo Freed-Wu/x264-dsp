@@ -10,7 +10,7 @@
 #include "common/x264.h"
 #include "input.h"
 #include "downsample.h"
-#ifdef FAKE_INPUT
+#ifdef BIN2C
 #include "yuv.h"
 static char *p_yuv = yuv;
 #endif
@@ -126,7 +126,7 @@ static int open_file(char *psz_filename, void **p_handle, video_info_t *info) {
 	info->csp = X264_CSP_I420;
 	info->num_frames = 0;
 
-#ifndef FAKE_INPUT
+#ifndef BIN2C
 	if (!strcmp(psz_filename, "-"))
 		h->fh = stdin;
 	else
@@ -144,7 +144,7 @@ static int open_file(char *psz_filename, void **p_handle, video_info_t *info) {
 	}
 
 	if (h->frame_size > 0) {
-#ifndef FAKE_INPUT
+#ifndef BIN2C
 		uint64_t i_size;
 		fseek(h->fh, 0, SEEK_END);
 		i_size = ftell(h->fh);
@@ -180,7 +180,7 @@ static int read_frame_internal(cli_pic_t *pic, input_hnd_t *h) {
 		}
 		plane_size *= 2 * 2;
 #endif
-#ifndef FAKE_INPUT
+#ifndef BIN2C
 		buf = malloc(pixel_depth * plane_size);
 		error |= fread(buf, pixel_depth, plane_size, h->fh) != plane_size;
 #else
@@ -195,7 +195,7 @@ static int read_frame_internal(cli_pic_t *pic, input_hnd_t *h) {
 #else
 #error wrong DOWNSAMPLE!
 #endif
-#ifndef FAKE_INPUT
+#ifndef BIN2C
 		free(buf);
 #else
 		p_yuv += pixel_depth * plane_size;
@@ -207,7 +207,7 @@ static int read_frame_internal(cli_pic_t *pic, input_hnd_t *h) {
 static int read_frame(cli_pic_t *pic, void *handle, int i_frame) {
 	input_hnd_t *h = handle;
 
-#ifndef FAKE_INPUT
+#ifndef BIN2C
 	if (i_frame > h->next_frame)
 		fseek(h->fh, i_frame * h->frame_size, SEEK_SET);
 #endif
@@ -220,7 +220,7 @@ static int read_frame(cli_pic_t *pic, void *handle, int i_frame) {
 }
 
 static int close_file(void *handle) {
-#ifndef FAKE_INPUT
+#ifndef BIN2C
 	input_hnd_t *h = handle;
 	if (!h || !h->fh)
 		return 0;

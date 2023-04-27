@@ -6,7 +6,7 @@ setup() {
 
 @test without-bin2c {
   run sh -c './configure --without-bin2c && cat config.h'
-  refute_output -p '#define FAKE_INPUT'
+  refute_output -p '#define BIN2C'
 }
 
 @test with-bin2c {
@@ -16,5 +16,5 @@ setup() {
 
 @test with-bin2c=configure.ac {
   run sh -c './configure --with-bin2c=configure.ac && cat config.h'
-  assert_output -p '#define FAKE_INPUT'
+  assert_output -p '#define BIN2C'
 }
