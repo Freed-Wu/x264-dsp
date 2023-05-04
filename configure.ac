@@ -185,6 +185,27 @@ AS_IF([test "x$with_downsample" != xno],
             []
       )
 
+AC_ARG_WITH([downsample-scale],
+            [AS_HELP_STRING([--with-downsample-scale@<:@=X@:>@],
+                            [downsample scale. default=2]
+                            )
+            ],
+            [],
+            [with_downsample_scale=yes]
+            )
+AS_IF([test "x$with_downsample_scale" = "xyes"],
+      [with_downsample_scale=2],
+      []
+)
+AS_IF([test "x$with_downsample_scale" = "xno"],
+      [AC_MSG_ERROR([must define downsample scale!])],
+      []
+      )
+AC_DEFINE_UNQUOTED([SCALE],
+                   [$with_downsample_scale],
+                   [downsample scale, a positive number]
+                   )
+
 AC_ARG_WITH([padding],
             [AS_HELP_STRING([--with-padding@<:@=1..3@:>@],
                             [padding method, edge, reflect, symmetric. default=3]

@@ -107,6 +107,9 @@ $ ./configure --help
   --with-downsample[=0|1] downsample from 720p to 360p, 0, 1 means bilinear,
                           bicubic. default=0
 
+  --with-downsample-scale[=X]
+                          downsample scale. default=2
+
   --with-padding[=1..3]   padding method, edge, reflect, symmetric. default=3
 ...
 ```

@@ -116,8 +116,8 @@ static int open_file(char *psz_filename, void **p_handle, video_info_t *info) {
 		if (*p >= '0' && *p <= '9' && sscanf(p, "%dx%d", &info->width, &info->height) == 2)
 			break;
 #ifdef DOWNSAMPLE
-	info->height /= 2;
-	info->width /= 2;
+	info->height /= SCALE;
+	info->width /= SCALE;
 #endif
 	if (!info->width || !info->height)
 		return -1;
@@ -154,7 +154,7 @@ static int open_file(char *psz_filename, void **p_handle, video_info_t *info) {
 		info->num_frames = yuv_len / h->frame_size;
 #endif
 #ifdef DOWNSAMPLE
-		info->num_frames /= 4;
+		info->num_frames /= SCALE * SCALE;
 #endif
 	}
 
@@ -178,7 +178,7 @@ static int read_frame_internal(cli_pic_t *pic, input_hnd_t *h) {
 			height /= 2;
 			width /= 2;
 		}
-		plane_size *= 2 * 2;
+		plane_size *= SCALE * SCALE;
 #endif
 #ifndef BIN2C
 		buf = malloc(pixel_depth * plane_size);

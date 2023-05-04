@@ -52,12 +52,12 @@ void resize(void *_dst, const void *_src, size_t dst_width, size_t dst_height) {
 	size_t x, y;
 	uint8_t *src = (uint8_t *)_src;
 	uint8_t *dst = (uint8_t *)_dst;
-	size_t src_width = 2 * dst_width, src_height = 2 * dst_height;
+	size_t src_width = (size_t)(SCALE * dst_width), src_height = (size_t)(SCALE * dst_height);
 	for (y = 0; y < dst_height; y++) {
 		// don't align corner
-		double v = (y + 0.5) / dst_height * src_height - 0.5;
+		double v = (y + 0.5) * SCALE - 0.5;
 		for (x = 0; x < dst_width; x++) {
-			double u = (x + 0.5) / dst_width * src_width - 0.5;
+			double u = (x + 0.5) * SCALE - 0.5;
 			*(dst++) = sample_bicubic(src, src_width, src_height, u, v);
 		}
 	}
