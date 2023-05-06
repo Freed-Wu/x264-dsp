@@ -157,8 +157,20 @@ AS_IF([test "x$with_bin2c" != "xno"],
                           [1],
                           [use bin2c]
                           )
+      AC_DEFINE_UNQUOTED([STRINGIFY(x)],
+                          [#x],
+                          []
+                          )
+      AC_DEFINE_UNQUOTED([INPUT_FILENAME],
+                          [STRINGIFY($with_bin2c)],
+                          [input filename]
+                          )
       ],
-      []
+      [AC_DEFINE_UNQUOTED([INPUT_FILENAME],
+                          ["352x288.yuv"],
+                          [input filename]
+                          )
+      ]
 )
 
 AC_ARG_WITH([downsample],

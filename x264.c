@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include "config.h"
 #include "common/x264.h"
 #include "input.h"
 #include "output.h"
@@ -85,7 +86,7 @@ int main(int argc, char **argv) {
 }
 
 static int parse(int argc, char **argv, x264_param_t *param, cli_opt_t *opt) {
-	char *input_filename = "1280x720.yuv";
+	char *input_filename = INPUT_FILENAME;
 	char *output_filename = "out.264";
 	video_info_t info = {0};
 
