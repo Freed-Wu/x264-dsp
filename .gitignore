@@ -1,4 +1,11 @@
-/.vscode/perl-lang/
+/.ccsproject
+/.cproject
+/.launches/
+/.project
+/.settings/
+/Release/
+/targetConfigs/
+
 /yuv.h
 /docs/_build/
 /tests/check_downsample

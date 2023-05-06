@@ -68,10 +68,12 @@ For TI DSP DM6467: (Refer
 
 ```shell
 # a large heap/stack size to avoid malloc failure
-ccstudio -noSplash -data ~/workspace_v12 -application com.ti.ccstudio.apps.projectCreate -ccs.device TMS320C64XX.TMS320DM6467 -ccs.name x264-dsp -ccs.setCompilerOptions --gcc -ccs.setCompilerOptions -O3 @configurations Release -ccs.setCompilerOptions --program_level_compile @configurations Release -ccs.setLinkerOptions -heap=0x1000000 -ccs.setLinkerOptions -stack=0x1000000
-cp -r .git ~/workspace_v12/x264-dsp
+ccstudio -noSplash -data ~/workspace_v12 -application com.ti.ccstudio.apps.projectCreate -ccs.device TMS320C64XX.TMS320DM6467 -ccs.name x264-dsp -ccs.setCompilerOptions --gcc -ccs.setCompilerOptions -O3 @configurations Release -ccs.setCompilerOptions --program_level_compile @configurations Release -ccs.setCompilerOptions --call_assumptions=3 @configurations Release -ccs.setLinkerOptions -heap=0x1000000 -ccs.setLinkerOptions -stack=0x1000000
 cd ~/workspace_v12/x264-dsp
+git clone --bare --depth=1 https://github.com/Freed-Wu/x264-dsp .git
+git config core.bare false
 git reset --hard
+autoreconf -vif
 ./configure --enable-asm --with-bin2c=/the/path/of/1280x720.yuv
 ccstudio -noSplash -data ~/workspace_v12 -application com.ti.ccstudio.apps.projectBuild -ccs.projects x264-dsp -ccs.configuration Release
 ```
@@ -117,18 +119,7 @@ $ ./configure --help
 ## Usage
 
 Download a test YUV from
-[release](https://github.com/Freed-Wu/x264-dsp/releases). Or you want to
-download a YUV from <https://media.xiph.org/video/derf/> and convert it to 720p
-by:
-
-<!-- markdownlint-disable MD013 -->
-
-```shell
-ffmpeg -y -f rawvideo -pixel_format yuv420p -s 352x288 -i /the/path/of/yuv/352x288.yuv -f rawvideo -pixel_format yuv420 -s 1280x720 /the/path/of/yuv/1280x720.yuv
-```
-
-<!-- markdownlint-enable MD013 -->
-
+[release](https://github.com/Freed-Wu/x264-dsp/releases).
 Note the file name must respect
 [YUView filename rules](https://github.com/IENT/YUView/wiki/YUV-File-Names)
 to contain resolution.
@@ -146,13 +137,13 @@ After running, `out.264` will occur in current directory.
 For DSP:
 
 ```shell
-mv /the/path/yuv/1280x720.yuv ~/workspace_v12/x264-dsp/Debug
+mv /the/path/yuv/1280x720.yuv ~/workspace_v12/x264-dsp/Release
 ```
 
 Then `Run -> Load -> Select Program to Load`, select
 `~/workspace_v12/x264-dsp/Release/x264-dsp.out`.
 
-After running, `out.264` will occur in `~/workspace_v12/x264-dsp/Debug`.
+After running, `out.264` will occur in `~/workspace_v12/x264-dsp/Release`.
 
 ```shell
 ffplay /the/path/of/out.264
