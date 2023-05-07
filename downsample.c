@@ -73,9 +73,28 @@ void resize2(void *_dst, const void *_src, size_t dst_width, size_t dst_height) 
 	size_t src_width = 2 * dst_width;
 	for (y = 0; y < dst_height; y++) {
 		for (x = 0; x < dst_width; x++) {
-			*(dst++) = (*(src) + *(src + 1) + *(src + src_width) + *(src + src_width + 1) + 2) / 4;
+			*(dst++) = (*src + *(src + 1) + *(src + src_width) + *(src + src_width + 1) + 2) / 4;
 			src += 2;
 		}
 		src += src_width;
+	}
+}
+
+void resize4(void *_dst, const void *_src, size_t dst_width, size_t dst_height) {
+	size_t x, y;
+	uint8_t *src = (uint8_t *)_src;
+	uint8_t *dst = (uint8_t *)_dst;
+	size_t src_width = 4 * dst_width;
+	for (y = 0; y < dst_height; y++) {
+		for (x = 0; x < dst_width; x++) {
+			*(dst++) = (*src + *(src + 1) + *(src + 2) + *(src + 3) +
+				    *(src + src_width) + *(src + src_width + 1) + *(src + src_width + 2) + *(src + src_width + 3) +
+				    *(src + 2 * src_width) + *(src + 2 * src_width + 1) + *(src + 2 * src_width + 2) + *(src + 2 * src_width + 3) +
+				    *(src + 3 * src_width) + *(src + 3 * src_width + 1) + *(src + 3 * src_width + 2) + *(src + 3 * src_width + 3) +
+				    8) /
+				   16;
+			src += 4;
+		}
+		src += 3 * src_width;
 	}
 }

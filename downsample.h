@@ -57,5 +57,6 @@ double cubic_hermite(double f_1, double f0, double f1, double f2, double t);
 uint8_t sample_bicubic(uint8_t *src, size_t src_width, size_t src_height, double u, double v);
 void resize(void *dst, const void *src, size_t dst_width, size_t dst_height);
 void resize2(void *dst, const void *src, size_t dst_width, size_t dst_height);
+void resize4(void *dst, const void *src, size_t dst_width, size_t dst_height);
 
 #endif /* downsample.h */

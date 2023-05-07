@@ -189,7 +189,13 @@ static int read_frame_internal(cli_pic_t *pic, input_hnd_t *h) {
 #ifndef DOWNSAMPLE
 		memcpy((void *)pic->img.plane[i], buf, plane_size);
 #elif DOWNSAMPLE == DOWNSAMPLE_BILINEAR
+#if SCALE == 2
 		resize2((void *)pic->img.plane[i], buf, width, height);
+#elif SCALE == 4
+		resize4((void *)pic->img.plane[i], buf, width, height);
+#else
+#error wrong SCALE for bilinear!
+#endif
 #elif DOWNSAMPLE == DOWNSAMPLE_BICUBIC
 		resize((void *)pic->img.plane[i], buf, width, height);
 #else
