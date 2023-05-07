@@ -254,7 +254,7 @@ static ALWAYS_INLINE double x264_clip3f(double v, double f_min, double f_max) {
 						  : v);
 }
 
-#ifdef HAVE_TIC6X
+#if defined(__TI_COMPILER_VERSION__) && HAVE_TIC6X
 static ALWAYS_INLINE void x264_median_mv(int16_t *dst, int16_t *a, int16_t *b, int16_t *c) {
 	int mva = _mem4(a);
 	int mvb = _mem4(b);
@@ -283,7 +283,7 @@ static ALWAYS_INLINE void x264_median_mv(int16_t *dst, int16_t *a, int16_t *b, i
 }
 #endif
 
-#ifdef HAVE_TIC6X
+#if defined(__TI_COMPILER_VERSION__) && HAVE_TIC6X
 static void ALWAYS_INLINE x264_predictor_roundclip(int16_t (*dst)[2], int16_t (*mvc)[2], int i_mvc, int mv_x_min, int mv_x_max, int mv_y_min, int mv_y_max) {
 	int mv_min = _spack2(mv_y_min, mv_x_min);
 	int mv_max = _spack2(mv_y_max, mv_x_max);

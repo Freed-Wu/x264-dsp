@@ -242,6 +242,9 @@ AS_IF([test "$with_padding" -le 3 -a "$with_padding" -ge 1],
       ],
       [AC_MSG_ERROR(["$with_padding" is an illegal padding method!])]
       )
+AH_TOP([#ifndef CONFIG_H])
+AH_TOP([#define CONFIG_H 1])
+AH_BOTTOM([#endif])
 
 # Checks for programs.
 AC_PROG_CC([gcc clang])

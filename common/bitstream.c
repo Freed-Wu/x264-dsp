@@ -4,7 +4,7 @@
 
 #include "common.h"
 
-#ifdef HAVE_TIC6X
+#if defined(__TI_COMPILER_VERSION__) && HAVE_TIC6X
 uint8_t *x264_nal_escape_ti(uint8_t *dst, uint8_t *src, uint8_t *end);
 #endif
 
@@ -60,7 +60,7 @@ void x264_nal_encode(x264_t *h, uint8_t *dst, x264_nal_t *nal) {
 
 void x264_bitstream_init(int cpu, x264_bitstream_function_t *pf) {
 	pf->nal_escape = x264_nal_escape_c;
-#ifdef HAVE_TIC6X
+#if defined(__TI_COMPILER_VERSION__) && HAVE_TIC6X
 	pf->nal_escape = x264_nal_escape_ti;
 #endif
 }

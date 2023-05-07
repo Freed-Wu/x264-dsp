@@ -4,7 +4,7 @@
 
 #include "common.h"
 
-#ifdef HAVE_TIC6X
+#if defined(__TI_COMPILER_VERSION__) && HAVE_TIC6X
 int quant_4x4_ti(dctcoef dct[16], udctcoef mf[16], udctcoef bias[16]);
 int quant_4x4_dc_ti(dctcoef dct[16], int mf, int bias);
 int quant_2x2_dc_ti(dctcoef dct[4], int mf, int bias);
@@ -142,7 +142,7 @@ static void dequant_4x4_dc(dctcoef dct[16], int dequant_mf[6][16], int i_qp) {
 	}
 }
 
-#ifdef HAVE_TIC6X
+#if defined(__TI_COMPILER_VERSION__) && HAVE_TIC6X
 void dequant_4x4_shl_ti(dctcoef dct[16], int dequant_mf[16], int qbits);
 void dequant_4x4_shr_ti(dctcoef dct[16], int dequant_mf[16], int qbits, int bias);
 
@@ -237,7 +237,7 @@ static void x264_denoise_dct(dctcoef *dct, uint32_t *sum, udctcoef *offset, int 
 	}
 }
 
-#ifdef HAVE_TIC6X
+#if defined(__TI_COMPILER_VERSION__) && HAVE_TIC6X
 int x264_decimate_score16_ti(dctcoef *dct);
 #endif
 
@@ -301,7 +301,7 @@ last(4)
 	    last(16)
 		last(64)
 
-#ifdef HAVE_TIC6X
+#if defined(__TI_COMPILER_VERSION__) && HAVE_TIC6X
 		    int x264_coeff_last16_ti(dctcoef *dct);
 #endif
 
@@ -360,7 +360,7 @@ level_run(4)
 	pf->coeff_level_run[DCT_CHROMA_AC] = pf->coeff_level_run[DCT_CHROMAU_AC] =
 	    pf->coeff_level_run[DCT_CHROMAV_AC] = pf->coeff_level_run[DCT_LUMA_AC];
 
-#ifdef HAVE_TIC6X
+#if defined(__TI_COMPILER_VERSION__) && HAVE_TIC6X
 	pf->quant_4x4 = quant_4x4_ti;
 	pf->quant_4x4_dc = quant_4x4_dc_ti;
 	pf->quant_2x2_dc = quant_2x2_dc_ti;

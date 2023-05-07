@@ -3,7 +3,7 @@
  *****************************************************************************/
 
 #include "config.h"
-#ifdef HAVE_TIC6X
+#if defined(__TI_COMPILER_VERSION__) && HAVE_TIC6X
 #define x264_macroblock_cache_mv_ptr(a, x, y, w, h, l, mv) x264_macroblock_cache_mv(a, x, y, w, h, l, M32(mv))
 /* x264_macroblock_cache_mvd updates mv of (x,y) to x264_t.mb.cache.mv */
 static ALWAYS_INLINE void x264_macroblock_cache_mv(x264_t *h, int x, int y, int width, int height, int i_list, uint32_t mv) {

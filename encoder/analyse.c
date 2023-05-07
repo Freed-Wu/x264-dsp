@@ -316,7 +316,7 @@ static const uint16_t x264_mv_bits_tab[23][3] =
 	*/
 };
 
-#ifdef HAVE_TIC6X
+#if defined(__TI_COMPILER_VERSION__) && HAVE_TIC6X
 static inline void x264_memset_uint16(uint16_t *dst, uint16_t d, int count) {
 	int i;
 	int div8 = count >> 3;

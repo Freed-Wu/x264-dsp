@@ -10,7 +10,7 @@
 #include <inttypes.h>
 #include <math.h>
 
-#ifdef HAVE_TIC6X
+#if defined(__TI_COMPILER_VERSION__) && HAVE_TIC6X
 #define HAVE_MEM_ALIGN 1  /* TI compiler defines memalign in stdlib.h, there is no memory.h */
 #define HAVE_LOG2F 1	  /* TI compiler defines log2f in mathf.h */
 #define HAVE_THREAD 0	  /* disable threads */
@@ -56,7 +56,7 @@
 #define MAY_ALIAS __attribute__((may_alias))
 #define x264_constant_p(x) __builtin_constant_p(x)
 #define x264_nonconstant_p(x) (!__builtin_constant_p(x))
-#elif defined(HAVE_TIC6X)
+#elif defined(__TI_COMPILER_VERSION__) && HAVE_TIC6X
 /* FIXME: #elif defined(__TI_GNU_ATTRIBUTE_SUPPORT__) */ /* Defined if GCC extensions are enabled (-gcc) */
 #define UNUSED __attribute__((unused))
 #define ALWAYS_INLINE __attribute__((always_inline)) inline

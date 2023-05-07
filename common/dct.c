@@ -4,7 +4,7 @@
 
 #include "common.h"
 
-#ifdef HAVE_TIC6X
+#if defined(__TI_COMPILER_VERSION__) && HAVE_TIC6X
 void sub4x4_dct_ti(dctcoef dct[16], pixel *pix1, pixel *pix2);
 void add4x4_idct_ti(pixel *p_dst, dctcoef dct[16]);
 
@@ -273,7 +273,7 @@ void x264_dct_init(int cpu, x264_dct_function_t *dctf) {
 	dctf->dct4x4dc = dct4x4dc;
 	dctf->idct4x4dc = idct4x4dc;
 
-#ifdef HAVE_TIC6X
+#if defined(__TI_COMPILER_VERSION__) && HAVE_TIC6X
 	dctf->sub4x4_dct = sub4x4_dct_ti;
 	dctf->add4x4_idct = add4x4_idct_ti;
 
@@ -291,7 +291,7 @@ void x264_dct_init(int cpu, x264_dct_function_t *dctf) {
 #endif
 }
 
-#ifdef HAVE_TIC6X
+#if defined(__TI_COMPILER_VERSION__) && HAVE_TIC6X
 void zigzag_scan_4x4_frame_ti(dctcoef level[16], dctcoef dct[16]);
 #endif
 
@@ -316,7 +316,7 @@ static void zigzag_scan_4x4_frame(dctcoef level[16], dctcoef dct[16]) {
 
 void x264_zigzag_init(int cpu, x264_zigzag_function_t *zigzagf) {
 	zigzagf->scan_4x4 = zigzag_scan_4x4_frame;
-#ifdef HAVE_TIC6X
+#if defined(__TI_COMPILER_VERSION__) && HAVE_TIC6X
 	zigzagf->scan_4x4 = zigzag_scan_4x4_frame_ti;
 #endif
 }
