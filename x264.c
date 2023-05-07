@@ -116,7 +116,7 @@ static int parse(int argc, char **argv, x264_param_t *param, cli_opt_t *opt) {
 	FAIL_IF_ERROR(cli_input.open_file(input_filename, &opt->hin, &info),
 		      "could not open input file `%s'\n", input_filename)
 
-	x264_cli_log("input", X264_LOG_INFO, "%dx%d%c %u:%u @ %u/%u fps (%cfr)\n", info.width,
+	x264_cli_log(input_filename, X264_LOG_INFO, "%dx%d%c %u:%u @ %u/%u fps (%cfr)\n", info.width,
 		     info.height, info.interlaced ? 'i' : 'p', info.sar_width, info.sar_height,
 		     info.fps_num, info.fps_den, info.vfr ? 'v' : 'c');
 
