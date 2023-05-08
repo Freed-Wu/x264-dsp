@@ -6,8 +6,7 @@ architecture.
 We tried to optimize several core routines, including DCT, Intra-Predict,
 Inter-Predict, CABAC, etc.
 
-Add an optional downsample module. The document is
-[here](https://x264-dsp.readthedocs.io/en/latest/md_docs_resources_downsample.html).
+Add an optional downsample module.
 
 ## Generate a Source Distribution
 
