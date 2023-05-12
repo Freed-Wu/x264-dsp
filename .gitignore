@@ -1,24 +1,31 @@
+/yuv.h
+/x264
+*.264
+
+*.log
+.dirstamp
+/config.h
+.deps/
+*~
+
+# check
+*.trs
+*.gcno
+/tests/*.c
+/tests/check_downsample
+
+# sphinx
+/docs/_build/
+
+# CCStudio
 /.ccsproject
 /.cproject
 /.launches/
 /.project
 /.settings/
+/Debug/
 /Release/
 /targetConfigs/
-
-/yuv.h
-/docs/_build/
-/tests/check_downsample
-*.trs
-*.log
-*.gcno
-/tests/*.c
-/x264
-*.264
-.dirstamp
-/config.h
-.deps/
-*~
 
 # create by https://github.com/iamcco/coc-gitignore (Sun Apr 02 2023 17:54:55 GMT+0800 (China Standard Time))
 # C.gitignore:
