@@ -108,7 +108,7 @@ AC_ARG_ENABLE([asm],
                               )
               ],
               [],
-              [enable_asm=no]
+              [enable_asm=yes]
               )
 AS_IF([test "x$enable_asm" = xyes],
       [AC_DEFINE_UNQUOTED([HAVE_TIC6X],

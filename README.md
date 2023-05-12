@@ -73,7 +73,7 @@ git clone --bare --depth=1 https://github.com/Freed-Wu/x264-dsp .git
 git config core.bare false
 git reset --hard
 autoreconf -vif
-./configure --enable-asm --with-bin2c=/the/path/of/1280x720.yuv
+./configure --with-bin2c=/the/path/of/1280x720.yuv
 ccstudio -noSplash -data ~/workspace_v12 -application com.ti.ccstudio.apps.projectBuild -ccs.projects x264-dsp -ccs.configuration Release
 ```
 

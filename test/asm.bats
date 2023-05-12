@@ -14,7 +14,7 @@ setup() {
   refute_output -p '#define HAVE_TIC6X'
 }
 
-@test disable-asm-default {
+@test enable-asm-default {
   run sh -c './configure && cat config.h'
-  refute_output -p '#define HAVE_TIC6X'
+  assert_output -p '#define HAVE_TIC6X'
 }
