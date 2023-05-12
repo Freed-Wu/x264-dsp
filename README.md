@@ -8,20 +8,13 @@ Inter-Predict, CABAC, etc.
 
 Add an optional downsample module.
 
-## Generate a Source Distribution
+## Dependencies
 
-In order to generate a source distribution, install:
+## Build Systems
 
-- [autoconf](https://www.gnu.org/software/autoconf)
-- [automake](https://www.gnu.org/software/automake)
+You have 2 methods to build this project:
 
-Then:
-
-```shell
-autoreconf -vif
-```
-
-## Build
+For `autotools`:
 
 Download
 [a source distribution](https://github.com/Freed-Wu/x264-dsp/releases), then
@@ -31,16 +24,23 @@ install:
 - [make](https://www.gnu.org/software/make) (ccstudio contains a builtin
   `/opt/ccstudio/ccs/utils/bin/gmake`)
 
-Optional dependencies:
+For `cmake`:
 
-- [check](https://github.com/libcheck/check): for unit test
-- [bin2c](https://github.com/adobe/bin2c): for
-  `./configure --with-bin2c=/the/path/of/WxH.yuv`
+- [cmake](https://github.com/Kitware/CMake)
+- [one generator of cmake](https://cmake.org/cmake/help/latest/manual/cmake-generators.7.html)
 
-To compile this program for native platform or other platforms, install:
+### Toolchains
 
-- [gcc](https://gcc.gnu.org)/[clang](https://clang.llvm.org/): for native
-  building
+### Host Builds
+
+One of the following:
+
+- [gcc](https://gcc.gnu.org)
+- [clang](https://clang.llvm.org/)
+- [MSVC](https://visualstudio.microsoft.com/vs/features/cplusplus)
+
+### Cross Compiling
+
 - [mingw-w64](https://archlinux.org/packages/community/x86_64/mingw-w64-gcc):
   for windows
 - [android-ndk](https://aur.archlinux.org/packages/android-ndk): for android
@@ -48,40 +48,37 @@ To compile this program for native platform or other platforms, install:
 - [TI C6000 toolchain \< 8.0.0](https://www.ti.com/tool/C6000-CGT): for TI DSP
   DM6467
 
+For TI C6000 toolchain > 8.0.0, refer <https://github.com/Freed-Wu/x264>.
+
+### Optional Dependencies
+
+- [check](https://github.com/libcheck/check): for unit test
+  - `make check`
+  - `ctest`
+- [bin2c](https://github.com/adobe/bin2c): use bin2c to convert a yuv to
+  a c array
+  - `./configure --with-bin2c=/the/path/of/WxH.yuv`
+  - `cmake -DBIN2C=ON -DINPUT_FILENAME=/the/path/of/WxH.yuv`
+
+## Build
+
+### autotools
+
 For OSs:
 
 ```shell
-# native build
-./configure
-# or for windows
-./configure --build=x86_64-pc-linux-gnu --host=x86_64-w64-mingw32
-# or for android, API version is 32
-./configure --build=x86_64-pc-linux-gnu --host=aarch64-linux-android32
-make
+mkdir build
+cd build
+# host build
+../configure
+# or cross compiling for windows
+../configure --build=x86_64-pc-linux-gnu --host=x86_64-w64-mingw32
+# or cross compiling for android with API 21
+../configure --build=x86_64-pc-linux-gnu --host=aarch64-linux-android21
+make -j$(nproc)
 ```
 
-For TI DSP DM6467: (Refer
-[ccs_projects-command-line](https://software-dl.ti.com/ccs/esd/documents/ccs_projects-command-line.html))
-
-<!-- markdownlint-disable MD013 -->
-
-```shell
-# a large heap/stack size to avoid malloc failure
-ccstudio -noSplash -data ~/workspace_v12 -application com.ti.ccstudio.apps.projectCreate -ccs.device TMS320C64XX.TMS320DM6467 -ccs.name x264-dsp -ccs.setCompilerOptions --gcc -ccs.setCompilerOptions -O3 @configurations Release -ccs.setCompilerOptions --program_level_compile @configurations Release -ccs.setCompilerOptions --call_assumptions=3 @configurations Release -ccs.setLinkerOptions -heap=0x1000000 -ccs.setLinkerOptions -stack=0x1000000
-cd ~/workspace_v12/x264-dsp
-git clone --bare --depth=1 https://github.com/Freed-Wu/x264-dsp .git
-git config core.bare false
-git reset --hard
-autoreconf -vif
-./configure --with-bin2c=/the/path/of/1280x720.yuv
-ccstudio -noSplash -data ~/workspace_v12 -application com.ti.ccstudio.apps.projectBuild -ccs.projects x264-dsp -ccs.configuration Release
-```
-
-<!-- markdownlint-enable MD013 -->
-
-For TI C6000 toolchain > 8.0.0, refer <https://github.com/Freed-Wu/x264>.
-
-## Configure
+See `--help` to know how to configure:
 
 ```shell
 $ ./configure --help
@@ -115,6 +112,43 @@ $ ./configure --help
 ...
 ```
 
+`autotools` doesn't support TI-CGT. So for TI DSP DM6467, we need `ccstudio`:
+(Refer [ccs_projects-command-line](https://software-dl.ti.com/ccs/esd/documents/ccs_projects-command-line.html))
+
+<!-- markdownlint-disable MD013 -->
+
+```shell
+# a large heap/stack size to avoid malloc failure
+ccstudio -noSplash -data ~/workspace_v12 -application com.ti.ccstudio.apps.projectCreate -ccs.device TMS320C64XX.TMS320DM6467 -ccs.name x264-dsp -ccs.setCompilerOptions --gcc -ccs.setCompilerOptions -O3 @configurations Release -ccs.setCompilerOptions --program_level_compile @configurations Release -ccs.setCompilerOptions --call_assumptions=3 @configurations Release -ccs.setLinkerOptions -heap=0x1000000 -ccs.setLinkerOptions -stack=0x1000000
+cd ~/workspace_v12/x264-dsp
+git clone --bare --depth=1 https://github.com/Freed-Wu/x264-dsp .git
+git config core.bare false
+git reset --hard
+autoreconf -vif
+./configure --with-bin2c=/the/path/of/1280x720.yuv
+ccstudio -noSplash -data ~/workspace_v12 -application com.ti.ccstudio.apps.projectBuild -ccs.projects x264-dsp -ccs.configuration Release
+```
+
+<!-- markdownlint-enable MD013 -->
+
+### cmake
+
+```shell
+# host build
+cmake -Bbuild
+# or cross compiling for windows
+cmake -Bbuild -DCMAKE_TOOLCHAIN_FILE=cmake/mingw.cmake
+# or cross compiling for windows on x86
+cmake -Bbuild -DCMAKE_TOOLCHAIN_FILE=cmake/mingw.cmake -DCMAKE_SYSTEM_PROCESSOR=i686
+# or cross compiling for android with highest API
+cmake -Bbuild -DCMAKE_TOOLCHAIN_FILE=cmake/android-ndk.cmake
+# or cross compiling for TI DSP
+cmake -Bbuild -DCMAKE_TOOLCHAIN_FILE=cmake/ti.cmake
+cmake --build build
+```
+
+See `ccmake -Bbuild` to know how to configure.
+
 ## Usage
 
 Download a test YUV from
@@ -123,12 +157,10 @@ Note the file name must respect
 [YUView filename rules](https://github.com/IENT/YUView/wiki/YUV-File-Names)
 to contain resolution.
 
-[Build](#build) a `x264`.
-
 For OSs:
 
 ```shell
-./x264 /the/path/yuv/1280x720.yuv
+build/x264 /the/path/yuv/1280x720.yuv
 ```
 
 After running, `out.264` will occur in current directory.

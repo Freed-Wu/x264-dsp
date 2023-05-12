@@ -2,11 +2,18 @@
 /x264
 *.264
 
+/build/
+/.cache/
+
 *.log
 .dirstamp
 /config.h
 .deps/
 *~
+
+/*.cmake
+*.ninja
+DartConfiguration.tcl
 
 # check
 *.trs
@@ -137,3 +144,26 @@ m4/lt~obsolete.m4
 # Generated source files
 configure
 Makefile
+
+# create by https://github.com/iamcco/coc-gitignore (Fri May 12 2023 20:52:28 GMT+0800 (China Standard Time))
+# CMake.gitignore:
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+
+# CMake.patch:
+# External projects
+*-prefix/
+
+# create by https://github.com/iamcco/coc-gitignore (Fri May 12 2023 20:52:35 GMT+0800 (China Standard Time))
+# Ninja.gitignore:
+.ninja_deps
+.ninja_log

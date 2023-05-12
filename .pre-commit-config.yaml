@@ -108,6 +108,10 @@ repos:
     rev: v16.0.1
     hooks:
       - id: clang-format
+  - repo: https://github.com/cmake-lint/cmake-lint
+    rev: 1.4.2
+    hooks:
+      - id: cmakelint
 
 ci:
   skip:

@@ -21,7 +21,11 @@ jobs:
           sudo apt install check
       - name: Test
         # disable bashcov due to bug
+        # https://bugs.launchpad.net/ubuntu/+source/check/+bug/2019478
         run: |
+          # cmake -Bbuild
+          # cmake --build build --target check_downsample
+          # ctest --test-dir build
           bats -r .
           make check
       - uses: codecov/codecov-action@v3
