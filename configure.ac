@@ -174,15 +174,15 @@ AS_IF([test "x$with_bin2c" != "xno"],
 )
 
 AC_ARG_WITH([downsample],
-            [AS_HELP_STRING([--with-downsample@<:@=0|1@:>@],
-                            [downsample from 720p to 360p, 0, 1 means bilinear, bicubic. default=0]
+            [AS_HELP_STRING([--with-downsample@<:@=1|2@:>@],
+                            [downsample from 720p to 360p, 1, 2 means bilinear, bicubic. default=1]
                             )
             ],
             [],
             [with_downsample=no]
             )
 AS_IF([test "x$with_downsample" = "xyes"],
-      [with_downsample=0],
+      [with_downsample=1],
       []
 )
 AS_IF([test "x$with_downsample" != xno],

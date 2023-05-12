@@ -4,8 +4,8 @@
 #include <stdint.h>
 #include "config.h"
 
-#define DOWNSAMPLE_BILINEAR 0
-#define DOWNSAMPLE_BICUBIC 1
+#define DOWNSAMPLE_BILINEAR 1
+#define DOWNSAMPLE_BICUBIC 2
 // https://pytorch.org/vision/stable/generated/torchvision.transforms.Pad.html
 #define PADDING_EDGE 1
 #define PADDING_REFLECT 2

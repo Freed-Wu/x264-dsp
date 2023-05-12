@@ -20,6 +20,6 @@ setup() {
 }
 
 @test with-downsample=2 {
-  run sh -c './configure --with-downsample=2'
+  run sh -c './configure --with-downsample=9'
   assert_failure
 }

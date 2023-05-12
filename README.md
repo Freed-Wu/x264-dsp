@@ -105,8 +105,8 @@ $ ./configure --help
   --with-bin2c[=/the/path/of/WxH.yuv]
                           use bin2c to convert a yuv to yuv.h
 
-  --with-downsample[=0|1] downsample from 720p to 360p, 0, 1 means bilinear,
-                          bicubic. default=0
+  --with-downsample[=1|2] downsample from 720p to 360p, 1, 2 means bilinear,
+                          bicubic. default=1
 
   --with-downsample-scale[=X]
                           downsample scale. default=2
