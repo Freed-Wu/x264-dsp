@@ -12,7 +12,7 @@
 #include "downsample.h"
 #ifdef BIN2C
 #include "yuv.h"
-static char *p_yuv = yuv;
+static char *p_yuv = (char *)yuv;
 #endif
 
 typedef struct
