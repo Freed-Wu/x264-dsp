@@ -1,7 +1,12 @@
 cmake_minimum_required(VERSION 3.10)
+if(DEFINED ENV{GITHUB_REF_NAME})
+  set(VERSION $ENV{GITHUB_REF_NAME})
+else()
+  set(VERSION 0.0.0.0)
+endif()
 project(
   x264-dsp
-  VERSION 0.0.0.0
+  VERSION ${VERSION}
   DESCRIPTION x264-dsp
   HOMEPAGE_URL https://github.com/Freed-Wu/x264-dsp
   LANGUAGES C ASM)
