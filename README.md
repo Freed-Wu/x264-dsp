@@ -60,6 +60,13 @@ For TI C6000 toolchain > 8.0.0, refer <https://github.com/Freed-Wu/x264>.
   - `./configure --with-bin2c=/the/path/of/WxH.yuv`
   - `cmake -DBIN2C=ON -DINPUT_FILENAME=/the/path/of/WxH.yuv`
 
+**Note**: TI-CGT cannot support too large `/the/path/of/WxH.yuv`!
+A reasonable size can be:
+
+```sh
+head -c13824000 /720p/the/path/of/WxH.yuv > /the/path/of/WxH.yuv
+```
+
 ## Build
 
 ### autotools
