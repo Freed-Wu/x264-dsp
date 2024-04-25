@@ -24,7 +24,7 @@
 	} while (0)
 #define IS_DISPOSABLE(type) (type == X264_TYPE_B)
 #define FIX8(f) ((int)(f * (1 << 8) + .5))
-#define ALIGN(x, a) (((x) + ((a)-1)) & ~((a)-1))
+#define ALIGN(x, a) (((x) + ((a) - 1)) & ~((a) - 1))
 
 #define CHECKED_MALLOC(var, size)        \
 	do {                             \
@@ -144,7 +144,7 @@ typedef uint64_t pixel4;
 typedef int32_t dctcoef;
 typedef uint32_t udctcoef;
 
-#define PIXEL_SPLAT_X4(x) ((x)*0x0001000100010001ULL)
+#define PIXEL_SPLAT_X4(x) ((x) * 0x0001000100010001ULL)
 #define MPIXEL_X4(src) M64(src)
 #else
 typedef uint8_t pixel;
@@ -152,7 +152,7 @@ typedef uint32_t pixel4;
 typedef int16_t dctcoef;
 typedef uint16_t udctcoef;
 
-#define PIXEL_SPLAT_X4(x) ((x)*0x01010101U)
+#define PIXEL_SPLAT_X4(x) ((x) * 0x01010101U)
 #define MPIXEL_X4(src) M32(src)
 #endif
 

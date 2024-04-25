@@ -67,7 +67,7 @@ static void x264_cabac_intra4x4_pred_mode(x264_cabac_t *cb, int i_pred, int i_mo
 			i_mode--;
 
 		/* FL(Fixed-Length) binarization of Intra4x4PredMode with cMax = 7 */
-		x264_cabac_encode_decision(cb, 69, (i_mode)&0x01);
+		x264_cabac_encode_decision(cb, 69, (i_mode) & 0x01);
 		x264_cabac_encode_decision(cb, 69, (i_mode >> 1) & 0x01);
 		x264_cabac_encode_decision(cb, 69, (i_mode >> 2));
 	}

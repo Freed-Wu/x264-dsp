@@ -840,7 +840,7 @@ static void x264_mb_analyse_intra(x264_t *h, x264_mb_analysis_t *a, int i_satd_i
 		(m)->i_stride[0] = h->mb.pic.i_stride[0];                                                          \
 		(m)->i_stride[1] = h->mb.pic.i_stride[1];                                                          \
 		(m)->i_stride[2] = h->mb.pic.i_stride[2];                                                          \
-		(m)->p_fenc[0] = &(src)[0][(xoff) + (yoff)*FENC_STRIDE];                                           \
+		(m)->p_fenc[0] = &(src)[0][(xoff) + (yoff) * FENC_STRIDE];                                         \
 		(m)->p_fenc[1] = &(src)[1][((xoff) >> CHROMA_H_SHIFT) + ((yoff) >> CHROMA_V_SHIFT) * FENC_STRIDE]; \
 		(m)->p_fenc[2] = &(src)[2][((xoff) >> CHROMA_H_SHIFT) + ((yoff) >> CHROMA_V_SHIFT) * FENC_STRIDE]; \
 	}

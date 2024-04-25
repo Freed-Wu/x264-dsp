@@ -285,7 +285,7 @@ void x264_predict_8x8c_p_c(pixel *src) {
  * 4x4 prediction for intra luma block
  ****************************************************************************/
 
-#define SRC(x, y) src[(x) + (y)*FDEC_STRIDE]
+#define SRC(x, y) src[(x) + (y) * FDEC_STRIDE]
 #define SRC_X4(x, y) MPIXEL_X4(&SRC(x, y))
 
 #define PREDICT_4x4_DC(v) \

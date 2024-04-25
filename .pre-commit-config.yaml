@@ -100,6 +100,10 @@ repos:
     rev: 1.4.2
     hooks:
       - id: cmakelint
+  - repo: https://github.com/Decodetalkers/neocmakelsp
+    rev: v0.6.23
+    hooks:
+      - id: neocmakelsp-format
 
 ci:
   skip:

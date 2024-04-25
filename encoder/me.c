@@ -45,10 +45,10 @@ static void refine_subpel(x264_t *h, x264_me_t *m, int hpel_iters, int qpel_iter
  * compute cost (sad + mvd_bits) of mv(mx, my) and compare with bcost. *
  * if cost is lower, set bcost = cost, bmx = mx, bmy = my.             *
  ***********************************************************************/
-#define COST_MV(mx, my)                                                                                                             \
-	{                                                                                                                           \
-		int cost = h->pixf.fpelcmp[i_pixel](p_fenc, FENC_STRIDE, &p_fref_w[(my)*stride + (mx)], stride) + BITS_MVD(mx, my); \
-		COPY3_IF_LT(bcost, cost, bmx, mx, bmy, my);                                                                         \
+#define COST_MV(mx, my)                                                                                                               \
+	{                                                                                                                             \
+		int cost = h->pixf.fpelcmp[i_pixel](p_fenc, FENC_STRIDE, &p_fref_w[(my) * stride + (mx)], stride) + BITS_MVD(mx, my); \
+		COPY3_IF_LT(bcost, cost, bmx, mx, bmy, my);                                                                           \
 	}
 
 /*********************************************************************************
@@ -68,17 +68,17 @@ static void refine_subpel(x264_t *h, x264_me_t *m, int hpel_iters, int qpel_iter
  * mv base: bmx, mv delta: (m0x, m0y), (m1x, m1y), (m2x, m2y)    *
  * all costs are saved to array for later comparison.            *
  *****************************************************************/
-#define COST_MV_X3_DIR(m0x, m0y, m1x, m1y, m2x, m2y, costs)                  \
-	{                                                                    \
-		pixel *pix_base = p_fref_w + bmx + bmy * stride;             \
-		h->pixf.fpelcmp_x3[i_pixel](p_fenc,                          \
-					    pix_base + (m0x) + (m0y)*stride, \
-					    pix_base + (m1x) + (m1y)*stride, \
-					    pix_base + (m2x) + (m2y)*stride, \
-					    stride, costs);                  \
-		(costs)[0] += BITS_MVD(bmx + (m0x), bmy + (m0y));            \
-		(costs)[1] += BITS_MVD(bmx + (m1x), bmy + (m1y));            \
-		(costs)[2] += BITS_MVD(bmx + (m2x), bmy + (m2y));            \
+#define COST_MV_X3_DIR(m0x, m0y, m1x, m1y, m2x, m2y, costs)                    \
+	{                                                                      \
+		pixel *pix_base = p_fref_w + bmx + bmy * stride;               \
+		h->pixf.fpelcmp_x3[i_pixel](p_fenc,                            \
+					    pix_base + (m0x) + (m0y) * stride, \
+					    pix_base + (m1x) + (m1y) * stride, \
+					    pix_base + (m2x) + (m2y) * stride, \
+					    stride, costs);                    \
+		(costs)[0] += BITS_MVD(bmx + (m0x), bmy + (m0y));              \
+		(costs)[1] += BITS_MVD(bmx + (m1x), bmy + (m1y));              \
+		(costs)[2] += BITS_MVD(bmx + (m2x), bmy + (m2y));              \
 	}
 
 /**************************************************************************
@@ -86,19 +86,19 @@ static void refine_subpel(x264_t *h, x264_me_t *m, int hpel_iters, int qpel_iter
  * mv base: bmx, mv delta: (m0x, m0y), (m1x, m1y), (m2x, m2y), (m3x, m3y) *
  * all costs are saved to array for later comparison.                     *
  **************************************************************************/
-#define COST_MV_X4_DIR(m0x, m0y, m1x, m1y, m2x, m2y, m3x, m3y, costs)        \
-	{                                                                    \
-		pixel *pix_base = p_fref_w + bmx + bmy * stride;             \
-		h->pixf.fpelcmp_x4[i_pixel](p_fenc,                          \
-					    pix_base + (m0x) + (m0y)*stride, \
-					    pix_base + (m1x) + (m1y)*stride, \
-					    pix_base + (m2x) + (m2y)*stride, \
-					    pix_base + (m3x) + (m3y)*stride, \
-					    stride, costs);                  \
-		(costs)[0] += BITS_MVD(bmx + (m0x), bmy + (m0y));            \
-		(costs)[1] += BITS_MVD(bmx + (m1x), bmy + (m1y));            \
-		(costs)[2] += BITS_MVD(bmx + (m2x), bmy + (m2y));            \
-		(costs)[3] += BITS_MVD(bmx + (m3x), bmy + (m3y));            \
+#define COST_MV_X4_DIR(m0x, m0y, m1x, m1y, m2x, m2y, m3x, m3y, costs)          \
+	{                                                                      \
+		pixel *pix_base = p_fref_w + bmx + bmy * stride;               \
+		h->pixf.fpelcmp_x4[i_pixel](p_fenc,                            \
+					    pix_base + (m0x) + (m0y) * stride, \
+					    pix_base + (m1x) + (m1y) * stride, \
+					    pix_base + (m2x) + (m2y) * stride, \
+					    pix_base + (m3x) + (m3y) * stride, \
+					    stride, costs);                    \
+		(costs)[0] += BITS_MVD(bmx + (m0x), bmy + (m0y));              \
+		(costs)[1] += BITS_MVD(bmx + (m1x), bmy + (m1y));              \
+		(costs)[2] += BITS_MVD(bmx + (m2x), bmy + (m2y));              \
+		(costs)[3] += BITS_MVD(bmx + (m3x), bmy + (m3y));              \
 	}
 
 /**************************************************************************
@@ -111,10 +111,10 @@ static void refine_subpel(x264_t *h, x264_me_t *m, int hpel_iters, int qpel_iter
 	{                                                                         \
 		pixel *pix_base = p_fref_w + omx + omy * stride;                  \
 		h->pixf.fpelcmp_x4[i_pixel](p_fenc,                               \
-					    pix_base + (m0x) + (m0y)*stride,      \
-					    pix_base + (m1x) + (m1y)*stride,      \
-					    pix_base + (m2x) + (m2y)*stride,      \
-					    pix_base + (m3x) + (m3y)*stride,      \
+					    pix_base + (m0x) + (m0y) * stride,    \
+					    pix_base + (m1x) + (m1y) * stride,    \
+					    pix_base + (m2x) + (m2y) * stride,    \
+					    pix_base + (m3x) + (m3y) * stride,    \
 					    stride, costs);                       \
 		costs[0] += BITS_MVD(omx + (m0x), omy + (m0y));                   \
 		costs[1] += BITS_MVD(omx + (m1x), omy + (m1y));                   \

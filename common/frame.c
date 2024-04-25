@@ -255,7 +255,7 @@ static void ALWAYS_INLINE pixel_memset(pixel *dst, pixel *src, int len, int size
 
 #if defined(__TI_COMPILER_VERSION__) && HAVE_TIC6X
 static void ALWAYS_INLINE plane_expand_border(pixel *pix, int i_stride, int i_width, int i_height, int i_padh, int i_padv, int b_pad_top, int b_pad_bottom, int b_chroma) {
-#define PPIXEL(x, y) (pix + (x) + (y)*i_stride)
+#define PPIXEL(x, y) (pix + (x) + (y) * i_stride)
 	uint32_t pixl_v1, pixr_v1, pixl_v2, pixr_v2, pixl_v4, pixr_v4;
 	uint64_t pixl_v8, pixr_v8, *pixl_src, *pixr_src;
 	int y;
@@ -323,7 +323,7 @@ static void ALWAYS_INLINE plane_expand_border(pixel *pix, int i_stride, int i_wi
 }
 #else
 static void ALWAYS_INLINE plane_expand_border(pixel *pix, int i_stride, int i_width, int i_height, int i_padh, int i_padv, int b_pad_top, int b_pad_bottom, int b_chroma) {
-#define PPIXEL(x, y) (pix + (x) + (y)*i_stride)
+#define PPIXEL(x, y) (pix + (x) + (y) * i_stride)
 	int y;
 	for (y = 0; y < i_height; y++) {
 		/* left band: copy left edge pixel value to left paddings */

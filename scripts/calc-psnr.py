@@ -7,6 +7,7 @@ options:
     -h, --help                  Show this screen.
     -V, --version               Show version.
 """
+
 if __name__ == "__main__" and __doc__:
     from typing import Dict, Union
 

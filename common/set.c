@@ -259,7 +259,7 @@ void x264_cqm_delete(x264_t *h) {
 
 #else
 
-#define SHIFT(x, s) ((s) <= 0 ? (x) << -(s) : ((x) + (1 << ((s)-1))) >> (s))
+#define SHIFT(x, s) ((s) <= 0 ? (x) << -(s) : ((x) + (1 << ((s) - 1))) >> (s))
 #define DIV(n, d) (((n) + ((d) >> 1)) / (d))
 
 static const uint8_t dequant4_scale[6][3] =
