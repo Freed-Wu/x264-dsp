@@ -12,8 +12,6 @@ Add an optional downsample module.
 
 ## Build Systems
 
-You have 2 methods to build this project:
-
 For `autotools`:
 
 Download
@@ -28,6 +26,11 @@ For `cmake`:
 
 - [cmake](https://github.com/Kitware/CMake)
 - [one generator of cmake](https://cmake.org/cmake/help/latest/manual/cmake-generators.7.html)
+
+For `meson`:
+
+- [meson](https://mesonbuild.com)
+- [one backend of meson](https://mesonbuild.com/Builtin-options.html#core-options)
 
 ### Toolchains
 
@@ -55,10 +58,12 @@ For TI C6000 toolchain > 8.0.0, refer <https://github.com/Freed-Wu/x264>.
 - [check](https://github.com/libcheck/check): for unit test
   - `make check`
   - `ctest`
+  - `meson test -Cbuild`
 - [bin2c](https://github.com/adobe/bin2c): use bin2c to convert a yuv to
   a c array
   - `./configure --with-bin2c=/the/path/of/WxH.yuv`
   - `cmake -DBIN2C=ON -DINPUT_FILENAME=/the/path/of/WxH.yuv`
+  - `meson setup build -Dbin2c=true -Dinput_filename=/the/path/of/WxH.yuv`
 
 ## Build
 
@@ -131,6 +136,15 @@ cmake --build build
 ```
 
 See `ccmake -Bbuild` to know how to configure.
+
+### meson
+
+```sh
+meson setup build
+meson compile -Cbuild
+```
+
+See `meson configure build` to know how to configure.
 
 ### ccstudio
 

@@ -1,0 +1,59 @@
+option(
+  'input_filename',
+  type: 'string',
+  description: 'input filename',
+)
+option(
+  'bin2c',
+  type: 'boolean',
+  value: false,
+  description: 'use bin2c',
+)
+option(
+  'dry_run',
+  type: 'boolean',
+  value: false,
+  description: 'do not write any file',
+)
+option(
+  'have_tic6x',
+  type: 'combo',
+  choices: ['1', '0'],
+  description: 'enable TI C6X asm',
+)
+option(
+  'downsample',
+  type: 'combo',
+  choices: ['1', '2'],
+  description: 'downsample from 720p to 360p, 1, 2 means bilinear, bicubic',
+)
+option(
+  'padding',
+  type: 'combo',
+  choices: ['3', '1', '2'],
+  description: 'padding method, 1..3 means edge, reflect, symmetric',
+)
+option(
+  'scale',
+  type: 'combo',
+  choices: ['2', '1', '4'],
+  description: 'SCALE scale, a positive number',
+)
+option(
+  'x264_bit_depth',
+  type: 'combo',
+  choices: ['8', '10'],
+  description: 'bit depth, can be 8 or 10',
+)
+option(
+  'x264_chroma_format',
+  type: 'combo',
+  choices: ['1', '0', '2', '3'],
+  description: 'chroma format, 0..3 means 400, 420, 422, 444',
+)
+option(
+  'x264_log_level',
+  type: 'combo',
+  choices: ['2', '0', '1', '3'],
+  description: 'log level, 0..3 means error, warning, info, debug',
+)
