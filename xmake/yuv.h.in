@@ -1,0 +1,12 @@
+/* compatible for https://github.com/adobe/bin2c */
+
+#ifndef YUV_H
+#define YUV_H 1
+
+#include <stdlib.h>
+const char yuv[] = {
+#include "${HEADER_FILENAME}.h"
+};
+const size_t yuv_len = sizeof(yuv) - 1;
+
+#endif /* yuv.h */

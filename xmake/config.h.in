@@ -1,0 +1,17 @@
+/* config.h.  Generated from config.h.in by xmake.  */
+
+#ifndef CONFIG_H
+#define CONFIG_H 1
+
+${define INPUT_FILENAME}
+${define BIN2C}
+${define DRY_RUN}
+${define HAVE_TIC6X 0}
+${define DOWNSAMPLE}
+${define PADDING}
+${define SCALE}
+${define X264_BIT_DEPTH}
+${define X264_CHROMA_FORMAT}
+${define X264_LOG_LEVEL}
+
+#endif /* config.h */

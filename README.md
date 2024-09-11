@@ -32,6 +32,10 @@ For `meson`:
 - [meson](https://mesonbuild.com)
 - [one backend of meson](https://mesonbuild.com/Builtin-options.html#core-options)
 
+For `xmake`:
+
+- [xmake](https://xmake.io)
+
 ### Toolchains
 
 ### Host Builds
@@ -60,10 +64,12 @@ For TI C6000 toolchain > 8.0.0, refer <https://github.com/Freed-Wu/x264>.
   - `ctest`
   - `meson test -Cbuild`
 - [bin2c](https://github.com/adobe/bin2c): use bin2c to convert a yuv to
-  a c array
+  a c array. Or use xmake's builtin
+  [bin2c](https://xmake.io/#/manual/custom_rule?id=utilsbin2c).
   - `./configure --with-bin2c=/the/path/of/WxH.yuv`
   - `cmake -DBIN2C=ON -DINPUT_FILENAME=/the/path/of/WxH.yuv`
   - `meson setup build -Dbin2c=true -Dinput_filename=/the/path/of/WxH.yuv`
+  - `xmake f --bin2c=y`
 
 ## Build
 
@@ -145,6 +151,14 @@ meson compile -Cbuild
 ```
 
 See `meson configure build` to know how to configure.
+
+### xmake
+
+```sh
+xmake
+```
+
+See `xmake f --menu` to know how to configure.
 
 ### ccstudio
 
