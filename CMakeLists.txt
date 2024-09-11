@@ -114,7 +114,7 @@ if(NOT (X264_LOG_LEVEL GREATER_EQUAL 0 AND X264_LOG_LEVEL LESS 4))
   message(FATAL_ERROR "${X264_LOG_LEVEL} is an invalid X264_LOG_LEVEL!")
 endif()
 
-configure_file(configure.h.in config.h)
+configure_file(cmake/config.h.in config.h)
 
 include(CTest)
 add_subdirectory(tests EXCLUDE_FROM_ALL)
