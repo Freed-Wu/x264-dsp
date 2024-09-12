@@ -10,7 +10,7 @@ project(
   VERSION ${VERSION}
   DESCRIPTION x264-dsp
   HOMEPAGE_URL https://github.com/Freed-Wu/x264-dsp
-  LANGUAGES C ASM AP)
+  LANGUAGES C AP)
 file(GLOB SRC *.c common/*.c encoder/*.c)
 add_executable(x264 ${SRC} ${DSP_SRC})
 install(TARGETS x264 RUNTIME)
