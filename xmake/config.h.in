@@ -6,7 +6,10 @@
 ${define INPUT_FILENAME}
 ${define BIN2C}
 ${define DRY_RUN}
-${define HAVE_TIC6X 0}
+${define HAVE_TIC6X}
+#ifndef HAVE_TIC6X
+#define HAVE_TIC6X 0
+#endif /* ifndef HAVE_TIC6X */
 ${define DOWNSAMPLE}
 ${define PADDING}
 ${define SCALE}

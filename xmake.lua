@@ -3,11 +3,10 @@ add_rules("mode.debug", "mode.release")
 -- key: option name
 -- value: function to convert option value to config value
 local opts = {}
-local values
 local opt
 
 opt = "input filename"
-opts[opt] = ""
+table.insert(opts, opt)
 option(opt)
 do
     set_default("")
@@ -15,7 +14,7 @@ do
 end
 
 opt = "bin2c"
-opts[opt] = ""
+table.insert(opts, opt)
 option(opt)
 do
     set_default(false)
@@ -23,7 +22,7 @@ do
 end
 
 opt = "dry run"
-opts[opt] = ""
+table.insert(opts, opt)
 option(opt)
 do
     set_default(false)
@@ -31,7 +30,7 @@ do
 end
 
 opt = "have tic6x"
-opts[opt] = ""
+table.insert(opts, opt)
 option(opt)
 do
     set_default(true)
@@ -39,33 +38,45 @@ do
 end
 
 opt = "downsample"
-opts[opt] = { bilinear = 1, bicubic = 2 }
+table.insert(opts, opt)
 option(opt)
 do
     set_default("bilinear")
-    values = {}
-    for value in pairs(opts[opt]) do
-        table.insert(values, value)
-    end
+    local values = { "bilinear", "bicubic" }
     set_values(values)
+    after_check(
+        function(option)
+            for i, value in ipairs(values) do
+                if option:value() == value then
+                    option:set_value(i)
+                end
+            end
+        end
+    )
     set_description("downsample from 720p to 360p")
 end
 
 opt = "padding"
-opts[opt] = { edge = 1, reflect = 2, symmetric = 3 }
+table.insert(opts, opt)
 option(opt)
 do
     set_default("symmetric")
-    values = {}
-    for value in pairs(opts[opt]) do
-        table.insert(values, value)
-    end
+    local values = { "edge", "reflect", "symmetric" }
     set_values(values)
+    after_check(
+        function(option)
+            for i, value in ipairs(values) do
+                if option:value() == value then
+                    option:set_value(i)
+                end
+            end
+        end
+    )
     set_description("padding method")
 end
 
 opt = "scale"
-opts[opt] = ""
+table.insert(opts, opt)
 option(opt)
 do
     set_default(2)
@@ -74,7 +85,7 @@ do
 end
 
 opt = "x264 bit depth"
-opts[opt] = ""
+table.insert(opts, opt)
 option(opt)
 do
     set_default(8)
@@ -83,51 +94,58 @@ do
 end
 
 opt = "x264 chroma format"
-opts[opt] = { [400] = 0, [420] = 1, [422] = 2, [444] = 3 }
+table.insert(opts, opt)
 option(opt)
 do
     set_default(420)
-    values = {}
-    for value in pairs(opts[opt]) do
-        table.insert(values, value)
-    end
+    local values = { 400, 420, 422, 444 }
     set_values(values)
+    after_check(
+        function(option)
+            for i, value in ipairs(values) do
+                if option:value() == value then
+                    option:set_value(i - 1)
+                end
+            end
+        end
+    )
     set_description("chroma format")
 end
 
 opt = "x264 log level"
-opts[opt] = { error = 0, warning = 1, info = 2, debug = 3 }
+table.insert(opts, opt)
 option(opt)
 do
     set_default("info")
-    values = {}
-    for value in pairs(opts[opt]) do
-        table.insert(values, value)
-    end
+    local values = { "error", "warning", "info", "debug" }
     set_values(values)
+    after_check(
+        function(option)
+            for i, value in ipairs(values) do
+                if option:value() == value then
+                    option:set_value(i - 1)
+                end
+            end
+        end
+    )
     set_description("log level")
 end
 
 target("x264-dsp")
 do
     set_kind("binary")
-    for name, values in pairs(opts) do
-        local value = get_config(name)
-        if values ~= "" then
-            value = values[value]
-        end
+    for _, name in ipairs(opts) do
         set_configvar(
             name:upper():gsub(" ", "_"),
-            value,
+            get_config(name),
             { quote = name == "input filename" }
         )
     end
     add_configfiles("xmake/config.h.in")
     if get_config("bin2c") then
-        add_rules("utils.bin2c", {extensions = {".yuv"}})
+        add_rules("utils.bin2c", { extensions = { ".yuv" } })
         add_configfiles("xmake/yuv.h.in")
-        local value = get_config("input filename")
-        set_configvar("HEADER_FILENAME", value:match("[^/]*$"))
+        set_configvar("HEADER_FILENAME", get_config("input filename"):match("[^/]*$"))
         add_files(value)
     end
     add_includedirs("$(buildir)")
