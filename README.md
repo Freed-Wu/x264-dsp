@@ -165,19 +165,20 @@ See `xmake f --menu` to know how to configure.
 <!-- markdownlint-disable MD013 -->
 
 ```shell
-# a large heap/stack size to avoid malloc failure
-ccstudio -noSplash -data ~/workspace_v12 -application com.ti.ccstudio.apps.projectCreate -ccs.device TMS320C64XX.TMS320DM6467 -ccs.name x264-dsp -ccs.setCompilerOptions --gcc -ccs.setCompilerOptions -O3 @configurations Release -ccs.setCompilerOptions --program_level_compile @configurations Release -ccs.setCompilerOptions --call_assumptions=3 @configurations Release -ccs.setLinkerOptions -heap=0x1000000 -ccs.setLinkerOptions -stack=0x1000000
+scripts/ccstudio.sh
 cd ~/workspace_v12/x264-dsp
-git clone --bare --depth=1 https://github.com/Freed-Wu/x264-dsp .git
-git config core.bare false
-git reset --hard
 # use autotools to generate config.h and yuv.h
 autoreconf -vif
-./configure --with-bin2c=/the/path/of/1280x720.yuv --with-downsample --with-downsample-scale=4
+mkdir build
+cd build
+../configure --with-bin2c=/the/path/of/1280x720.yuv --with-downsample --with-downsample-scale=4
 # or use cmake
-cmake -B. -DBIN2C=ON -DINPUT_FILENAME=/the/path/of/1280x720.yuv -DDOWNSAMPLE=1 -DSCALE=4
-cmake --build . --target yuv.h
+cmake -Bbuild -DBIN2C=ON -DINPUT_FILENAME=/the/path/of/1280x720.yuv -DDOWNSAMPLE=1 -DSCALE=4
+cmake --build build --target yuv.h
 rm -r CMakeFiles
+# or use xmake
+xmake f --bin2c=yes --input\ filename=/the/path/of/1280x720.yuv
+xmake
 ccstudio -noSplash -data ~/workspace_v12 -application com.ti.ccstudio.apps.projectBuild -ccs.projects x264-dsp -ccs.configuration Release
 ```
 
