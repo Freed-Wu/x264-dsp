@@ -77,7 +77,7 @@ For TI C6000 toolchain > 8.0.0, refer <https://github.com/Freed-Wu/x264>.
 
 For OSs:
 
-```shell
+```sh
 mkdir build
 cd build
 # host build
@@ -91,7 +91,7 @@ make -j$(nproc)
 
 See `--help` to know how to configure:
 
-```shell
+```sh
 $ ./configure --help
 ...
   --enable-debug          enable debug. default=no
@@ -127,7 +127,7 @@ $ ./configure --help
 
 ### cmake
 
-```shell
+```sh
 # host build
 cmake -Bbuild
 # or cross compiling for windows
@@ -136,7 +136,7 @@ cmake -Bbuild -DCMAKE_TOOLCHAIN_FILE=cmake/mingw.cmake
 cmake -Bbuild -DCMAKE_TOOLCHAIN_FILE=cmake/mingw.cmake -DCMAKE_SYSTEM_PROCESSOR=i686
 # or cross compiling for android with highest API
 cmake -Bbuild -DCMAKE_TOOLCHAIN_FILE=cmake/android-ndk.cmake
-# or cross compiling for TI DSP
+# or cross compiling for TI DSP. make sure *.cmd in project root
 cmake -Bbuild -DCMAKE_TOOLCHAIN_FILE=cmake/ti.cmake
 cmake --build build
 ```
@@ -147,6 +147,8 @@ See `ccmake -Bbuild` to know how to configure.
 
 ```sh
 meson setup build
+# or cross compiling for TI DSP. make sure *.cmd in project root
+meson setup --cross-file meson/ti-c6000.txt build
 meson compile -Cbuild
 ```
 
@@ -164,7 +166,7 @@ See `xmake f --menu` to know how to configure.
 
 <!-- markdownlint-disable MD013 -->
 
-```shell
+```sh
 scripts/ccstudio.sh
 cd ~/workspace_v12/x264-dsp
 # use autotools to generate config.h and yuv.h
@@ -203,7 +205,7 @@ and help us to continue to make the tools more robust.
 
 Try to reduce the size of YUV file:
 
-```shell
+```sh
 head -c13824000 /720p/the/path/of/WxH.yuv > /the/path/of/WxH.yuv
 ```
 
@@ -213,7 +215,7 @@ You must create an arm project to activate DSP core by [gel files](assets/gel).
 
 <!-- markdownlint-disable MD013 -->
 
-```shell
+```sh
 ccstudio -noSplash -data ~/workspace_v12 -application com.ti.ccstudio.apps.projectCreate -ccs.device ARM9.TMS320DM6467 -ccs.name arm -ccs.template com.ti.common.project.core.emptyProjectWithMainTemplate
 ```
 
@@ -290,7 +292,7 @@ to contain resolution.
 
 If you don't use `bin2c`, you must move YUV file to the path which x264 can find.
 
-```shell
+```sh
 # For DSP
 mv /the/path/yuv/1280x720.yuv ~/workspace_v12/x264-dsp/Release
 # For PC
@@ -299,7 +301,7 @@ mv /the/path/yuv/1280x720.yuv .
 
 Or tell the precious path:
 
-```shell
+```sh
 the/path/of/x264 /the/path/yuv/1280x720.yuv
 ```
 
@@ -308,7 +310,7 @@ DSP and current directory for PC.
 
 You can use `ffplay` to check the correctness of 264 format.
 
-```shell
+```sh
 ffplay /the/path/of/out.264
 ```
 

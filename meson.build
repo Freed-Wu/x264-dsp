@@ -100,10 +100,16 @@ if get_option('bin2c') and get_option('input_filename') != ''
   )
   files += yuv_h
 endif
+if meson.is_cross_build()
+  add_project_arguments('--gcc', '-mv64+', language: ['c'])
+  add_project_link_arguments('-heap=0x1000000', '-stack=0x1000000', get_option('cmd_file'), language: ['c'])
+else
+  subdir('tests')
+endif
+
 executable(
   'x264',
   files,
   install: true,
   dependencies: m_dep,
 )
-subdir('tests')
