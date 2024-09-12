@@ -4,16 +4,15 @@ if(DEFINED ENV{GITHUB_REF_NAME})
 else()
   set(VERSION 0.0.0.0)
 endif()
+# https://gitlab.kitware.com/cmake/cmake/-/merge_requests/9811
 project(
   x264-dsp
   VERSION ${VERSION}
   DESCRIPTION x264-dsp
   HOMEPAGE_URL https://github.com/Freed-Wu/x264-dsp
-  LANGUAGES C ASM)
-# https://discourse.cmake.org/t/how-to-compile-linear-assemble/8122/1
-list(APPEND CMAKE_ASM_SOURCE_FILE_EXTENSIONS sa)
+  LANGUAGES C ASM AP)
 file(GLOB SRC *.c common/*.c encoder/*.c)
-add_executable(x264 ${SRC} ${ASM_SRC})
+add_executable(x264 ${SRC} ${DSP_SRC})
 install(TARGETS x264 RUNTIME)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 include(CheckLibraryExists)

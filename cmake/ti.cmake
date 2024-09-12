@@ -8,9 +8,11 @@ string(TOUPPER ${TOOLCHAIN_SUFFIX} TOOLCHAIN_SUFFIX_UPPER)
 if(NOT DEFINED ENV{C${TOOLCHAIN_SUFFIX_UPPER}_C_DIR})
   message(FATAL_ERROR "please define $C${TOOLCHAIN_SUFFIX_UPPER}_C_DIR")
 endif()
-file(GLOB ASM_SRC ${CMAKE_SOURCE_DIR}/common/*.sa)
-add_compile_options(--gcc -mv64+)
-add_link_options(-heap=0x1000000 -stack=0x1000000)
+file(GLOB DSP_SRC ${CMAKE_SOURCE_DIR}/common/*.sa)
+file(GLOB DSP_SRC ${CMAKE_SOURCE_DIR}/*.cmd)
+# yuv.h is in ${CMAKE_BINARY_DIR}
+add_compile_options(--gcc -mv64+ --include_path=${CMAKE_BINARY_DIR})
+add_link_options(-heap=0x1000000 -stack=0x1000000 ${CMD_SRC})
 # avoid bug which cmake always convert `libc.a` to `c`
 # https://discourse.cmake.org/t/how-to-stop-cmake-converting-libc-a-to-c/8121/1
 find_program(CC_PATH REQUIRED NAMES ${CMAKE_C_COMPILER})
