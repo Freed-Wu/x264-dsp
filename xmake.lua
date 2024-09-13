@@ -42,11 +42,10 @@ table.insert(opts, opt)
 option(opt)
 do
     set_default("bilinear")
-    local values = { "bilinear", "bicubic" }
-    set_values(values)
+    set_values("bilinear", "bicubic")
     after_check(
         function(option)
-            for i, value in ipairs(values) do
+            for i, value in ipairs(option:get("values")) do
                 if option:value() == value then
                     option:set_value(i)
                 end
@@ -61,11 +60,10 @@ table.insert(opts, opt)
 option(opt)
 do
     set_default("symmetric")
-    local values = { "edge", "reflect", "symmetric" }
-    set_values(values)
+    set_values("edge", "reflect", "symmetric")
     after_check(
         function(option)
-            for i, value in ipairs(values) do
+            for i, value in ipairs(option:get("values")) do
                 if option:value() == value then
                     option:set_value(i)
                 end
@@ -98,11 +96,10 @@ table.insert(opts, opt)
 option(opt)
 do
     set_default(420)
-    local values = { 400, 420, 422, 444 }
-    set_values(values)
+    set_values(400, 420, 422, 444)
     after_check(
         function(option)
-            for i, value in ipairs(values) do
+            for i, value in ipairs(option:get("values")) do
                 if option:value() == value then
                     option:set_value(i - 1)
                 end
@@ -117,11 +114,10 @@ table.insert(opts, opt)
 option(opt)
 do
     set_default("info")
-    local values = { "error", "warning", "info", "debug" }
-    set_values(values)
+    set_values("error", "warning", "info", "debug")
     after_check(
         function(option)
-            for i, value in ipairs(values) do
+            for i, value in ipairs(option:get("values")) do
                 if option:value() == value then
                     option:set_value(i - 1)
                 end
