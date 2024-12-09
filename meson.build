@@ -3,7 +3,10 @@ project(
   ['c'],
 )
 cc = meson.get_compiler('c')
-m_dep = cc.find_library('m', required: false)
+deps = []
+if cc.get_id() != 'c6000'
+  deps += [cc.find_library('m', required: false)]
+endif
 conf_data = configuration_data()
 conf_data.set_quoted(
   'INPUT_FILENAME',
@@ -115,5 +118,5 @@ executable(
   'x264',
   files,
   install: true,
-  dependencies: m_dep,
+  dependencies: deps,
 )
