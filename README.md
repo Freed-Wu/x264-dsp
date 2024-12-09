@@ -12,16 +12,6 @@ Add an optional downsample module.
 
 ## Build Systems
 
-For `autotools`:
-
-Download
-[a source distribution](https://github.com/Freed-Wu/x264-dsp/releases), then
-install:
-
-- [bash](https://www.gnu.org/software/bash)
-- [make](https://www.gnu.org/software/make) (ccstudio contains a builtin
-  `/opt/ccstudio/ccs/utils/bin/gmake`)
-
 For `cmake`:
 
 - [cmake](https://github.com/Kitware/CMake)
@@ -73,58 +63,6 @@ For TI C6000 toolchain > 8.0.0, refer <https://github.com/Freed-Wu/x264>.
 
 ## Build
 
-### autotools
-
-For OSs:
-
-```sh
-mkdir build
-cd build
-# host build
-../configure
-# or cross compiling for windows
-../configure --build=x86_64-pc-linux-gnu --host=x86_64-w64-mingw32
-# or cross compiling for android with API 21
-../configure --build=x86_64-pc-linux-gnu --host=aarch64-linux-android21
-make -j$(nproc)
-```
-
-See `--help` to know how to configure:
-
-```sh
-$ ./configure --help
-...
-  --enable-debug          enable debug. default=no
-
-  --enable-asm            enable TI C6X asm. default=no
-
-  --enable-dry-run        enable dry run, do not write any file. default=no
-...
-  --with-x264-bit-depth[=8|10]
-                          bit depth. default=8
-
-  --with-x264-chroma-format[=0..3]
-                          chroma format: 400, 420, 422, 444. default=1
-
-  --with-x264-log-level[=0..3]
-                          log level: error, warning, info, debug. debug will
-                          decrease fps. default=2
-
-  --with-bin2c[=/the/path/of/WxH.yuv]
-                          use bin2c to convert a yuv to yuv.h
-
-  --with-downsample[=1|2] downsample from 720p to 360p, 1, 2 means bilinear,
-                          bicubic. default=1
-
-  --with-downsample-scale[=X]
-                          downsample scale. default=2
-
-  --with-padding[=1..3]   padding method, edge, reflect, symmetric. default=3
-...
-```
-
-`autotools` doesn't support TI-CGT.
-
 ### cmake
 
 ```sh
@@ -169,12 +107,8 @@ See `xmake f --menu` to know how to configure.
 ```sh
 scripts/ccstudio.sh
 cd ~/workspace_v12/x264-dsp
-# use autotools to generate config.h and yuv.h
-autoreconf -vif
-mkdir build
-cd build
-../configure --with-bin2c=/the/path/of/1280x720.yuv --with-downsample --with-downsample-scale=4
-# or use cmake
+# generate config.h and yuv.h
+# use cmake
 cmake -Bbuild -DBIN2C=ON -DINPUT_FILENAME=/the/path/of/1280x720.yuv -DDOWNSAMPLE=1 -DSCALE=4
 cmake --build build --target yuv.h
 rm -r CMakeFiles
