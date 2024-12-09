@@ -12,11 +12,6 @@ Add an optional downsample module.
 
 ## Build Systems
 
-For `cmake`:
-
-- [cmake](https://github.com/Kitware/CMake)
-- [one generator of cmake](https://cmake.org/cmake/help/latest/manual/cmake-generators.7.html)
-
 For `meson`:
 
 - [meson](https://mesonbuild.com)
@@ -50,36 +45,14 @@ For TI C6000 toolchain > 8.0.0, refer <https://github.com/Freed-Wu/x264>.
 ### Optional Dependencies
 
 - [check](https://github.com/libcheck/check): for unit test
-  - `make check`
-  - `ctest`
   - `meson test -Cbuild`
 - [bin2c](https://github.com/adobe/bin2c): use bin2c to convert a yuv to
   a c array. Or use xmake's builtin
   [bin2c](https://xmake.io/#/manual/custom_rule?id=utilsbin2c).
-  - `./configure --with-bin2c=/the/path/of/WxH.yuv`
-  - `cmake -DBIN2C=ON -DINPUT_FILENAME=/the/path/of/WxH.yuv`
   - `meson setup build -Dbin2c=true -Dinput_filename=/the/path/of/WxH.yuv`
   - `xmake f --bin2c=y`
 
 ## Build
-
-### cmake
-
-```sh
-# host build
-cmake -Bbuild
-# or cross compiling for windows
-cmake -Bbuild -DCMAKE_TOOLCHAIN_FILE=cmake/mingw.cmake
-# or cross compiling for windows on x86
-cmake -Bbuild -DCMAKE_TOOLCHAIN_FILE=cmake/mingw.cmake -DCMAKE_SYSTEM_PROCESSOR=i686
-# or cross compiling for android with highest API
-cmake -Bbuild -DCMAKE_TOOLCHAIN_FILE=cmake/android-ndk.cmake
-# or cross compiling for TI DSP. make sure *.cmd in project root
-cmake -Bbuild -DCMAKE_TOOLCHAIN_FILE=cmake/ti.cmake
-cmake --build build
-```
-
-See `ccmake -Bbuild` to know how to configure.
 
 ### meson
 
@@ -108,11 +81,6 @@ See `xmake f --menu` to know how to configure.
 scripts/ccstudio.sh
 cd ~/workspace_v12/x264-dsp
 # generate config.h and yuv.h
-# use cmake
-cmake -Bbuild -DBIN2C=ON -DINPUT_FILENAME=/the/path/of/1280x720.yuv -DDOWNSAMPLE=1 -DSCALE=4
-cmake --build build --target yuv.h
-rm -r CMakeFiles
-# or use xmake
 xmake f --bin2c=yes --input\ filename=/the/path/of/1280x720.yuv
 xmake
 ccstudio -noSplash -data ~/workspace_v12 -application com.ti.ccstudio.apps.projectBuild -ccs.projects x264-dsp -ccs.configuration Release
