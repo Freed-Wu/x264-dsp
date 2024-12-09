@@ -57,7 +57,6 @@ conf_data.set(
 )
 conf_file = configure_file(output: 'config.h', configuration: conf_data)
 files = [
-  conf_file.full_path(),
   'downsample.c',
   'input.c',
   'output.c',
@@ -102,7 +101,12 @@ if get_option('bin2c') and get_option('input_filename') != ''
 endif
 if meson.is_cross_build()
   add_project_arguments('--gcc', '-mv64+', language: ['c'])
-  add_project_link_arguments('-heap=0x1000000', '-stack=0x1000000', get_option('cmd_file'), language: ['c'])
+  add_project_link_arguments(
+    '-heap=0x1000000',
+    '-stack=0x1000000',
+    get_option('cmd_file'),
+    language: ['c'],
+  )
 else
   subdir('tests')
 endif

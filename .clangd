@@ -1,0 +1,22 @@
+---
+CompileFlags:
+  Add:
+    - -undef
+    - -D__TI_COMPILER_VERSION__=7.4.24
+    - -D__SIZE_T_TYPE__=int
+    - -D__WCHAR_T_TYPE__=int
+    - -D__PTRDIFF_T_TYPE__=int
+    - -D__int40_t=int
+    - -Dfar=
+    - -nostdinc
+    - -nostdinc++
+    - -isysroot/opt/ccstudio/ccs/tools/compiler/c6000_7.4.24
+    - -iwithsysroot/include
+    # https://github.com/clangd/clangd/issues/2249
+    - -I.
+    - -I..
+  Remove:
+    - -I=*
+    - --preproc_*
+    - --gcc
+    - --output_file=*

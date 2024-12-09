@@ -3,10 +3,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "config.h"
+
 #include "common/x264.h"
 #include "input.h"
 #include "output.h"
+#include "config.h"
 
 /* In microseconds */
 #define UPDATE_INTERVAL 1000000
