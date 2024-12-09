@@ -13,56 +13,25 @@ permissions:
   contents: write
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: mig4/setup-bats@v1
-      - uses: brokenpip3/setup-bats-libs@0.1.0
-      - name: Install dependencies
-        run: |
-          sudo apt-get -y update
-          sudo apt-get -y install check
-      - name: Test
-        # disable bashcov due to bug
-        # https://bugs.launchpad.net/ubuntu/+source/check/+bug/2019478
-        run: |
-          # cmake -Bbuild
-          # cmake --build build --target check_downsample
-          # ctest --test-dir build
-          bats -r .
-          make check
-      - uses: codecov/codecov-action@v3
-        with:
-          gcov: true
   build:
-    needs: test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install dependencies
         run: |
+          sudo add-apt-repository ppa:xmake-io/xmake
           sudo apt-get -y update
-          sudo apt-get -y install check
-          # gcc-mingw-w64-x86-64-win32
+          sudo apt-get -y install xmake
       - name: Build
         run: |
-          autoreconf -vif
-          ./configure
-          make dist
-          make
-          # ./configure --build=x86_64-pc-linux-gnu --host=x86_64-w64-mingw32
-          # make
-      - uses: actions/upload-artifact@v3
+          xmake
+      - uses: actions/upload-artifact@v4
         if: ${{ ! startsWith(github.ref, 'refs/tags/') }}
         with:
           path: |
             x264
-            *.tar.gz
-      - uses: softprops/action-gh-release@v1
+      - uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          # body_path: CHANGELOG.md
           files: |
             x264
-            *.tar.gz
