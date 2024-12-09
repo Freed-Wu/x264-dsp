@@ -107,7 +107,7 @@ if meson.is_cross_build()
   add_project_link_arguments(
     '-heap=0x1000000',
     '-stack=0x1000000',
-    get_option('cmd_file'),
+    join_paths(meson.current_source_dir(), get_option('cmd_file')),
     language: ['c'],
   )
 else
