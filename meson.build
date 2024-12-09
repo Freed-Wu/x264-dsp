@@ -1,12 +1,8 @@
 project(
   'x264-dsp',
-  ['c'],
+  ['c', 'linearasm'],
 )
 cc = meson.get_compiler('c')
-deps = []
-if cc.get_id() != 'c6000'
-  deps += [cc.find_library('m', required: false)]
-endif
 conf_data = configuration_data()
 conf_data.set_quoted(
   'INPUT_FILENAME',
@@ -100,22 +96,36 @@ if get_option('bin2c') and get_option('input_filename') != ''
     capture: true,
     command: [bin2c, 'yuv'],
   )
-  files += yuv_h
+  files += yuv_h.full_path()
 endif
 if meson.is_cross_build()
-  add_project_arguments('--gcc', '-mv64+', language: ['c'])
+  add_project_arguments('--gcc', '-mv64+', language: ['c', 'linearasm'])
   add_project_link_arguments(
-    '--issue_remarkers',
+    '--issue_remarks',
     '--rom_model',
     '--heap_size=0x1000000',
     '--stack_size=0x1000000',
     join_paths(meson.current_source_dir(), get_option('cmd_file')),
-    language: ['c'],
+    language: ['c', 'linearasm'],
   )
 else
   subdir('tests')
 endif
 
+deps = []
+if cc.get_id() == 'c6000'
+  files += [
+    'common/bitstream-a.sa',
+    'common/dct-a.sa',
+    'common/deblock-a.sa',
+    'common/mc-a.sa',
+    'common/pixel-a.sa',
+    'common/predict-a.sa',
+    'common/quant-a.sa',
+  ]
+else
+  deps += [cc.find_library('m', required: false)]
+endif
 executable(
   'x264',
   files,
