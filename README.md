@@ -10,7 +10,7 @@ Add an optional downsample module.
 
 ## Dependencies
 
-## Build Systems
+### Build Systems
 
 For `meson`:
 
@@ -23,24 +23,12 @@ For `xmake`:
 
 ### Toolchains
 
-### Host Builds
-
-One of the following:
-
-- [gcc](https://gcc.gnu.org)
-- [clang](https://clang.llvm.org/)
-- [MSVC](https://visualstudio.microsoft.com/vs/features/cplusplus)
-
-### Cross Compiling
-
-- [mingw-w64](https://archlinux.org/packages/community/x86_64/mingw-w64-gcc):
-  for windows
-- [android-ndk](https://aur.archlinux.org/packages/android-ndk): for android
-- [ccstudio](https://aur.archlinux.org/packages/ccstudio): for TI DSP
+- [ccstudio](https://aur.archlinux.org/packages/ccstudio)
 - [TI C6000 toolchain \< 8.0.0](https://www.ti.com/tool/C6000-CGT): for TI DSP
-  DM6467. Go to ccstudio's App center to install TI-CGT 7.4.24
+  DM6467. Go to ccstudio's App center to install
+  [TI-CGT 7.4.24](https://dr-download.ti.com/secure/software-development/ide-configuration-compiler-or-debugger/MD-vqU2jj6ibH/7.4.24/ti_cgt_c6000_7.4.24_linux_installer_x86.bin)
 
-For TI C6000 toolchain > 8.0.0, refer <https://github.com/Freed-Wu/x264>.
+For TI C6000 toolchain > 8.0.0, refer <https://github.com/ustc-ivclab/x264>.
 
 ### Optional Dependencies
 
@@ -73,22 +61,11 @@ xmake
 
 See `xmake f --menu` to know how to configure.
 
-### ccstudio
-
-<!-- markdownlint-disable MD013 -->
+For input file,
 
 ```sh
-scripts/ccstudio.sh
-cd ~/workspace_v12/x264-dsp
-# generate config.h and yuv.h
 xmake f --bin2c=yes --input\ filename=/the/path/of/1280x720.yuv
-xmake
-ccstudio -noSplash -data ~/workspace_v12 -application com.ti.ccstudio.apps.projectBuild -ccs.projects x264-dsp -ccs.configuration Release
 ```
-
-<!-- markdownlint-enable MD013 -->
-
-You will get `Release/x264-dsp.out`.
 
 **Note**: TI-CGT cannot support too large `/the/path/of/WxH.yuv`!
 Otherwise, you will met the following error when `ccs.projectBuild`.
