@@ -105,8 +105,10 @@ endif
 if meson.is_cross_build()
   add_project_arguments('--gcc', '-mv64+', language: ['c'])
   add_project_link_arguments(
-    '-heap=0x1000000',
-    '-stack=0x1000000',
+    '--issue_remarkers',
+    '--rom_model',
+    '--heap_size=0x1000000',
+    '--stack_size=0x1000000',
     join_paths(meson.current_source_dir(), get_option('cmd_file')),
     language: ['c'],
   )
