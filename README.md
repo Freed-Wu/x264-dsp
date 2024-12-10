@@ -200,6 +200,10 @@ ffplay /the/path/of/out.264
   - [Overview of the H.264 / AVC Video Coding Standard](http://www.h264soft.com/downloads/h264_overview.pdf)
   - [White Paper: H.264 / AVC Intra Prediction](http://www.staroceans.org/e-book/vcodex/H264_intrapred_wp.pdf)
 - TI DSP
-  - [TMS320C6000 Assembly Language Tools](https://www.ti.com/lit/ug/sprui03e/sprui03e.pdf)
-  - [TMS320C6000 Optimizing C/C++ Compile](https://www.ti.com/lit/ug/sprui04e/sprui04e.pdf)
-  - [ccs_projects-command-line](https://software-dl.ti.com/ccs/esd/documents/ccs_projects-command-line.html)
+  - TMS320C6000 Assembly Language Tools:
+    - [PDF](https://www.ti.com/lit/ug/sprui03e/sprui03e.pdf)
+    - [HTML](https://downloads.ti.com/docs/esd/SPRUI03/)
+  - TMS320C6000 Optimizing C/C++ Compile
+    - [PDF](https://www.ti.com/lit/ug/sprui04e/sprui04e.pdf)
+    - [HTML](https://downloads.ti.com/docs/esd/SPRUI04/)
+  - [Code Composer Studio™ User's Guide](https://downloads.ti.com/ccs/esd/documents/users_guide/)
