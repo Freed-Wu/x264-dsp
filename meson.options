@@ -60,6 +60,6 @@ option(
 option(
   'cmd_file',
   type: 'string',
-  value: 'DM6467.cmd',
+  value: '/opt/ccstudio/ccs/ccs_base/c6000/include/DM6467.cmd',
   description: 'TI DSP cmd filename',
 )
