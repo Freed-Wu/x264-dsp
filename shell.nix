@@ -6,5 +6,7 @@ mkShell {
   buildInputs = [
     meson
     ninja
+
+    doxygen
   ];
 }

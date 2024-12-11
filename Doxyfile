@@ -1,5 +1,5 @@
 PROJECT_NAME           = x264-dsp
-OUTPUT_DIRECTORY       = .deps
+OUTPUT_DIRECTORY       = _readthedocs
 USE_MDFILE_AS_MAINPAGE = README.md
 GENERATE_XML           = YES
 RECURSIVE              = YES

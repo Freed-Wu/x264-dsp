@@ -6,10 +6,7 @@ build:
   os: ubuntu-22.04
   tools:
     python: "3"
-
-formats:
-  - htmlzip
-
-python:
-  install:
-    - requirements: docs/requirements.txt
+  commands:
+    - pip install hererocks
+    - hererocks ~/lua -l5.1 -rlatest
+    - scripts/ldoc.sh

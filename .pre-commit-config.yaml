@@ -71,14 +71,14 @@ repos:
           - mdformat-ruff
           - mdformat-config
           - mdformat-web
-        exclude: ^docs/resources/.*\.md$
+        exclude: ^docs/.*\.md$
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: v0.15.0
     hooks:
       - id: markdownlint-cli2
         additional_dependencies:
           - markdown-it-texmath
-        exclude: ^docs/resources/.*\.md$
+        exclude: ^docs/.*\.md$
   - repo: https://github.com/scop/pre-commit-shfmt
     rev: v3.10.0-1
     hooks:
