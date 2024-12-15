@@ -7,6 +7,7 @@ mkShell {
     meson
     ninja
 
+    jq
     doxygen
   ];
 }

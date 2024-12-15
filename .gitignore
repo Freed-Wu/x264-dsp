@@ -6,5 +6,5 @@
 
 /subprojects/*/
 
-/build/
-/.cache/
+build/
+.cache/
