@@ -36,9 +36,15 @@ def define_builtins:
   "GEL_TextOut", "GEL_Trace", "GEL_UnloadAllGels", "GEL_UnloadAllSymbols",
   "GEL_UnloadGel", "GEL_VerifyBinProgram", "GEL_VerifyProgram" |
   "-D\(.)(...)="] | join(" ");
+
+def define_callbacks:
+  ["StartUp", "OnChildRunning", "OnFileLoaded", "OnHalt", "OnPreFileLoaded",
+  "OnPreReset", "OnPreTargetConnect", "OnReset", "OnResetDetected", "OnRestart",
+  "OnTargetConnect" | "-D\(.)=\(.)"] | join(" ");
+
 [ inputs |
   {
-    "command": "clang -undef -nostdinc -nostdinc++ -xc -c -Wno-implicit-int -Wno-implicit-function-declaration -Dhotmenu=void -D'__CONCAT(x, y)=x ## y' -D'CONCAT(x, y)=__CONCAT(x, y)' -Dmenuitem='static const char CONCAT(_menuitem, __COUNTER__)[] = ' \(define_builtins) \(.)",
+    "command": "clang -undef -nostdinc -nostdinc++ -xc -c -Wno-implicit-int -Wno-implicit-function-declaration -Dhotmenu=void -D'__CONCAT(x, y)=x ## y' -D'CONCAT(x, y)=__CONCAT(x, y)' -Dmenuitem='static const char CONCAT(_menuitem, __COUNTER__)[] = ' \(define_builtins) \(define_callbacks) \(.)",
     "directory": "\(sub("/[^/]+$"; "/build"))",
     "file": "\(.)"
   }
