@@ -1,10 +1,9 @@
-/yuv.h
-/x264
+*.out
 *.264
-
-/.xmake/
-
-/subprojects/*/
 
 build/
 .cache/
+
+/subprojects/*/
+
+/.xmake/

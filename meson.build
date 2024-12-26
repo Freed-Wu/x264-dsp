@@ -1,6 +1,7 @@
 project(
   'x264-dsp',
   ['c', 'linearasm'],
+  default_options: ['bindir=.', 'prefix=/'],
 )
 cc = meson.get_compiler('c')
 conf_data = configuration_data()
@@ -103,6 +104,7 @@ if meson.is_cross_build()
   add_project_link_arguments(
     '--issue_remarks',
     '--rom_model',
+    '--arg_size=0x100',
     '--heap_size=0x1000000',
     '--stack_size=0x1000000',
     join_paths(meson.current_source_dir(), get_option('cmd_file')),
