@@ -12,21 +12,24 @@ Add an optional downsample module.
 
 ### Build Systems
 
-- [meson](https://mesonbuild.com)
+- [meson](https://mesonbuild.com): version must be after
+  [this PR](https://github.com/mesonbuild/meson/pull/13989)
 - [one backend of meson](https://mesonbuild.com/Builtin-options.html#core-options)
 
 ### Toolchains
 
 - [TI-CGT 7.4.24](https://dr-download.ti.com/secure/software-development/ide-configuration-compiler-or-debugger/MD-vqU2jj6ibH/7.4.24/ti_cgt_c6000_7.4.24_linux_installer_x86.bin):
-  8.0.0 doesn't support TI DSP DM6467. Refer
-  [x264-for-TI-CGT-8.0.0](https://github.com/ustc-ivclab/x264)
+  Download it needs a TI account to log in.
+  If you don't want register, download
+  [this backup](https://github.com/ustc-ivclab/x264-dsp/releases/download/0.0.1/c6000_7.4.24.7z)
+  8.0.0 doesn't support TI DSP DM6467.
+  Refer [x264-for-TI-CGT-8.0.0](https://github.com/ustc-ivclab/x264)
 - [ccstudio](https://aur.archlinux.org/packages/ccstudio): for burn.
   Default install path is `/opt/ccstudio/ccs`
 
 ### Optional Dependencies
 
-- [check](https://github.com/libcheck/check): for unit test
-  - `meson test -Cbuild`
+- [check](https://github.com/libcheck/check): for unit test: `meson test -Cbuild`
 
 ## Build
 
@@ -37,7 +40,15 @@ meson compile -Cbuild
 
 See `meson configure build` to know how to configure.
 
-## Burn
+Default TI linker command file is `/opt/ccstudio/ccs/ccs_base/c6000/include/DM6467.cmd`.
+You can download [it](https://github.com/ustc-ivclab/x264-dsp/releases/download/0.0.1/DM6467.cmd)
+and modify for your requirements.
+
+```sh
+meson setup --cross-file meson/ti-c6000.txt build -Dcmd_file=/the/path/of/my/DM6467.cmd
+```
+
+## Burn and Run
 
 Default debugger is XDS100v3. See [targetConfigs](targetConfigs) to modify it.
 
@@ -47,6 +58,8 @@ Default debugger is XDS100v3. See [targetConfigs](targetConfigs) to modify it.
 scripts/burn.js /the/path/of/352x288.yuv -- build/x264.out --input=352x288.yuv --frames=10
 ffplay build/out.264
 ```
+
+Some [test yuv files](https://github.com/ustc-ivclab/x264-dsp/releases).
 
 ## Usage
 
