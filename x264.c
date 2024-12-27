@@ -7,7 +7,6 @@
 #include "common/x264.h"
 #include "input.h"
 #include "output.h"
-#include "config.h"
 
 /* In microseconds */
 #define UPDATE_INTERVAL 1000000
@@ -68,13 +67,13 @@ static int encode(x264_param_t *param, cli_opt_t *opt);
 int main(int argc, char **argv) {
 	x264_param_t param;
 	cli_opt_t opt = {0};
-	int ret = 0;
+	int ret = EXIT_SUCCESS;
 
 	/* Parse command line */
-	if (parse(argc, argv, &param, &opt) < 0)
-		ret = -1;
+	if (parse(argc, argv, &param, &opt) > 0)
+		ret = EXIT_FAILURE;
 
-	if (!ret)
+	if (ret == EXIT_SUCCESS)
 		ret = encode(&param, &opt);
 
 	/* clean up handles */
@@ -87,15 +86,16 @@ int main(int argc, char **argv) {
 }
 
 static int parse(int argc, char **argv, x264_param_t *param, cli_opt_t *opt) {
-	char *input_filename = INPUT_FILENAME;
+	char *input_filename = "352x288.yuv";
 	char *output_filename = "out.264";
 	video_info_t info = {0};
 
-	opt->b_progress = 1;
 	if (argc > 1)
 		input_filename = argv[1];
 	if (argc > 2)
-		output_filename = argv[2];
+		info.num_frames = strtol(argv[2], NULL, 0);
+	info.num_frames = 1;
+	opt->b_progress = 1;
 
 	x264_param_default(param);
 	cli_log_level = param->i_log_level;
