@@ -8,6 +8,8 @@
 #include "input.h"
 #include "output.h"
 
+#include "extras/getopt.h"
+
 /* In microseconds */
 #define UPDATE_INTERVAL 1000000
 
@@ -85,17 +87,32 @@ int main(int argc, char **argv) {
 	return ret;
 }
 
+static char shortopts[] = "i:f:";
+static struct option longopts[] = {
+    {"input", required_argument, NULL, 'i'},
+    {"frames", required_argument, NULL, 'f'},
+    {NULL, 0, NULL, 0}};
+
 static int parse(int argc, char **argv, x264_param_t *param, cli_opt_t *opt) {
 	char *input_filename = "352x288.yuv";
 	char *output_filename = "out.264";
 	video_info_t info = {0};
+	int c;
 
-	if (argc > 1)
-		input_filename = argv[1];
-	if (argc > 2)
-		info.num_frames = strtol(argv[2], NULL, 0);
-	info.num_frames = 1;
 	opt->b_progress = 1;
+	info.num_frames = 1;
+	while ((c = getopt_long(argc, argv, shortopts, longopts, NULL)) != -1) {
+		switch (c) {
+		case 'i':
+			input_filename = optarg;
+			break;
+		case 'f':
+			info.num_frames = strtol(optarg, NULL, 0);
+			break;
+		default:
+			return 1;
+		}
+	}
 
 	x264_param_default(param);
 	cli_log_level = param->i_log_level;

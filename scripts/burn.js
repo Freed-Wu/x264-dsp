@@ -20,18 +20,21 @@ c64xp.expression.evaluate(
   'GEL_LoadGel("/opt/ccstudio/ccs/ccs_base/emulation/boards/evmdm6467/gel/davincihd1080p_dsp.gel")'
 );
 c64xp.target.connect();
-var bin = "build/x264.out";
-var args = [];
-for (i in arguments)
-  if (arguments[i] === "--") {
-    args = [bin].concat(arguments.slice(Number(i) + 1));
-    break;
-  }
-c64xp.memory.loadProgram(bin, args);
-c64xp.memory.verifyProgram(bin);
+
 if (arguments[0] && arguments[0] !== "--") {
   var ddr2 = 0xa0000000;
   arm926.memory.loadRaw(0, ddr2, arguments[0], 32, false); // DDR2 SDRAM
   arm926.memory.verifyBinaryProgram(arguments[0], ddr2);
 }
-if (args.length) c64xp.clock.runBenchmark();
+
+var args = [];
+for (i in arguments)
+  if (arguments[i] === "--") {
+    args = arguments.slice(Number(i) + 1);
+    break;
+  }
+if (args.length) {
+  c64xp.memory.loadProgram(args[0], args);
+  c64xp.memory.verifyProgram(args[0]);
+  c64xp.clock.runBenchmark();
+}

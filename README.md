@@ -43,8 +43,8 @@ Default debugger is XDS100v3. See [targetConfigs](targetConfigs) to modify it.
 
 ```sh
 # load /the/path/of/352x288.yuv to DDR2 and run:
-#   build/x264.out 352x288.yuv 1
-scripts/burn.js /the/path/of/352x288.yuv -- 352x288.yuv 1
+#   build/x264.out --input=352x288.yuv --frames=10
+scripts/burn.js /the/path/of/352x288.yuv -- build/x264.out --input=352x288.yuv --frames=10
 ffplay build/out.264
 ```
 

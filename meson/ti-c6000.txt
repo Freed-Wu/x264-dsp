@@ -15,6 +15,7 @@ ar = 'ar6x'
 strip = 'strip6x'
 nm = 'nm6x'
 as = 'asm6x'
+exe_wrapper = 'wrapper.sh'
 
 [properties]
 needs_exe_wrapper = true

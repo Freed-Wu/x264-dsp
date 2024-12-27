@@ -100,9 +100,8 @@ if meson.is_cross_build()
     join_paths(meson.current_source_dir(), get_option('cmd_file')),
     language: ['c', 'linearasm'],
   )
-else
-  subdir('tests')
 endif
+subdir('tests')
 
 deps = []
 if cc.get_id() == 'c6000'
