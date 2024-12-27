@@ -1,15 +1,4 @@
 option(
-  'input_filename',
-  type: 'string',
-  description: 'input filename',
-)
-option(
-  'bin2c',
-  type: 'boolean',
-  value: false,
-  description: 'use bin2c',
-)
-option(
   'dry_run',
   type: 'boolean',
   value: false,
@@ -24,7 +13,7 @@ option(
 option(
   'downsample',
   type: 'combo',
-  choices: ['1', '2'],
+  choices: ['0', '1', '2'],
   description: 'downsample from 720p to 360p, 1, 2 means bilinear, bicubic',
 )
 option(
@@ -36,7 +25,7 @@ option(
 option(
   'scale',
   type: 'combo',
-  choices: ['2', '1', '4'],
+  choices: ['1', '2', '4'],
   description: 'SCALE scale, a positive number',
 )
 option(

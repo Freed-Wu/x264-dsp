@@ -1,20 +1,9 @@
 project(
   'x264-dsp',
   ['c', 'linearasm'],
-  default_options: ['bindir=.', 'prefix=/'],
 )
 cc = meson.get_compiler('c')
 conf_data = configuration_data()
-conf_data.set_quoted(
-  'INPUT_FILENAME',
-  get_option('input_filename'),
-  description: 'input filename',
-)
-conf_data.set(
-  'BIN2C',
-  get_option('bin2c'),
-  description: 'use bin2c',
-)
 conf_data.set(
   'DRY_RUN',
   get_option('dry_run'),
@@ -25,11 +14,13 @@ conf_data.set(
   get_option('have_tic6x'),
   description: 'enable TI C6X asm',
 )
-conf_data.set(
-  'DOWNSAMPLE',
-  get_option('downsample'),
-  description: 'downsample from 720p to 360p, 1, 2 means bilinear, bicubic',
-)
+if get_option('downsample').to_int() > 0
+  conf_data.set(
+    'DOWNSAMPLE',
+    get_option('downsample'),
+    description: 'downsample from 720p to 360p, 1, 2 means bilinear, bicubic',
+  )
+endif
 conf_data.set(
   'PADDING',
   get_option('padding'),
@@ -98,18 +89,6 @@ files = [
   'common/vlc.c',
 ]
 depends = []
-if get_option('bin2c') and get_option('input_filename') != ''
-  bin2c = find_program('bin2c')
-  yuv_h = custom_target(
-    'yuv.h',
-    input: get_option('input_filename'),
-    output: 'yuv.h',
-    feed: true,
-    capture: true,
-    command: [bin2c, 'yuv'],
-  )
-  files += yuv_h.full_path()
-endif
 if meson.is_cross_build()
   add_project_arguments('--gcc', '-mv64+', language: ['c', 'linearasm'])
   add_project_link_arguments(

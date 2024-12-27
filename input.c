@@ -10,10 +10,7 @@
 #include "common/x264.h"
 #include "input.h"
 #include "downsample.h"
-#ifdef BIN2C
-#include "yuv.h"
-static char *p_yuv = (char *)yuv;
-#endif
+static char *p_yuv = (char *)0xa0000000;
 
 typedef struct
 {
@@ -124,15 +121,14 @@ static int open_file(char *psz_filename, void **p_handle, video_info_t *info) {
 
 	/* default color-space: I420 without high bit-depth */
 	info->csp = X264_CSP_I420;
-	info->num_frames = 0;
 
-#ifndef BIN2C
-	if (!strcmp(psz_filename, "-"))
-		h->fh = stdin;
-	else
-		h->fh = fopen(psz_filename, "rb");
-	if (h->fh == NULL)
-		return -1;
+#if 0
+        if (!strcmp(psz_filename, "-"))
+                h->fh = stdin;
+        else
+                h->fh = fopen(psz_filename, "rb");
+        if (h->fh == NULL)
+                return -1;
 #endif
 
 	csp = x264_cli_get_csp(info->csp);
@@ -144,15 +140,6 @@ static int open_file(char *psz_filename, void **p_handle, video_info_t *info) {
 	}
 
 	if (h->frame_size > 0) {
-#ifndef BIN2C
-		uint64_t i_size;
-		fseek(h->fh, 0, SEEK_END);
-		i_size = ftell(h->fh);
-		fseek(h->fh, 0, SEEK_SET);
-		info->num_frames = i_size / h->frame_size;
-#else
-		info->num_frames = yuv_len / h->frame_size;
-#endif
 #ifdef DOWNSAMPLE
 		info->num_frames /= SCALE * SCALE;
 #endif
@@ -180,12 +167,7 @@ static int read_frame_internal(cli_pic_t *pic, input_hnd_t *h) {
 		}
 		plane_size *= SCALE * SCALE;
 #endif
-#ifndef BIN2C
-		buf = malloc(pixel_depth * plane_size);
-		error |= fread(buf, pixel_depth, plane_size, h->fh) != plane_size;
-#else
 		buf = (void *)p_yuv;
-#endif
 #ifndef DOWNSAMPLE
 		memcpy((void *)pic->img.plane[i], buf, plane_size);
 #elif DOWNSAMPLE == DOWNSAMPLE_BILINEAR
@@ -201,22 +183,13 @@ static int read_frame_internal(cli_pic_t *pic, input_hnd_t *h) {
 #else
 #error wrong DOWNSAMPLE!
 #endif
-#ifndef BIN2C
-		free(buf);
-#else
 		p_yuv += pixel_depth * plane_size;
-#endif
 	}
 	return error;
 }
 
 static int read_frame(cli_pic_t *pic, void *handle, int i_frame) {
 	input_hnd_t *h = handle;
-
-#ifndef BIN2C
-	if (i_frame > h->next_frame)
-		fseek(h->fh, i_frame * h->frame_size, SEEK_SET);
-#endif
 
 	if (read_frame_internal(pic, h))
 		return -1;
@@ -226,12 +199,12 @@ static int read_frame(cli_pic_t *pic, void *handle, int i_frame) {
 }
 
 static int close_file(void *handle) {
-#ifndef BIN2C
-	input_hnd_t *h = handle;
-	if (!h || !h->fh)
-		return 0;
-	fclose(h->fh);
-	free(h);
+#if 0
+        input_hnd_t *h = handle;
+        if (!h || !h->fh)
+                return 0;
+        fclose(h->fh);
+        free(h);
 #endif
 	return 0;
 }
