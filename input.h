@@ -5,6 +5,7 @@
 #ifndef X264_INPUT_H
 #define X264_INPUT_H
 
+#include <stdint.h>
 /* properties of the source given by the demuxer */
 typedef struct
 {
@@ -45,12 +46,12 @@ typedef struct
 
 typedef struct
 {
-	int (*open_file)(char *psz_filename, void **p_handle, video_info_t *info);
+	int (*open_file)(char *psz_filename, void **p_handle, video_info_t *info, int b_ddr_input);
 	int (*picture_alloc)(cli_pic_t *pic, int csp, int width, int height);
-	int (*read_frame)(cli_pic_t *pic, void *handle, int i_frame);
+	int (*read_frame)(cli_pic_t *pic, void *handle, int i_frame, int b_ddr_input);
 	int (*release_frame)(cli_pic_t *pic, void *handle);
 	void (*picture_clean)(cli_pic_t *pic);
-	int (*close_file)(void *handle);
+	int (*close_file)(void *handle, int b_ddr_input);
 } cli_input_t;
 
 extern const cli_input_t cli_input;

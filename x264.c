@@ -3,12 +3,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <ctype.h>
 
 #include "common/x264.h"
 #include "input.h"
 #include "output.h"
 
 #include "extras/getopt.h"
+
+#define DEFAULT_BUFFER_SIZE 256
 
 /* In microseconds */
 #define UPDATE_INTERVAL 1000000
@@ -18,6 +21,8 @@ typedef struct {
 	int i_seek;	/* seek position of start encoding */
 	void *hin;	/* input handle */
 	void *hout;	/* output handle */
+	int b_ddr_input;
+	int b_ddr_output;
 } cli_opt_t;
 
 /* logging and printing for within the cli system */
@@ -80,34 +85,95 @@ int main(int argc, char **argv) {
 
 	/* clean up handles */
 	if (opt.hin)
-		cli_input.close_file(opt.hin);
+		cli_input.close_file(opt.hin, opt.b_ddr_input);
 	if (opt.hout)
 		cli_output.close_file(opt.hout, 0, 0);
 
 	return ret;
 }
 
-static char shortopts[] = "i:f:";
+static char shortopts[] = "hVf:i:o:I:O:1:0:";
 static struct option longopts[] = {
-    {"input", required_argument, NULL, 'i'},
+    {"help", no_argument, NULL, 'h'},
+    {"version", no_argument, NULL, 'V'},
     {"frames", required_argument, NULL, 'f'},
+    {"input", required_argument, NULL, 'i'},
+    {"output", required_argument, NULL, 'o'},
+    {"disable-ddr-input", no_argument, NULL, 'I'},
+    {"disable-ddr-output", no_argument, NULL, 'O'},
+    {"ddr-input-address", required_argument, NULL, '1'},
+    {"ddr-output-address", required_argument, NULL, '0'},
     {NULL, 0, NULL, 0}};
+
+int print_help(const struct option *longopts) {
+	unsigned int i = 0;
+	struct option o = longopts[i];
+	while (o.name != NULL) {
+		char name[DEFAULT_BUFFER_SIZE];
+		char value[DEFAULT_BUFFER_SIZE + sizeof("(|)") - 1];
+		char meta[DEFAULT_BUFFER_SIZE];
+		char *str = meta;
+
+		if (isascii(o.val))
+			sprintf(name, "(--%s|-%c)", o.name, (char)o.val);
+		else
+			sprintf(name, "--%s", o.name);
+
+		sprintf(meta, "%s", o.name);
+		do
+			*str = (char)toupper(*str);
+		while (*str++);
+
+		if (o.has_arg == required_argument)
+			sprintf(value, " %s", meta);
+		else if (o.has_arg == optional_argument)
+			sprintf(value, "( %s)", meta);
+		else
+			value[0] = '\0';
+
+		printf(" [%s%s]", name, value);
+
+		o = longopts[++i];
+	}
+	return EXIT_SUCCESS;
+}
 
 static int parse(int argc, char **argv, x264_param_t *param, cli_opt_t *opt) {
 	char *input_filename = "352x288.yuv";
 	char *output_filename = "out.264";
 	video_info_t info = {0};
 	int c;
+#if defined(__TI_COMPILER_VERSION__)
+	opt->b_ddr_input = 1;
+	opt->b_ddr_output = 1;
+#endif
 
 	opt->b_progress = 1;
 	info.num_frames = 1;
 	while ((c = getopt_long(argc, argv, shortopts, longopts, NULL)) != -1) {
 		switch (c) {
+		case 'h':
+			printf("x264");
+			print_help(longopts);
+			puts("");
+			return 1;
+		case 'V':
+			puts("0.0.1");
+			return 1;
+		case 'f':
+			info.num_frames = strtol(optarg, NULL, 0);
+			break;
 		case 'i':
 			input_filename = optarg;
 			break;
-		case 'f':
-			info.num_frames = strtol(optarg, NULL, 0);
+		case 'o':
+			output_filename = optarg;
+			break;
+		case 'I':
+			opt->b_ddr_input = 0;
+			break;
+		case 'O':
+			opt->b_ddr_output = 0;
 			break;
 		default:
 			return 1;
@@ -131,7 +197,7 @@ static int parse(int argc, char **argv, x264_param_t *param, cli_opt_t *opt) {
 	FAIL_IF_ERROR(cli_output.open_file(output_filename, &opt->hout),
 		      "could not open output file `%s'\n", output_filename)
 
-	FAIL_IF_ERROR(cli_input.open_file(input_filename, &opt->hin, &info),
+	FAIL_IF_ERROR(cli_input.open_file(input_filename, &opt->hin, &info, opt->b_ddr_input),
 		      "could not open input file `%s'\n", input_filename)
 
 	x264_cli_log(input_filename, X264_LOG_INFO, "%dx%d%c %u:%u @ %u/%u fps (%cfr)\n", info.width,
@@ -245,7 +311,7 @@ static int encode(x264_param_t *param, cli_opt_t *opt) {
 
 	/* Encode frames */
 	for (; (i_frame < param->i_frame_total || !param->i_frame_total); i_frame++) {
-		if (cli_input.read_frame(&cli_pic, opt->hin, i_frame + opt->i_seek))
+		if (cli_input.read_frame(&cli_pic, opt->hin, i_frame + opt->i_seek, opt->b_ddr_input))
 			break;
 
 		x264_picture_init(&pic);

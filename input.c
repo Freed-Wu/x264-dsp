@@ -100,7 +100,7 @@ typedef struct
 	uint64_t frame_size;	/* frame size in bytes*/
 } input_hnd_t;
 
-static int open_file(char *psz_filename, void **p_handle, video_info_t *info) {
+static int open_file(char *psz_filename, void **p_handle, video_info_t *info, int b_ddr_input) {
 	int i;
 	char *p;
 	const x264_cli_csp_t *csp;
@@ -122,14 +122,14 @@ static int open_file(char *psz_filename, void **p_handle, video_info_t *info) {
 	/* default color-space: I420 without high bit-depth */
 	info->csp = X264_CSP_I420;
 
-#if 0
-        if (!strcmp(psz_filename, "-"))
-                h->fh = stdin;
-        else
-                h->fh = fopen(psz_filename, "rb");
-        if (h->fh == NULL)
-                return -1;
-#endif
+	if (b_ddr_input == 0) {
+		if (!strcmp(psz_filename, "-"))
+			h->fh = stdin;
+		else
+			h->fh = fopen(psz_filename, "rb");
+		if (h->fh == NULL)
+			return -1;
+	}
 
 	csp = x264_cli_get_csp(info->csp);
 	for (i = 0; i < csp->planes; i++) {
@@ -140,6 +140,13 @@ static int open_file(char *psz_filename, void **p_handle, video_info_t *info) {
 	}
 
 	if (h->frame_size > 0) {
+		if (b_ddr_input == 0) {
+			uint64_t i_size;
+			fseek(h->fh, 0, SEEK_END);
+			i_size = ftell(h->fh);
+			fseek(h->fh, 0, SEEK_SET);
+			info->num_frames = i_size / h->frame_size;
+		}
 #ifdef DOWNSAMPLE
 		info->num_frames /= SCALE * SCALE;
 #endif
@@ -149,7 +156,7 @@ static int open_file(char *psz_filename, void **p_handle, video_info_t *info) {
 	return 0;
 }
 
-static int read_frame_internal(cli_pic_t *pic, input_hnd_t *h) {
+static int read_frame_internal(cli_pic_t *pic, input_hnd_t *h, int b_ddr_input) {
 	int error = 0;
 	int i;
 	int pixel_depth = x264_cli_csp_depth_factor(pic->img.csp);
@@ -167,7 +174,11 @@ static int read_frame_internal(cli_pic_t *pic, input_hnd_t *h) {
 		}
 		plane_size *= SCALE * SCALE;
 #endif
-		buf = (void *)p_yuv;
+		if (b_ddr_input == 0) {
+			buf = malloc(pixel_depth * plane_size);
+			error |= fread(buf, pixel_depth, plane_size, h->fh) != plane_size;
+		} else
+			buf = (void *)p_yuv;
 #ifndef DOWNSAMPLE
 		memcpy((void *)pic->img.plane[i], buf, plane_size);
 #elif DOWNSAMPLE == DOWNSAMPLE_BILINEAR
@@ -183,29 +194,35 @@ static int read_frame_internal(cli_pic_t *pic, input_hnd_t *h) {
 #else
 #error wrong DOWNSAMPLE!
 #endif
-		p_yuv += pixel_depth * plane_size;
+		if (b_ddr_input == 0)
+			free(buf);
+		else
+			p_yuv += pixel_depth * plane_size;
 	}
 	return error;
 }
 
-static int read_frame(cli_pic_t *pic, void *handle, int i_frame) {
+static int read_frame(cli_pic_t *pic, void *handle, int i_frame, int b_ddr_input) {
 	input_hnd_t *h = handle;
 
-	if (read_frame_internal(pic, h))
+	if (b_ddr_input == 0 && i_frame > h->next_frame)
+		fseek(h->fh, i_frame * h->frame_size, SEEK_SET);
+
+	if (read_frame_internal(pic, h, b_ddr_input))
 		return -1;
 
 	h->next_frame = i_frame + 1;
 	return 0;
 }
 
-static int close_file(void *handle) {
-#if 0
-        input_hnd_t *h = handle;
-        if (!h || !h->fh)
-                return 0;
-        fclose(h->fh);
-        free(h);
-#endif
+static int close_file(void *handle, int b_ddr_input) {
+	if (b_ddr_input == 0) {
+		input_hnd_t *h = handle;
+		if (!h || !h->fh)
+			return 0;
+		fclose(h->fh);
+		free(h);
+	}
 	return 0;
 }
 

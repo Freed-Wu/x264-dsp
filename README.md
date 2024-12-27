@@ -48,6 +48,79 @@ scripts/burn.js /the/path/of/352x288.yuv -- build/x264.out --input=352x288.yuv -
 ffplay build/out.264
 ```
 
+## Usage
+
+See `--help`:
+
+```sh
+sed -i -e"s/, 'linearasm'//g" meson.build
+meson setup build/host
+meson compile -Cbuild/host
+build/host/x264 --help
+```
+
+Here are some details:
+
+### --disable-ddr-input/--disable-ddr-output
+
+There are two methods to pass input/output file to/from TI DSP:
+
+- CIO. for only debug, allow TI DSP read/write host machine filesystem, we can
+  get frame number from file size
+- `loadRaw()/saveRaw()`. load/save a file from/to DDR2. We must tell frame
+  number
+
+By default, in TI DSP, it will enable DDR input/output. In PC, it always
+read/write from itself's filesystem.
+
+```sh
+$ scripts/burn.js -- build/x264.out --input=../../352x288.yuv --disable-ddr-input
+# ...
+../../352x288.yuv [info]: 352x288p 0:0 @ 25/1 fps (cfr)
+x264 [info]: profile Constrained Baseline, level 1.3
+x264 [info]: frame I:1     Avg QP:29.00  size:  5403
+encoded 1 frames, 0.02 fps, 1080.60 kb/s
+$ scripts/burn.js ../352x288.yuv -- build/x264.out --input=../../352x288.yuv --frames=1
+# ...
+../../352x288.yuv [info]: 352x288p 0:0 @ 25/1 fps (cfr)
+x264 [info]: profile Constrained Baseline, level 1.3
+x264 [info]: frame I:1     Avg QP:29.00  size:  5648
+encoded 1 frames, 0.50 fps, 1129.60 kb/s
+```
+
+### --input/--output
+
+In PC, related path is based on `$PWD`. In TI DSP, related path is based on the
+directory of `x264.out`.
+
+```sh
+$ build/host/x264 --input=../352x288.yuv
+../352x288.yuv [info]: 352x288p 0:0 @ 25/1 fps (cfr)
+x264 [info]: profile Constrained Baseline, level 1.3
+x264 [info]: frame I:1     Avg QP:29.00  size:  5403
+encoded 1 frames, inf fps, 1080.60 kb/s
+```
+
+If you use DDR input, it will ignore `--input`. however, `x264` get
+`widthxheight` from `--input`. So the following commands are same:
+
+```sh
+scripts/burn.js ../352x288.yuv -- build/x264.out --input=../../352x288.yuv --frames=1
+scripts/burn.js ../352x288.yuv -- build/x264.out --input=foo352x288bar.yuv --frames=1
+```
+
+`scripts/burn.js ../352x288.yuv` will `loadRaw()` `../352x288.yuv` to DDR.
+If the power is on, the step only need to be done once:
+
+```sh
+scripts/burn.js ../352x288.yuv
+scripts/burn.js -- build/x264.out --input=../../352x288.yuv --frames=1
+```
+
+### Todo
+
+- Fix bug about 5648 != 5403
+
 ## Documents
 
 - codec
