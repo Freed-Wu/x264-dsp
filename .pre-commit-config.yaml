@@ -1,5 +1,5 @@
 ---
-exclude: ^build-aux/git-version-gen$
+exclude: ^assets/gel/
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks

@@ -1,10 +1,17 @@
 /* ------------------------------------------------------------------------ *
  *                                                                          *
- *  davincihd_arm.gel                                                       *
- *  Version 0.99                                                            *
+ *  davincihd1080p_arm.gel                                                  *
+ *  Version 1.15                                                            *
  *                                                                          *
  *  This GEL file is designed to be used in conjunction with                *
- *  CCStudio 3.2+ and the DM6467 based EVM.                                 *
+ *  CCStudio 3.3+ and the DaVinci HD1080p based EVM.                        *
+ *                                                                          *
+ *  Version History                                                         *
+ *     v0.11 - Updated Refresh Rate                                         *
+ *     v0.12 - Pll0 DIV2/DIV3 updated to correct ratios                     *
+ *     v0.13 - Unused PLL1 registers removed (1/14/2010)                    *
+ *     v1.14 - Unused PINMUX0 field removed  (7/01/2010)                    *
+ *     v1.15 - DDR2 Settings updated         (7/28/2010)                    *
  *                                                                          *
  * ------------------------------------------------------------------------ */
 /* ------------------------------------------------------------------------ *
@@ -26,20 +33,23 @@ StartUp( )
  * ------------------------------------------------------------------------ */
 OnTargetConnect( )
 {
-    GEL_TextOut( "\nDaVinci HD ARM Startup Sequence\n\n" );
+    GEL_TextOut( "\nDaVinci HD1080p ARM Startup Sequence\n\n" );
 
     Disable_IRQ_Flush_Cache( );     // Clean up system state
     Enable_Instruction_Cache( );    // Enable I-Cache
     Setup_Pin_Mux( );               // Setup Pin Mux
     Setup_Psc_All_On( );            // Setup All Power Domains
 
-    // Setup_Pll0_594_MHz_OscIn( );    // Setup Pll0 [DSP @ 594 MHz, ARM @ 297 MHz]
-    Setup_DDR_297_MHz( );           // Setup DDR2 [297 MHz]
+    /* Setup_Pll0_990_MHz_OscIn( );    // Setup Pll0 [DSP @ 990 MHz, ARM @ 247.5 MHz] */
+    Setup_DDR_396_MHz( );           // Setup DDR2 [396 MHz]
 
-    Setup_EMIFCS2_NandFlash_8Bit( );// Setup NAND Flash
+//    Setup_EMIFCS2_NandFlash_8Bit( );// Setup NAND Flash
 
-    // DSP_Boot_from_L2_ram( );        // Boot DSP from L2
-    DSP_Boot_from_DDR2();
+//    DSP_Boot_from_L2_ram( );        // Boot DSP from L2
+
+	psc_change_state( 31 , 0 ); // I2C Off
+	psc_change_state( 31 , 3 ); // I2C On
+
     GEL_TextOut( "\nStartup Complete.\n\n" );
 }
 
@@ -53,7 +63,7 @@ OnTargetConnect( )
 OnPreFileLoaded( )
 {
     /*
-     *  GEL_Reset() is used to deal with the worst case scenario of
+     *  GEL_Reset() is used to deal with the worst case senario of
      *  unknown target state.  If for some reason a reset is not desired
      *  upon target connection, GEL_Reset() may be removed and replaced
      *  with something "less brutal" like a cache initialization
@@ -90,7 +100,7 @@ OnRestart( int nErrorCode )
     GEL_TextOut( "\n" );
 }
 
-menuitem "DaVinci HD Memory Map";
+menuitem "DaVinci HD1080pMemory Map";
 
 /* ------------------------------------------------------------------------ *
  *                                                                          *
@@ -214,7 +224,7 @@ Clear_Memory_Map( )
     GEL_MapReset( );
 }
 
-menuitem "DaVinci HD Functions";
+menuitem "DaVinci HD1080p Functions";
 
 _wait( int delay )
 {
@@ -295,7 +305,7 @@ Disable_VPSS( )
 /* ------------------------------------------------------------------------ *
  *                                                                          *
  *  Disable_EDMA( )                                                         *
- *      Disable EDMA events and interrupts, clear any pending events        *
+ *      Disabe EDMA events and interrupts, clear any pending events         *
  *                                                                          *
  * ------------------------------------------------------------------------ */
 Disable_EDMA( )
@@ -335,7 +345,7 @@ hotmenu Enable_Instruction_Cache( )
 
     CPSR = 0x400000d3;              // Set to supervisor mode, disable IRQ/FIQ
     REG_CP15_I_CACHE = 1;           // Enable Instruction Cache
-}
+} 
 
 /* ------------------------------------------------------------------------ *
  *                                                                          *
@@ -370,7 +380,6 @@ Setup_Pin_Mux( )
             | ( 0 << 20 )           // [2]TSSIMUX   [VP_DIN[7:0]]
             | ( 0 << 18 )           // [2]PTSOMUX   [VP_DIN[7:0]]
             | ( 0 << 16 )           // [2]PTSIMUX   [VP_DIN[15:8]]
-            | ( 0 << 5 )            // PINTD        [GPIO5]
             | ( 0 << 2 )            // PCIEN        [no PCI]
             | ( 0 << 1 )            // HPIEN        [no HPI]
             | ( 1 << 0 );           // ATAEN        [ATA/NAND]*/
@@ -519,7 +528,7 @@ psc_change_state( int id, int state )
  *      clock_source    <- 0: Onchip Oscillator                             *
  *                         1: External Clock                                *
  *                                                                          *
- *      pll_mult        <- 21: 22x Multiplier * 27MHz Clk = 594 MHz         *
+ *      pll_mult        <- 29: Multiplier(30) * 33MHz Clk = 990 MHz         *
  *                                                                          *
  * ------------------------------------------------------------------------ */
 setup_pll_0( int clock_source, int pll_mult )
@@ -539,7 +548,7 @@ setup_pll_0( int clock_source, int pll_mult )
     unsigned int* pll_div8      = ( unsigned int* )( 0x01c40970 );
     unsigned int* pll_div9      = ( unsigned int* )( 0x01c40974 );
 
-    int pll0_freq = 27 * ( pll_mult + 1 );
+    int pll0_freq = 33 * ( pll_mult + 1 );
     int dsp_freq = pll0_freq;
     int arm_freq = pll0_freq / 2;
     int postdiv = 0;
@@ -597,16 +606,16 @@ setup_pll_0( int clock_source, int pll_mult )
      *           Div9: VLYNQ
      */
     *pll_div1   = 0x8000 | 0;       // DSP
-    *pll_div2   = 0x8000 | 1;       // ARM/PCI/HDVICP
-    *pll_div3   = 0x8000 | 3;       // Peripherals
-    *pll_div4   = 0x8000 | 5;       // ATA divider
+//    *pll_div2   = 0x8000 | 3;       // ARM/PCI/HDVICP 247.5
+//    *pll_div3   = 0x8000 | 7;       // EMIFA, HPI, Peripherals
+    *pll_div4   = 0x8000 | 9;       // ATA divider 99
   //*pll_div5   = 0x8000 | 7;
   //*pll_div6   = 0x8000 | 7;
   //*pll_div7   = 0x8000 | 7;
-    *pll_div8   = 0x8000 | 7;       // Video Clock
-    *pll_div9   = 0x8000 | 5;       // VLYNQ divider
+    *pll_div8   = 0x8000 | 12;       // Video Clock 76.15
+    *pll_div9   = 0x8000 | 9;       // VLYNQ divider
   //*pll_bpdiv  = 0x8000 | bpdiv;   // Bypass divider
-  //*pll_postdiv= 0x8000 | postdiv; // Post divider
+  //*pll_postdiv= 0x8000 | postdiv; // Post divider 
     *pll_cmd   |= 0x0001;           // GO
     _wait( 2000 );
 
@@ -624,9 +633,9 @@ setup_pll_0( int clock_source, int pll_mult )
     _wait( 2000 );
     *pll_ctl |= 0x0001;
 
-    pll0_freq = 27 * ( ( *pll_pllm & 0x3f ) + 1 );
+    pll0_freq = 33 * ( ( *pll_pllm & 0x3f ) + 1 );
     dsp_freq = pll0_freq;
-    arm_freq = pll0_freq / 2;
+    arm_freq = pll0_freq / 4;
 
     GEL_TextOut( "(DSP = %d MHz + ",,,,, dsp_freq );
     GEL_TextOut( "ARM = %d MHz + ",,,,, arm_freq );
@@ -640,10 +649,10 @@ setup_pll_0( int clock_source, int pll_mult )
 }
 
 hotmenu
-Setup_Pll0_594_MHz_OscIn( )
+Setup_Pll0_990_MHz_OscIn( )
 {
-    /* DSP @ [594 MHz] & ARM @ [297 MHz] w/ Onchip Oscillator */
-    setup_pll_0( 0, 21 );
+    /* DSP @ [990 MHz] & ARM @ [297 MHz] w/ Onchip Oscillator */
+    setup_pll_0( 0, 29 );
 }
 
 /* ------------------------------------------------------------------------ *
@@ -654,10 +663,10 @@ Setup_Pll0_594_MHz_OscIn( )
  *                         1: External Clock                                *
  *                                                                          *
  *      pll_mult        <- PLL Multiplier                                   *
- *                         23: 24x Multiplier * 27MHz Clk = 648 MHz         *
+ *                         23: Multiplier(=24) * 33MHz Clk =  792MHz        *
  *                                                                          *
  *      ddr2_div        <- DDR2 divider ( For pll1 )                        *
- *                         1: 648 MHz Clk / (2*2)x Divider = 162 MHz        *
+ *                         0: 792 MHz Clk / (2 * Divider(=1)) = 396MHz      *
  *                                                                          *
  * ------------------------------------------------------------------------ */
 setup_pll_1( int clock_source, int pll_mult, int ddr2_div )
@@ -667,12 +676,9 @@ setup_pll_1( int clock_source, int pll_mult, int ddr2_div )
     unsigned int* pll_cmd       = ( unsigned int* )( 0x01c40d38 );
     unsigned int* pll_stat      = ( unsigned int* )( 0x01c40d3c );
     unsigned int* pll_div1      = ( unsigned int* )( 0x01c40d18 );
-    unsigned int* pll_div2      = ( unsigned int* )( 0x01c40d1c );
-    unsigned int* pll_bpdiv     = ( unsigned int* )( 0x01c40d2c );
 
-    int pll1_freq = 27 * ( pll_mult + 1 );
+    int pll1_freq = 33 * ( pll_mult + 1 );
     int ddr2_freq = pll1_freq / ( 2 * ( ddr2_div + 1 ) );
-    int bpdiv = 1;
 
     GEL_TextOut( "Setup PLL1 " );
 
@@ -721,8 +727,8 @@ setup_pll_1( int clock_source, int pll_mult, int ddr2_div )
      *  Step 9 - Load PLL dividers ( must be in a 1/3/6 ratio )
      *           1:DDR2
      */
-    *pll_bpdiv = 0x8000 | bpdiv;
-    *pll_div2  = 0x8000 | ( ddr2_div & 0x1f );
+
+    *pll_div1  = 0x8000 | ( ddr2_div & 0x1f );
     *pll_cmd  |= 0x0001;            // Set phase alignment
     while( ( *pll_stat & 1 ) != 0 );// Wait for phase alignment
 
@@ -740,8 +746,8 @@ setup_pll_1( int clock_source, int pll_mult, int ddr2_div )
     _wait( 2000 );
     *pll_ctl |= 0x0001;
 
-    pll1_freq = 27 * ( ( *pll_pllm & 0x3f ) + 1 );
-    ddr2_freq = pll1_freq / ( 2 * ( ( *pll_div2 & 0x1f ) + 1 ) );
+    pll1_freq = 33 * ( ( *pll_pllm & 0x3f ) + 1 );
+    ddr2_freq = pll1_freq / ( 2 * ( ( *pll_div1 & 0x1f ) + 1 ) );
 
     GEL_TextOut( "(DDR2 Phy = %d MHz + ",,,,, ddr2_freq );
 
@@ -782,15 +788,35 @@ setup_ddr2( int freq )
     /*
      *  Step 3 - DDR2 Initialization
      */
-    DDR_DDRPHYCR = 0x00008AC7;      // DLL powered, ReadLatency=7
-    DDR_SDBCR    = 0x08D78A32;      // DDR Bank: 32-bit bus, CAS=5,
-                                    // 8 banks, 1024-word pg, unlocl
-    DDR_SDTIMR   = 0x4B245C12;
-    DDR_SDTIMR2  = 0x3B2BC742;
-    DDR_SDRCR    = 0x90D;           // Refresh Control [ 7.8 us * 297 MHz ]
+    DDR_DDRPHYCR = 0x00004006;      // DLL powered, ReadLatency=6
+    DDR_SDBCR    = 0x00138a32;      // DDR Bank: 32-bit bus, CAS=5,
+                                    // 8 banks, 1024-word pg
 
-    DDR_SDBCR    = 0x08570A32;      // Lock values
+    if ( freq == 396 )  // 2.53ns
+    {
+        DDR_SDTIMR = 0             // DDR Timing Register
+            | (50 << 25 )          // tRFC = ( 127.5 ns / 2.53 ns ) - 1
+            | ( 4 << 22 )          // tRP  = (  12.5 ns / 2.53 ns ) - 1
+            | ( 4 << 19 )          // tRCD = (  12.5 ns / 2.53 ns ) - 1
+            | ( 5 << 16 )          // tWR  = (    15 ns / 2.53 ns ) - 1
+            | (17 << 11 )          // tRAS = (    45 ns / 2.53 ns ) - 1
+            | (22 << 6  )          // tRC  = (  57.5 ns / 2.53 ns ) - 1
+            | ( 3 << 3  )          // tRRD = (    10 ns / 2.53 ns ) - 1
+            | ( 2 << 0  );         // tWTR = (   7.5 ns / 2.53 ns ) - 1
 
+        DDR_SDTIMR2 = 0             // DDR Timing Register 2
+            | ( 8  << 27)           // T_RASMAX = (tRASmax/refresh_rate) - 1; tRASmax =70us, refreshrate = 7.8us
+            | ( 3  << 25)           // tXP = 2 tCKE = 3
+            | ( 54 << 16)           // tXSNR= ( 137.5 ns / 2.53 ns ) - 1
+            | ( 199<< 8 )           // tXSRD= (         200 cycles ) - 1
+            | ( 2  << 5 )           // tRTP = (   7.5 ns / 2.53 ns ) - 1
+            | ( 2  << 0 );          // tCKE = (           3 cycles ) - 1
+
+        refresh_rate = 3088;        // 7.8 us * 396 MHz
+    }
+
+    DDR_SDBCR    = 0x00130a32;      // DDR Bank: cannot modify
+    DDR_SDRCR    = refresh_rate;    // Refresh Control [ 7.8 usec * freq ]
 
     /*
      *  Step 4 - Dummy Read from DDR2
@@ -807,11 +833,11 @@ setup_ddr2( int freq )
 }
 
 hotmenu
-Setup_DDR_297_MHz( )
+Setup_DDR_396_MHz( )
 {
-    /* [DDR @ 297 MHz] w/ Onchip Oscillator */
-    setup_pll_1( 0, 21, 0 );
-    setup_ddr2( 297 );
+    /* [DDR @ 396 MHz] w/ Onchip Oscillator */
+    setup_pll_1( 0, 23, 0 );
+    setup_ddr2( 396 );
 }
 
 /* ------------------------------------------------------------------------ *
@@ -891,7 +917,7 @@ Setup_EMIFCS2_NandFlash_8Bit( )
     GEL_TextOut( "[Done]\n" );
 }
 
-menuitem "DaVinci HD Boot Mode";
+menuitem "DaVinci HD1080p Boot Mode";
 
 /* ------------------------------------------------------------------------ *
  *                                                                          *
@@ -963,7 +989,7 @@ Boot_Mode_Reader( )
     GEL_TextOut( "\n" );
 }
 
-menuitem "DaVinci HD DSP";
+menuitem "DaVinci HD1080p DSP";
 
 /* ------------------------------------------------------------------------ *
  *                                                                          *
