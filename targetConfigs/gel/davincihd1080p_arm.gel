@@ -345,7 +345,7 @@ hotmenu Enable_Instruction_Cache( )
 
     CPSR = 0x400000d3;              // Set to supervisor mode, disable IRQ/FIQ
     REG_CP15_I_CACHE = 1;           // Enable Instruction Cache
-} 
+}
 
 /* ------------------------------------------------------------------------ *
  *                                                                          *
@@ -615,7 +615,7 @@ setup_pll_0( int clock_source, int pll_mult )
     *pll_div8   = 0x8000 | 12;       // Video Clock 76.15
     *pll_div9   = 0x8000 | 9;       // VLYNQ divider
   //*pll_bpdiv  = 0x8000 | bpdiv;   // Bypass divider
-  //*pll_postdiv= 0x8000 | postdiv; // Post divider 
+  //*pll_postdiv= 0x8000 | postdiv; // Post divider
     *pll_cmd   |= 0x0001;           // GO
     _wait( 2000 );
 
