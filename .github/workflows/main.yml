@@ -35,6 +35,7 @@ jobs:
         run: |
           sudo apt-get -y update
           sudo apt-get -y install meson
+          ln -s meson.options meson_options.txt
       - name: Install dependencies
         if: runner.os == 'macOS'
         run: |
@@ -47,7 +48,7 @@ jobs:
           pacman -Sy --noconfirm mingw-w64-x86_64-meson
       - name: Build
         run: |
-          sed -i -e"s/, 'linearasm'//g" meson.build
+          perl -pi -e"s/, 'linearasm'//g" meson.build
           meson setup build -Db_coverage=true
           meson compile -Cbuild
           meson test -Cbuild
