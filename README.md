@@ -135,3 +135,4 @@ scripts/burn.js -- build/x264.out --input=../../352x288.yuv --frames=1
     - [PDF](https://www.ti.com/lit/ug/sprui04e/sprui04e.pdf)
     - [HTML](https://downloads.ti.com/docs/esd/SPRUI04/)
   - [Code Composer Studio™ User's Guide](https://downloads.ti.com/ccs/esd/documents/users_guide/)
+  - [TI Linker Command File Primer](https://software-dl.ti.com/ccs/esd/documents/sdto_cgt_Linker-Command-File-Primer.html)
