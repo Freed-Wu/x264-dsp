@@ -21,7 +21,7 @@ Add an optional downsample module.
 - [TI-CGT 7.4.24](https://dr-download.ti.com/secure/software-development/ide-configuration-compiler-or-debugger/MD-vqU2jj6ibH/7.4.24/ti_cgt_c6000_7.4.24_linux_installer_x86.bin):
   Download it needs a TI account to log in.
   If you don't want register, download
-  [this backup](https://github.com/ustc-ivclab/x264-dsp/releases/download/0.0.1/c6000_7.4.24.7z)
+  [this backup](https://github.com/ustc-ivclab/x264-dsp/releases/download/0.0.1/c6000_7.4.24.7z).
   8.0.0 doesn't support TI DSP DM6467.
   Refer [x264-for-TI-CGT-8.0.0](https://github.com/ustc-ivclab/x264)
 - [ccstudio](https://aur.archlinux.org/packages/ccstudio): for burn.
