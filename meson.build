@@ -5,11 +5,6 @@ project(
 cc = meson.get_compiler('c')
 conf_data = configuration_data()
 conf_data.set(
-  'DRY_RUN',
-  get_option('dry_run'),
-  description: 'do not write any file',
-)
-conf_data.set(
   'HAVE_TIC6X',
   get_option('have_tic6x'),
   description: 'enable TI C6X asm',

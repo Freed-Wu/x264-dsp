@@ -1,10 +1,4 @@
 option(
-  'dry_run',
-  type: 'boolean',
-  value: false,
-  description: 'do not write any file',
-)
-option(
   'have_tic6x',
   type: 'combo',
   choices: ['1', '0'],
