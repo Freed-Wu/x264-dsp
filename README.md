@@ -12,14 +12,8 @@ Add an optional downsample module.
 
 ### Build Systems
 
-For `meson`:
-
 - [meson](https://mesonbuild.com)
 - [one backend of meson](https://mesonbuild.com/Builtin-options.html#core-options)
-
-For `xmake`:
-
-- [xmake](https://xmake.io)
 
 ### Toolchains
 
@@ -36,22 +30,12 @@ For `xmake`:
 
 ## Build
 
-### meson
-
 ```sh
 meson setup --cross-file meson/ti-c6000.txt build
 meson compile -Cbuild
 ```
 
 See `meson configure build` to know how to configure.
-
-### xmake
-
-```sh
-xmake
-```
-
-See `xmake f --menu` to know how to configure.
 
 ## Burn
 
