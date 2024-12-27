@@ -10,6 +10,7 @@ CompileFlags:
     - -Dfar=
     - -nostdinc
     - -nostdinc++
+    - -std=gnu89
     - -isysroot/opt/ccstudio/ccs/tools/compiler/c6000_7.4.24
     - -iwithsysroot/include
     # https://github.com/clangd/clangd/issues/2249
