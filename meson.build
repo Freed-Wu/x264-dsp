@@ -55,7 +55,7 @@ conf_data.set(
   has_header,
   description: 'have <string.h>',
 )
-conf_file = configure_file(output: 'config.h', configuration: conf_data)
+configure_file(output: 'config.h', configuration: conf_data)
 add_project_arguments('-DHAVE_CONFIG_H=1', language: ['c', 'linearasm'])
 files = [
   'downsample.c',
