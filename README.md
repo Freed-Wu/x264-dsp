@@ -30,6 +30,13 @@ Add an optional downsample module.
 ### Optional Dependencies
 
 - [check](https://github.com/libcheck/check): for unit test: `meson test -Cbuild`
+- [direnv](https://direnv.net/) uses [`.envrc`](.envrc) in order to:
+
+- add the path of toolchains to `$PATH` and
+- `export C6X_C_DIR` to let compiler `cl6x` know where are header files and
+  libraries.
+
+Run `direnv allow` to activate it.
 
 ## Build
 
