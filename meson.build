@@ -92,7 +92,7 @@ if meson.is_cross_build()
     '--arg_size=0x100',
     '--heap_size=0x1000000',
     '--stack_size=0x1000000',
-    '--map_file=out.map',
+    '--map_file=' + meson.project_name() + '.map',
     join_paths(meson.current_source_dir(), get_option('cmd_file')),
     language: ['c', 'linearasm'],
   )
