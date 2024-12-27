@@ -55,7 +55,17 @@ conf_data.set(
   get_option('x264_log_level'),
   description: 'log level, 0..3 means error, warning, info, debug',
 )
+has_header = 0
+if cc.has_header('string.h')
+  has_header = 1
+endif
+conf_data.set(
+  'HAVE_STRING_H',
+  has_header,
+  description: 'have <string.h>',
+)
 conf_file = configure_file(output: 'config.h', configuration: conf_data)
+add_project_arguments('-DHAVE_CONFIG_H=1', language: ['c', 'linearasm'])
 files = [
   'downsample.c',
   'input.c',
@@ -71,6 +81,7 @@ files = [
   'encoder/ratecontrol.c',
   'encoder/set.c',
   'encoder/slicetype.c',
+  'extras/getopt.c',
   'common/bitstream.c',
   'common/cabac.c',
   'common/common.c',

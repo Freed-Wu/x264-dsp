@@ -16,8 +16,10 @@ CompileFlags:
     # https://github.com/clangd/clangd/issues/2249
     - -I.
     - -I..
+    - -DHAVE_CONFIG_H=1
   Remove:
     - -I=*
+    - --define=*
     - --preproc_*
     - --gcc
     - --output_file=*
