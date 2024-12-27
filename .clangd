@@ -2,7 +2,17 @@
 CompileFlags:
   Add:
     - -undef
-    - -D__TI_COMPILER_VERSION__=7.4.24
+    - -D__TI_COMPILER_VERSION__=7004024
+    - -D__DATE__='mmmm dd yy'
+    - -D__FILE__='file.c'
+    - -D__TI_EABI__=1
+    - -D__TIME__=HH:MM:SS
+    - -D__TMS320C6X__=1
+    # - -D__TMS320C6600__=1
+    # - -D__TMS320C6740__=1
+    - -D__TMS320C64_PLUS__=1
+    - -D__TMS320C6400_PLUS__=1
+    - -D__DSBT__=1
     - -D__SIZE_T_TYPE__=int
     - -D__WCHAR_T_TYPE__=int
     - -D__PTRDIFF_T_TYPE__=int
