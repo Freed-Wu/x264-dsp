@@ -46,7 +46,7 @@ meson compile -Cbuild
 
 See `meson configure build` to know how to configure.
 
-[Default TI linker command file](DM6467.cmd) will call
+[Default TI linker command file](targetConfigs/DM6467.cmd) will call
 `/opt/ccstudio/ccs/ccs_base/c6000/include/DM6467.cmd`.
 You can download [it](https://github.com/ustc-ivclab/x264-dsp/releases/download/0.0.1/DM6467.cmd).
 You can use your customized TI linker command file:

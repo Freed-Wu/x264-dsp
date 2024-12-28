@@ -48,4 +48,11 @@ def define_callbacks:
     "directory": "\(sub("/[^/]+$"; "/build"))",
     "file": "\(.)"
   }
+] | .[0].directory as $directory |
+($directory | sub("/[^/]+$"; "/DM6467.cmd")) as $file | . + [
+  {
+    "command": "clang -E -xc \($file)",
+    "directory": "\($directory)",
+    "file": "\($file)"
+  }
 ]
