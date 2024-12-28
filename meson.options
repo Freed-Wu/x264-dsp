@@ -43,6 +43,6 @@ option(
 option(
   'cmd_file',
   type: 'string',
-  value: 'DM6467.cmd',
+  value: 'targetConfigs/DM6467.cmd',
   description: 'TI DSP cmd filename',
 )

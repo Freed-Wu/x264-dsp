@@ -83,13 +83,10 @@ files = [
   'common/set.c',
   'common/vlc.c',
 ]
-depends = []
+objs = []
 if meson.is_cross_build()
   add_project_arguments('--gcc', '-mv64+', language: ['c', 'linearasm'])
-  add_project_link_arguments(
-    join_paths(meson.current_source_dir(), get_option('cmd_file')),
-    language: ['c', 'linearasm'],
-  )
+  objs += [join_paths(meson.current_source_dir(), get_option('cmd_file'))]
 endif
 subdir('tests')
 
@@ -112,4 +109,5 @@ executable(
   files,
   install: true,
   dependencies: deps,
+  objects: objs,
 )
