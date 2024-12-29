@@ -117,7 +117,7 @@ uint64_t x264_pixel_ssd_wxh(x264_pixel_function_t *pf, pixel *pix1, intptr_t i_p
 			SSD(PIXEL_8x8);
 #undef SSD
 
-			/* special handle for width or height not aligned to 8 pixel */
+	/* special handle for width or height not aligned to 8 pixel */
 #define SSD1                                                         \
 	{                                                            \
 		int d = pix1[y * i_pix1 + x] - pix2[y * i_pix2 + x]; \
