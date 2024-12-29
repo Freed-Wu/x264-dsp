@@ -46,15 +46,6 @@ meson compile -Cbuild
 
 See `meson configure build` to know how to configure.
 
-[Default TI linker command file](targetConfigs/DM6467.cmd) will call
-`/opt/ccstudio/ccs/ccs_base/c6000/include/DM6467.cmd`.
-You can download [it](https://github.com/ustc-ivclab/x264-dsp/releases/download/0.0.1/DM6467.cmd).
-You can use your customized TI linker command file:
-
-```sh
-meson setup --cross-file meson/ti-c6000.txt build -Dcmd_file=/the/path/of/my/DM6467.cmd
-```
-
 ## Burn and Run
 
 Default debugger is XDS100v3. See [targetConfigs](targetConfigs) to modify it.
