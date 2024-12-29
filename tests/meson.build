@@ -2,6 +2,7 @@ check_getopt = executable(
   'check_getopt',
   ['check_getopt.c', '../extras/getopt.c'],
   include_directories: include_directories('..'),
+  objects: objs,
 )
 test('check_getopt', check_getopt, args: ['--option0=0', '--option1', '1', '-22'])
 
@@ -21,6 +22,7 @@ if get_option('downsample').to_int() > 0
       [check_downsample_c, '../downsample.c'],
       include_directories: include_directories('..'),
       dependencies: check_dep,
+      objects: objs,
     )
     test('check_downsample', check_downsample)
   endif

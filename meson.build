@@ -88,7 +88,6 @@ if meson.is_cross_build()
   add_project_arguments('--gcc', '-mv64+', language: ['c', 'linearasm'])
   objs += [join_paths(meson.current_source_dir(), get_option('cmd_file'))]
 endif
-subdir('tests')
 
 deps = []
 if cc.get_id() == 'c6000'
@@ -111,3 +110,5 @@ executable(
   dependencies: deps,
   objects: objs,
 )
+
+subdir('tests')
