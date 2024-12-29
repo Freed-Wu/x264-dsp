@@ -10,7 +10,7 @@ var arm926 = ds.openSession(
 // /opt/ccstudio/ccs/ccs_base/emulation/boards/evmdm6467/gel/davincihd1080p_arm.gel
 // comment Setup_Pll0_990_MHz_OscIn()
 arm926.expression.evaluate(
-  'GEL_LoadGel("targetConfigs/gel/davincihd1080p_arm.gel")'
+  'GEL_LoadGel("targetConfigs/davincihd1080p_arm.gel")'
 );
 arm926.target.connect();
 // after OnTargetConnect()
