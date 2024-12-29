@@ -25,7 +25,7 @@ About develop board:
 
 - [TI-CGT 7.4.24](https://dr-download.ti.com/secure/software-development/ide-configuration-compiler-or-debugger/MD-vqU2jj6ibH/7.4.24/ti_cgt_c6000_7.4.24_linux_installer_x86.bin):
   Download it needs a TI account to log in.
-  If you don't want register, download
+  If you don't want to register, download
   [this backup](https://github.com/ustc-ivclab/x264-dsp/releases/download/0.0.1/c6000_7.4.24.7z).
   8.0.0 doesn't support TI DSP DM6467.
   Refer [x264-for-TI-CGT-8.0.0](https://github.com/ustc-ivclab/x264)
@@ -36,7 +36,7 @@ About develop board:
 
 - [check](https://github.com/libcheck/check): for unit test: `meson test -Cbuild`
 - [direnv](https://direnv.net/) uses [`.envrc`](.envrc) in order to:
-  - add the path of toolchains to `$PATH` and
+  - add the path of toolchains to `$PATH`
   - `export C6X_C_DIR` to let compiler `cl6x` know where are header files and
     libraries.
 
