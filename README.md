@@ -8,6 +8,11 @@ Inter-Predict, CABAC, etc.
 
 Add an optional downsample module.
 
+About develop board:
+
+- [introduction](https://www.cnblogs.com/orihard/p/4953006.html)
+- [purchase](https://orihard.taobao.com/)
+
 ## Dependencies
 
 ### Build Systems
