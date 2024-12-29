@@ -8,20 +8,28 @@ Inter-Predict, CABAC, etc.
 
 Add an optional downsample module.
 
-About develop board:
+## Dependencies
+
+### Hardware
+
+#### develop board
 
 - [introduction](https://www.cnblogs.com/orihard/p/4953006.html)
 - [purchase](https://orihard.taobao.com/)
 
-## Dependencies
+#### debugger
 
-### Build Systems
+TI 00IC-XDS100V3
+
+### Software
+
+#### Build Systems
 
 - [meson](https://mesonbuild.com): version must be after
   [this PR](https://github.com/mesonbuild/meson/pull/13989)
 - [one backend of meson](https://mesonbuild.com/Builtin-options.html#core-options)
 
-### Toolchains
+#### Toolchains
 
 - [TI-CGT 7.4.24](https://dr-download.ti.com/secure/software-development/ide-configuration-compiler-or-debugger/MD-vqU2jj6ibH/7.4.24/ti_cgt_c6000_7.4.24_linux_installer_x86.bin):
   Download it needs a TI account to log in.
@@ -32,7 +40,7 @@ About develop board:
 - [ccstudio](https://aur.archlinux.org/packages/ccstudio): for burn.
   Default install path is `/opt/ccstudio/ccs`
 
-### Optional Dependencies
+#### Optional Dependencies
 
 - [check](https://github.com/libcheck/check): for unit test: `meson test -Cbuild`
 - [direnv](https://direnv.net/) uses [`.envrc`](.envrc) in order to:
