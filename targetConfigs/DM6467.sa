@@ -1,0 +1,4 @@
+; always_inline
+; ...
+--gcc
+-mv64+

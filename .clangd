@@ -31,5 +31,6 @@ CompileFlags:
     - -I=*
     - --define=*
     - --preproc_*
+    - --cmd_file=*
     - --gcc
     - --output_file=*

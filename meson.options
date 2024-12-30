@@ -43,6 +43,12 @@ option(
 option(
   'cmd_file',
   type: 'string',
+  value: 'targetConfigs/DM6467.sa',
+  description: 'which file passed to --cmd_file',
+)
+option(
+  'lnk_file',
+  type: 'string',
   value: 'targetConfigs/DM6467.cmd',
-  description: 'TI DSP cmd filename',
+  description: 'TI linker command filename',
 )
