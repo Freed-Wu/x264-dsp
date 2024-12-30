@@ -2,7 +2,7 @@ project(
   'x264-dsp',
   ['c', 'linearasm'],
 )
-cc = meson.get_compiler('c')
+
 conf_data = configuration_data()
 conf_data.set(
   'HAVE_TIC6X',
@@ -41,6 +41,7 @@ conf_data.set(
   get_option('x264_log_level'),
   description: 'log level, 0..3 means error, warning, info, debug',
 )
+cc = meson.get_compiler('c')
 has_header = 0
 if cc.has_header('string.h')
   has_header = 1
@@ -51,6 +52,7 @@ conf_data.set(
   description: 'have <string.h>',
 )
 configure_file(output: 'config.h', configuration: conf_data)
+
 add_project_arguments('-DHAVE_CONFIG_H=1', language: ['c', 'linearasm'])
 files = [
   'downsample.c',
@@ -84,18 +86,14 @@ files = [
   'common/vlc.c',
 ]
 objs = []
-if meson.is_cross_build()
+deps = []
+if cc.get_id() == 'c6000'
   cmd_file = join_paths(meson.current_source_dir(), get_option('cmd_file'))
-  files += [cmd_file]
   add_project_arguments(
     '--cmd_file=' + cmd_file,
     language: ['c', 'linearasm'],
   )
   objs += [join_paths(meson.current_source_dir(), get_option('lnk_file'))]
-endif
-
-deps = []
-if cc.get_id() == 'c6000'
   files += [
     'common/bitstream-a.sa',
     'common/dct-a.sa',
@@ -108,6 +106,7 @@ if cc.get_id() == 'c6000'
 else
   deps += [cc.find_library('m', required: false)]
 endif
+
 executable(
   'x264',
   files,

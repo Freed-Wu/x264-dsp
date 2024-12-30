@@ -1,4 +1,4 @@
+-mv64+
 ; always_inline
 ; ...
 --gcc
--mv64+
