@@ -10,7 +10,6 @@ CompileFlags:
     - -D__TI_COMPILER_VERSION__=7004024
     - -D__DATE__='mmmm dd yy'
     - -D__FILE__='file.c'
-    - -D__TI_EABI__=1
     - -D__TIME__=HH:MM:SS
     - -D__TMS320C6X__=1
     # - -D__TMS320C6600__=1
