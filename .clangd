@@ -7,11 +7,16 @@ CompileFlags:
     - -D__FILE__='file.c'
     - -D__TI_EABI__=1
     - -D__TIME__=HH:MM:SS
+    - -D__interrupt=
+    - -D__cregister=
+    - -D__asm=asm
     - -D__TMS320C6X__=1
     # - -D__TMS320C6600__=1
     # - -D__TMS320C6740__=1
     - -D__TMS320C64_PLUS__=1
     - -D__TMS320C6400_PLUS__=1
+    - -D_TMS320C6400=1
+    - -D_TMS320C6400_PLUS=1
     - -D__DSBT__=1
     - -D__SIZE_T_TYPE__=int
     - -D__WCHAR_T_TYPE__=int
