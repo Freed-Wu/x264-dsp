@@ -2,14 +2,16 @@
 CompileFlags:
   Add:
     - -undef
+    - -D__interrupt=
+    - -Dnear=
+    - -Dfar=
+    - -D__cregister=
+    - -D__asm=asm
     - -D__TI_COMPILER_VERSION__=7004024
     - -D__DATE__='mmmm dd yy'
     - -D__FILE__='file.c'
     - -D__TI_EABI__=1
     - -D__TIME__=HH:MM:SS
-    - -D__interrupt=
-    - -D__cregister=
-    - -D__asm=asm
     - -D__TMS320C6X__=1
     # - -D__TMS320C6600__=1
     # - -D__TMS320C6740__=1
@@ -22,7 +24,6 @@ CompileFlags:
     - -D__WCHAR_T_TYPE__=int
     - -D__PTRDIFF_T_TYPE__=int
     - -D__int40_t=int
-    - -Dfar=
     - -nostdinc
     - -nostdinc++
     - -std=gnu89
