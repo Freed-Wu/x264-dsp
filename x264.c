@@ -2,9 +2,17 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
 #include <ctype.h>
 
+#ifdef __TI_COMPILER_VERSION__
+#include <c6x.h>
+// Don't use HOSTclock() !
+#define clock() ((uint64_t)TSCH << 32 | TSCL)
+// 990 MHz
+#define CLOCKS_PER_SEC 990000000
+#else
+#include <time.h>
+#endif
 #include "common/x264.h"
 #include "input.h"
 #include "output.h"
@@ -72,6 +80,9 @@ static int parse(int argc, char **argv, x264_param_t *param, cli_opt_t *opt);
 static int encode(x264_param_t *param, cli_opt_t *opt);
 
 int main(int argc, char **argv) {
+#ifdef __TI_COMPILER_VERSION__
+	TSCL = 0;
+#endif
 	x264_param_t param;
 	cli_opt_t opt = {0};
 	int ret = EXIT_SUCCESS;
@@ -237,7 +248,7 @@ static int encode_frame(x264_t *h, void *hout, x264_picture_t *pic, int64_t *las
 }
 
 static int64_t print_status(int64_t i_start, int64_t i_previous, int i_frame, int i_frame_total, int64_t i_file, x264_param_t *param, int64_t last_ts) {
-	int64_t i_time = time(NULL) * 1000000;
+	int64_t i_time = clock() * 1000000 / CLOCKS_PER_SEC;
 	int64_t i_elapsed;
 	double fps, bitrate;
 
@@ -290,7 +301,7 @@ static int encode(x264_param_t *param, cli_opt_t *opt) {
 
 	x264_encoder_parameters(h, param);
 
-	i_start = time(NULL) * 1000000;
+	i_start = clock() * 1000000 / CLOCKS_PER_SEC;
 
 	/* ticks/frame = ticks/second / frames/second */
 	ticks_per_frame = (int64_t)param->i_timebase_den * param->i_fps_den / param->i_timebase_num / param->i_fps_num;
@@ -367,7 +378,7 @@ fail:
 	else
 		duration = (double)(2 * largest_pts - second_largest_pts) * param->i_timebase_num / param->i_timebase_den;
 
-	i_end = time(NULL) * 1000000;
+	i_end = clock() * 1000000 / CLOCKS_PER_SEC;
 	if (h)
 		x264_encoder_close(h);
 
