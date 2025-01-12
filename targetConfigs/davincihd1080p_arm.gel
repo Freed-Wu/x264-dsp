@@ -585,7 +585,8 @@ setup_pll_0( int clock_source, int pll_mult )
      *  Step 6 - Enable PLL
      *  Step 7 - Wait for PLL to stabilize
      */
-    *pll_ctl |= 0x0010;             // Disable PLL
+     // TODO: disable will fail
+    /* *pll_ctl |= 0x0010;             // Disable PLL */
     *pll_ctl &= ~0x0002;            // Power up PLL
     *pll_ctl &= ~0x0010;            // Enable PLL
     _wait( 150 );                   // Wait for PLL to stabilize

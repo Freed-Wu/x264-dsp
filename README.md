@@ -54,6 +54,7 @@ Run `direnv allow` to activate it.
 
 ```sh
 meson setup --cross-file meson/ti-c6000.txt build
+meson configure build -Dbuildtype=release
 meson compile -Cbuild
 ```
 
@@ -79,6 +80,7 @@ See `--help`:
 ```sh
 sed -i -e"s/, 'linearasm'//g" meson.build
 meson setup build/host
+meson configure build/host -Dbuildtype=release
 meson compile -Cbuild/host
 build/host/x264 --help
 ```
@@ -109,7 +111,7 @@ $ scripts/burn.js ../352x288.yuv -- build/x264.out --input=../../352x288.yuv --f
 ../../352x288.yuv [info]: 352x288p 0:0 @ 25/1 fps (cfr)
 x264 [info]: profile Constrained Baseline, level 1.3
 x264 [info]: frame I:1     Avg QP:29.00  size:  5403
-encoded 1 frames, 4.64 fps, 1080.60 kb/s
+encoded 1 frames, 4.97 fps, 1080.60 kb/s
 ```
 
 ### --input/--output
@@ -122,7 +124,7 @@ $ build/host/x264 --input=../352x288.yuv
 ../352x288.yuv [info]: 352x288p 0:0 @ 25/1 fps (cfr)
 x264 [info]: profile Constrained Baseline, level 1.3
 x264 [info]: frame I:1     Avg QP:29.00  size:  5403
-encoded 1 frames, 84.03 fps, 1080.60 kb/s
+encoded 1 frames, 227.69 fps, 1080.60 kb/s
 # add an extra ../ because build/x264.out is in build/
 $ scripts/burn.js -- build/x264.out --input=../../352x288.yuv --disable-ddr-input
 # ...

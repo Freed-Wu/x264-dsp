@@ -98,7 +98,7 @@ int main(int argc, char **argv) {
 	if (opt.hin)
 		cli_input.close_file(opt.hin, opt.b_ddr_input);
 	if (opt.hout)
-		cli_output.close_file(opt.hout, 0, 0);
+		cli_output.close_file(opt.hout, 0, 0, opt.b_ddr_output);
 
 	return ret;
 }
@@ -154,7 +154,7 @@ static int parse(int argc, char **argv, x264_param_t *param, cli_opt_t *opt) {
 	char *output_filename = "out.264";
 	video_info_t info = {0};
 	int c;
-#if defined(__TI_COMPILER_VERSION__)
+#ifdef __TI_COMPILER_VERSION__
 	opt->b_ddr_input = 1;
 	opt->b_ddr_output = 1;
 #endif
@@ -205,7 +205,7 @@ static int parse(int argc, char **argv, x264_param_t *param, cli_opt_t *opt) {
 	info.tff = param->b_tff;
 	info.vfr = param->b_vfr_input;
 
-	FAIL_IF_ERROR(cli_output.open_file(output_filename, &opt->hout),
+	FAIL_IF_ERROR(cli_output.open_file(output_filename, &opt->hout, opt->b_ddr_output),
 		      "could not open output file `%s'\n", output_filename)
 
 	FAIL_IF_ERROR(cli_input.open_file(input_filename, &opt->hin, &info, opt->b_ddr_input),
@@ -229,7 +229,7 @@ static int parse(int argc, char **argv, x264_param_t *param, cli_opt_t *opt) {
 	return 0;
 }
 
-static int encode_frame(x264_t *h, void *hout, x264_picture_t *pic, int64_t *last_dts) {
+static int encode_frame(x264_t *h, cli_opt_t *opt, x264_picture_t *pic, int64_t *last_dts) {
 	x264_picture_t pic_out;
 	x264_nal_t *nal;
 	int i_nal;
@@ -240,7 +240,7 @@ static int encode_frame(x264_t *h, void *hout, x264_picture_t *pic, int64_t *las
 	FAIL_IF_ERROR(i_frame_size < 0, "x264_encoder_encode failed\n");
 
 	if (i_frame_size) {
-		i_frame_size = cli_output.write_frame(hout, nal[0].p_payload, i_frame_size, &pic_out);
+		i_frame_size = cli_output.write_frame(opt->hout, nal[0].p_payload, i_frame_size, &pic_out, opt->b_ddr_output);
 		*last_dts = pic_out.i_dts;
 	}
 
@@ -314,7 +314,7 @@ static int encode(x264_param_t *param, cli_opt_t *opt) {
 		int i_nal;
 
 		FAIL_IF_ERROR2(x264_encoder_headers(h, &headers, &i_nal) < 0, "x264_encoder_headers failed\n")
-		FAIL_IF_ERROR2((i_file = cli_output.write_headers(opt->hout, headers)) < 0, "error writing headers to output file\n");
+		FAIL_IF_ERROR2((i_file = cli_output.write_headers(opt->hout, headers, opt->b_ddr_output)) < 0, "error writing headers to output file\n");
 	}
 
 	/* Alloc picture for encoding frame */
@@ -348,7 +348,7 @@ static int encode(x264_param_t *param, cli_opt_t *opt) {
 		largest_pts = pic.i_pts;
 
 		prev_dts = last_dts;
-		i_frame_size = encode_frame(h, opt->hout, &pic, &last_dts);
+		i_frame_size = encode_frame(h, opt, &pic, &last_dts);
 		if (i_frame_size < 0) {
 			retval = -1;
 		} else if (i_frame_size) {
@@ -361,9 +361,11 @@ static int encode(x264_param_t *param, cli_opt_t *opt) {
 		if (cli_input.release_frame && cli_input.release_frame(&cli_pic, opt->hin))
 			break;
 
-		/* update status line (up to 1000 times per input file) */
+/* update status line (up to 1000 times per input file) */
+#ifndef __TI_COMPILER_VERSION__
 		if (cli_log_level >= X264_LOG_DEBUG && opt->b_progress && i_frame_output)
 			i_previous = print_status(i_start, i_previous, i_frame_output, param->i_frame_total, i_file, param, 2 * last_dts - prev_dts - first_dts);
+#endif
 	}
 
 	cli_input.picture_clean(&cli_pic);
@@ -382,7 +384,7 @@ fail:
 	if (h)
 		x264_encoder_close(h);
 
-	cli_output.close_file(opt->hout, largest_pts, second_largest_pts);
+	cli_output.close_file(opt->hout, largest_pts, second_largest_pts, opt->b_ddr_output);
 	opt->hout = NULL;
 
 	if (i_frame_output > 0) {
