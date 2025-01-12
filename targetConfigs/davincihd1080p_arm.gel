@@ -46,6 +46,7 @@ OnTargetConnect( )
 //    Setup_EMIFCS2_NandFlash_8Bit( );// Setup NAND Flash
 
 //    DSP_Boot_from_L2_ram( );        // Boot DSP from L2
+    DSP_Boot_from_DDR2( );        // Boot DSP from L2
 
 	psc_change_state( 31 , 0 ); // I2C Off
 	psc_change_state( 31 , 3 ); // I2C On

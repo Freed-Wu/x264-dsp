@@ -13,8 +13,6 @@ arm926.expression.evaluate(
   'GEL_LoadGel("targetConfigs/davincihd1080p_arm.gel")'
 );
 arm926.target.connect();
-// after OnTargetConnect()
-arm926.expression.evaluate("DSP_Boot_from_DDR2()");
 var c64xp = ds.openSession("Texas Instruments XDS100v3 USB Debug Probe/C64XP");
 c64xp.expression.evaluate(
   'GEL_LoadGel("/opt/ccstudio/ccs/ccs_base/emulation/boards/evmdm6467/gel/davincihd1080p_dsp.gel")'
