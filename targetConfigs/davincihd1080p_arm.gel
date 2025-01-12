@@ -40,7 +40,7 @@ OnTargetConnect( )
     Setup_Pin_Mux( );               // Setup Pin Mux
     Setup_Psc_All_On( );            // Setup All Power Domains
 
-    /* Setup_Pll0_990_MHz_OscIn( );    // Setup Pll0 [DSP @ 990 MHz, ARM @ 247.5 MHz] */
+    Setup_Pll0_990_MHz_OscIn( );    // Setup Pll0 [DSP @ 990 MHz, ARM @ 247.5 MHz]
     Setup_DDR_396_MHz( );           // Setup DDR2 [396 MHz]
 
 //    Setup_EMIFCS2_NandFlash_8Bit( );// Setup NAND Flash
@@ -570,7 +570,8 @@ setup_pll_0( int clock_source, int pll_mult )
      *         - Wait for PLL to stabilize
      */
     *pll_ctl &= ~0x0020;
-    *pll_ctl &= ~0x0001;
+    /* TODO: pll_ctl cannot work */
+    /* *pll_ctl &= ~0x0001; */
     _wait( 150 );
 
     /*
@@ -617,7 +618,8 @@ setup_pll_0( int clock_source, int pll_mult )
     *pll_div9   = 0x8000 | 9;       // VLYNQ divider
   //*pll_bpdiv  = 0x8000 | bpdiv;   // Bypass divider
   //*pll_postdiv= 0x8000 | postdiv; // Post divider
-    *pll_cmd   |= 0x0001;           // GO
+    /* TODO: pll_cmd cannot work */
+    /* *pll_cmd   |= 0x0001;           // GO */
     _wait( 2000 );
 
     /*
@@ -632,7 +634,8 @@ setup_pll_0( int clock_source, int pll_mult )
      *  Step 13 - Switch out of BYPASS mode
      */
     _wait( 2000 );
-    *pll_ctl |= 0x0001;
+    /* TODO: pll_ctl cannot work */
+    /* *pll_ctl |= 0x0001; */
 
     pll0_freq = 33 * ( ( *pll_pllm & 0x3f ) + 1 );
     dsp_freq = pll0_freq;
