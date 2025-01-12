@@ -2,6 +2,7 @@ project(
   'x264-dsp',
   ['c', 'linearasm'],
 )
+languages = ['c', 'linearasm']
 
 conf_data = configuration_data()
 conf_data.set(
@@ -53,7 +54,7 @@ conf_data.set(
 )
 configure_file(output: 'config.h', configuration: conf_data)
 
-add_project_arguments('-DHAVE_CONFIG_H=1', language: ['c', 'linearasm'])
+add_project_arguments('-DHAVE_CONFIG_H=1', language: languages)
 files = [
   'downsample.c',
   'input.c',
@@ -91,7 +92,7 @@ if cc.get_id() == 'c6000'
   cmd_file = join_paths(meson.current_source_dir(), get_option('cmd_file'))
   add_project_arguments(
     '--cmd_file=' + cmd_file,
-    language: ['c', 'linearasm'],
+    language: languages,
   )
   objs += [join_paths(meson.current_source_dir(), get_option('lnk_file'))]
   files += [
