@@ -19,7 +19,7 @@ Add an optional downsample module.
 
 #### debugger
 
-TI 00IC-XDS100V3
+TI 00IC-XDS100V3. See [targetConfigs](targetConfigs) to modify it.
 
 ### Software
 
@@ -60,8 +60,6 @@ meson compile -Cbuild
 See `meson configure build` to know how to configure.
 
 ## Burn and Run
-
-Default debugger is XDS100v3. See [targetConfigs](targetConfigs) to modify it.
 
 ```sh
 # load /the/path/of/352x288.yuv to DDR2 and run:
