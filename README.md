@@ -78,7 +78,6 @@ Some [test yuv files](https://github.com/ustc-ivclab/x264-dsp/releases).
 See `--help`:
 
 ```sh
-sed -i -e"s/, 'linearasm'//g" meson.build
 meson setup build/host
 meson configure build/host -Dbuildtype=release
 meson compile -Cbuild/host

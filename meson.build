@@ -1,8 +1,9 @@
-project(
-  'x264-dsp',
-  ['c', 'linearasm'],
-)
-languages = ['c', 'linearasm']
+project('x264-dsp')
+languages = ['c']
+add_languages(languages, required: true)
+if add_languages(['linearasm'], native: false, required: false)
+  languages += ['linearasm']
+endif
 
 conf_data = configuration_data()
 conf_data.set(
@@ -42,8 +43,8 @@ conf_data.set(
   get_option('x264_log_level'),
   description: 'log level, 0..3 means error, warning, info, debug',
 )
-cc = meson.get_compiler('c')
 has_header = 0
+cc = meson.get_compiler('c')
 if cc.has_header('string.h')
   has_header = 1
 endif
