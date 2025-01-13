@@ -45,7 +45,7 @@ jobs:
       - name: Install dependencies
         if: runner.os == 'Windows'
         run: |
-          pacman -Sy --noconfirm mingw-w64-x86_64-meson
+          pacman -Sy --noconfirm mingw-w64-x86_64-meson mingw-w64-x86_64-gcc
       - name: Build
         run: |
           meson setup build -Db_coverage=true -Dbuildtype=release
