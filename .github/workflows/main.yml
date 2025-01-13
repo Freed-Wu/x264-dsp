@@ -48,8 +48,7 @@ jobs:
           pacman -Sy --noconfirm mingw-w64-x86_64-meson
       - name: Build
         run: |
-          perl -pi -e"s/, 'linearasm'//g" meson.build
-          meson setup build -Db_coverage=true
+          meson setup build -Db_coverage=true -Dbuildtype=release
           meson compile -Cbuild
           meson test -Cbuild
           mv build/x264 build/${{matrix.runs-on}}-x264 ||
