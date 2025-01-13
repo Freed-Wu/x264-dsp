@@ -53,8 +53,7 @@ Run `direnv allow` to activate it.
 ## Build
 
 ```sh
-meson setup --cross-file meson/ti-c6000.txt build
-meson configure build -Dbuildtype=release
+meson setup build --cross-file=meson/ti-c6000.txt -Dbuildtype=release
 meson compile -Cbuild
 ```
 
@@ -78,8 +77,7 @@ Some [test yuv files](https://github.com/ustc-ivclab/x264-dsp/releases).
 See `--help`:
 
 ```sh
-meson setup build/host
-meson configure build/host -Dbuildtype=release
+meson setup build/host -Dbuildtype=release
 meson compile -Cbuild/host
 build/host/x264 --help
 ```
